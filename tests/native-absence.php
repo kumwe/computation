@@ -19,7 +19,31 @@ if (in_array('--list-json', $argv ?? [], true)) {
     exit(0);
 }
 
-require $argv[1] ?? dirname(__DIR__) . '/vendor/autoload.php';
+$missingReleaseApi = ($argv[1] ?? null) === '--missing-release-api';
+$autoload = ($missingReleaseApi ? ($argv[2] ?? null) : ($argv[1] ?? null))
+    ?? dirname(__DIR__) . '/vendor/autoload.php';
+require $autoload;
+
+if ($missingReleaseApi) {
+    if (
+        !extension_loaded('kumwe_engine')
+        || !class_exists('Kumwe\\Engine\\Runtime', false)
+        || (new \ReflectionClass('Kumwe\\Engine\\Runtime'))->hasMethod('release')
+    ) {
+        throw new RuntimeException('This gate requires an actual historical extension without the release API.');
+    }
+    $refused = false;
+    try {
+        NativeRuntime::assertAvailable();
+    } catch (ExecutionRefused $failure) {
+        $refused = $failure->reason === RefusalCode::IncompatibleCapability;
+    }
+    if (!$refused) {
+        throw new RuntimeException('The older native API was admitted without required plan release support.');
+    }
+    echo "Historical native API is refused before adapter construction.\n";
+    exit(0);
+}
 
 if (extension_loaded('kumwe_engine')) {
     throw new RuntimeException('Run the native absence gate without the extension loaded.');

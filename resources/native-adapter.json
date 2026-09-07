@@ -18,7 +18,6 @@
         "extension": "kumwe_engine",
         "abi_major": 1,
         "capabilities": [
-            "decimal-batch-draft/1",
             "formula-draft/1",
             "normalized-document-draft/1",
             "normalized-preparation-draft/1",
