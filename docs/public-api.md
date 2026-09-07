@@ -5,7 +5,7 @@ resolve under `Kumwe\Computation\` unless they are PHP built-ins. Public propert
 PHP exception state. `Internal\Guard` is not public API. Native algorithms remain in the Engine; this package
 owns no Engine implementation or
 semantic corpus selection. See [architecture](architecture.md), [integration](integration.md) and the
-[native boundary](native-boundary-draft.md) for ownership and release barriers.
+[native boundary](native-boundary.md) for ownership and release barriers.
 
 Constructors and `fromArray()` validate exact bounded values and refuse malformed input with `ExecutionRefused`.
 A semantic coordinate is supplied metadata, not release verification. Opaque payload bytes are not parsed here.
@@ -985,7 +985,8 @@ toArray(
 
 ## `Kumwe\Computation\ConfigProvider`
 
-`__invoke()` returns the two native service factories and three interface aliases. Both concrete services are
+`__invoke()` returns the two native service factories and two package-owned interface aliases. Both concrete
+services are
 shared within the host's request container. Registration does not probe the extension or create services.
 The host supplies `NativeCompatibility`; Compiler and Executor must share the same NativeAdapter instance.
 

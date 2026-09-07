@@ -143,7 +143,6 @@ $that($provider === ['dependencies' => [
     'aliases' => [
         Compiler::class => NativeAdapter::class,
         Executor::class => NativeAdapter::class,
-        CanonicalEncoder::class => NativeCanonicalEncoder::class,
     ],
     'shared' => [NativeAdapter::class => true, NativeCanonicalEncoder::class => true],
 ]], 'Provider service identities or request-scoped sharing changed.');
@@ -409,7 +408,10 @@ $refuses(static fn () => $adapter->execute($plan, $documents, $limits), RefusalC
 $refuses(static fn () => $adapter->release($plan), RefusalCode::InvalidProgram);
 for ($cycle = 0; $cycle < 130; ++$cycle) {
     $reusable = $adapter->compile($source, $identity($source), $limits);
-    $that(count($adapter->execute($reusable, $documents, $limits)->results()) === 2, 'Released capacity was not reusable.');
+    $that(
+        count($adapter->execute($reusable, $documents, $limits)->results()) === 2,
+        'Released capacity was not reusable.',
+    );
     $adapter->release($reusable);
 }
 echo 'Native adapter integration: ' . $assertions . " assertions passed.\n";

@@ -1,7 +1,7 @@
 {
     "schema": "kumwe-package-public-api/v1",
     "package": "kumwe/computation",
-    "release": "0.2.1",
+    "release": "0.2.2",
     "namespace": "Kumwe\\Computation\\",
     "symbols": {
         "Kumwe\\Computation\\BatchResult": {
@@ -1463,6 +1463,20 @@
                         }
                     ],
                     "return": "Kumwe\\Computation\\BatchResult"
+                },
+                "release": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [
+                        {
+                            "name": "program",
+                            "type": "Kumwe\\Computation\\CompiledProgram",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        }
+                    ],
+                    "return": "void"
                 }
             },
             "deprecated": null

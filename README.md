@@ -1,6 +1,6 @@
 # Kumwe Computation
 
-Bounded computation transport and explicit adapters to the native Engine. The 0.2.0 candidate adds exact
+Bounded computation transport and explicit adapters to the native Engine. The native adapter provides exact
 compatibility checks, compiler/executor services and the GenericV1 CanonicalEncoder implementation. It requires
 64-bit PHP 8.5, the actual `kumwe_engine` extension, the reviewed canonical contract and PSR container 2.x.
 
@@ -23,20 +23,21 @@ contract suite or `composer examples` for the shipped transport example.
 ## Contract ownership
 
 The [charter](CHARTER.md) defines this package's scope. The [public API](docs/public-api.md) documents every
-public member. The [native boundary draft](docs/native-boundary-draft.md) names the proposed native owner
+public member. The [native boundary](docs/native-boundary.md) names the implemented native owner
 and separates portable metadata from Engine algorithms. The [integration notes](docs/integration.md) and
 [migration handoff](MIGRATION-HANDOFF.md) describe the ordered release and adoption barriers.
 
 Construct transport values directly. Register host-selected NativeCompatibility and apply ConfigProvider in a
-request-scoped container. Compiler and Executor share one NativeAdapter; CanonicalEncoder resolves to the native
-canonical service. See integration notes for the required independent compatibility JSON and native test gate.
+request-scoped container. Compiler and Executor share one NativeAdapter. The host explicitly binds the canonical
+interface to its selected encoder and releases finished native plans. See integration notes for the required
+independent compatibility JSON and native test gate.
 
 ## Test ownership
 
 Computation tests own transport shape, round trips, bounds, identity/cache-key vectors, compatibility and
 ordered findings/batches. Engine owns semantic algorithms, parity corpora, fuzzing, sanitizers and performance.
 The native binding owns Zend lifecycle and marshalling tests. App owns authority, composition, database,
-transaction, deployment and recovery tests. Phase 1A removes no App code or test; the later native cutover
+transaction, deployment and recovery tests. This successor removes no App code or test; the later native cutover
 must remove superseded package-unit cases from App while retaining integration coverage.
 
 ## Release status

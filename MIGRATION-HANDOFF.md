@@ -20,44 +20,45 @@ source:
     capability_index_sha256: "87ded886f35f74878ca9eb8db4c36e23d681c4a49891f76dfc3210f385a7ce39"
   semantic_inputs: []
   examined_dependencies:
-    - "CanonicalEncoder GenericV1 port; exact native corpus selected by host NativeCompatibility."
-    - "App retains existing Expression, DecimalValue and document validation implementations."
-    - "Native extension, canonical port and PSR container are explicit runtime dependencies."
-  active_related_pull_requests:
-    - "https://github.com/kumwe/app/pull/135"
+    - "php ^8.5"
+    - "php-64bit ^8.5"
+    - "ext-kumwe_engine 0.0.0-dev"
+    - "kumwe/canonical-json 0.1.1"
+    - "psr/container ^2.0"
+  active_related_pull_requests: []
 target:
   repository: "https://github.com/kumwe/computation"
   artifact_identity: "kumwe/computation"
   canonical_namespace_or_abi: "Kumwe\\Computation"
-  branch: "agent/native-runtime-closure-v3"
-  pull_request: "https://github.com/kumwe/computation/pull/8"
+  branch: "codex/extraction-readiness-20260907"
+  pull_request: "https://github.com/kumwe/computation/pull/11"
 ownership:
-  responsibility: "Portable bounded execution transport, exact identities and compiler/executor contracts."
+  responsibility: "Portable transport, native adapters, compatibility and deterministic refusals."
   non_responsibilities:
-    - "Engine algorithms, decimal/expression semantics, document normalization and canonical JSON."
-    - "C ABI implementation, Zend binding, extension provisioning and host container lifetime."
-    - "Authority, persistence, transactions, cache lifetime, localization and App adoption."
+    - "Host trust and final authorization"
+    - "Persistence, durable transactions, worker and transport lifecycle"
+    - "App runtime adoption and native release publication"
   allowed_dependency_ceiling:
+    - "php"
+    - "php-64bit"
     - "ext-kumwe_engine"
     - "kumwe/canonical-json"
     - "psr/container"
   implementation_owner: "kumwe/computation"
-  next_consumer: "kumwe/engine"
+  next_consumer: "kumwe/app"
   public_manifests:
-    - path: "resources/public-api/v1.json"
-      sha256: "1e8a2001ccc8344b4b868755148ad54e9da93cf36c81e5eb6fdf6491e7fc8085"
-    - path: "resources/capabilities/v1.json"
-      sha256: "f6af645b297fd8177737815cb5342ae140e5238868f7f61eed4c8f800702cbea"
-    - path: "resources/service-map/v1.json"
-      sha256: "d5012c52ce54bed285fc10506fd55f5e659d2e0acad2e9951b54329176c65467"
-    - path: "resources/native-ownership/v1.json"
-      sha256: "35cdddeb2cc2dc1557340ea282b1685da9c857724f9f55d84ca7f293bf6a3b4c"
-    - path: "resources/conformance/v1.json"
-      sha256: "30a64cf682a46c38ca99544d5abcad43cda7071bb9702621226bf297411b8bfc"
+    -
+      path: "resources/public-api/v1.json"
+      sha256: "cd1a3e6abe265e043fc2a245f12a3fdddb5af95fb8762b6a34dc7de12578f97a"
+    -
+      path: "resources/capabilities/v1.json"
+      sha256: "a7034c5b068d17f07e7f983e0c32bbf72069841b5643e59193a433cabbdb414d"
+    -
+      path: "resources/service-map/v1.json"
+      sha256: "2f83cffac717f24e7911dfd7860657342bf19f1736a5d9f0b2b74f67f81a4dfd"
   intentionally_excluded:
-    - "No verbatim App extraction or App code/test removal in Phase 1A."
-    - "No autoloadable native classes, PHP executor or semantic fallback."
-    - "Transport corpus remains synthetic; actual native integration is separately required."
+    - "Engine owns algorithms; extension owns C ABI/Zend binding."
+    - "No App extraction or runtime adoption occurs in this successor."
 framework_php:
   composer_package: "kumwe/computation"
   canonical_namespace: "Kumwe\\Computation"
@@ -68,45 +69,40 @@ framework_php:
   consumers:
     app_code: []
     configuration_and_di: []
-    reflection_and_string_references: []
-    fixtures_and_examples: []
-    external:
-      - "Future Engine implementation consumes the independently verified contract baseline."
-      - "Future Computation Phase 1B adapter consumes verified native releases."
+    reflection_and_string_references:
+      - "Re-scan current App dynamic, reflected and same-namespace references before adoption."
+    fixtures_and_examples:
+      - "examples/typed-consumer.php"
+    external: []
   dependency_injection:
-    mode: "explicit-provider"
+    mode: "config-provider"
     provider: "Kumwe\\Computation\\ConfigProvider"
     factories:
-      - "NativeAdapterFactory"
-      - "NativeCanonicalEncoderFactory"
+      - "Kumwe\\Computation\\NativeAdapterFactory"
+      - "Kumwe\\Computation\\NativeCanonicalEncoderFactory"
     aliases:
-      - "Compiler and Executor -> NativeAdapter"
-      - "Kumwe\\CanonicalJson\\CanonicalEncoder -> NativeCanonicalEncoder"
+      - "Kumwe\\Computation\\Compiler -> Kumwe\\Computation\\NativeAdapter"
+      - "Kumwe\\Computation\\Executor -> Kumwe\\Computation\\NativeAdapter"
     service_lifetimes:
-      - "Shared native services within a host-owned request container."
-      - "NativeCompatibility is host-supplied; upstream canonical Limits is optional."
+      - "Kumwe\\Computation\\NativeAdapter: shared"
+      - "Kumwe\\Computation\\NativeCanonicalEncoder: shared"
     configuration_keys: []
+    provider_absence_reason: null
 native_cpp: null
 php_extension: null
 tests:
   moved_or_added:
+    - "tests/native-absence.php"
+    - "tests/native.php"
     - "tests/run.php"
-    - "Package-owned contract invariants, wire round trips, identity vectors and hostile bounds."
-    - "tools/test-release-record.sh"
-    - "tools/verify-clean-consumer.php"
   remain_in_app_or_consumer:
-    - "All existing App tests remain during Phase 1A."
-    - "App authority, composition, DB/transaction, deployment, stale-generation and recovery coverage."
-    - "Engine semantic algorithms, parity corpora, fuzzing, sanitizers and performance coverage."
-    - "Native binding Zend lifecycle, cleanup, marshalling, PHPT and installer coverage."
+    - "Retain host composition, authority, persistence and integration assertions in App."
   split_tests:
-    - "At native cutover, refresh exact App test methods and separate portable invariants from integration."
-    - "Do not delete an App test before its verified replacement implementation is adopted."
+    - "Remove vendor implementation assertions only after verified App adoption."
   prohibited_duplicates:
-    - "Do not duplicate Computation contract unit tests inside App after adoption."
-    - "No parallel App or package PHP executor to bypass ordered native cutover."
+    - "App must not duplicate package implementation unit tests after adoption."
   corpora:
-    - "resources/conformance/v1.json: transport-only vectors, not semantic owner/parity attestations."
+    - "resources/conformance/v1.json"
 documentation:
   charter: "CHARTER.md"
   readme: "README.md"
@@ -115,101 +111,125 @@ documentation:
   integration_or_consumer: "docs/integration.md"
   examples:
     - "examples/typed-consumer.php"
-  changelog_record: "CHANGELOG.md / 0.2.1 (native adapter source successor)"
+  changelog_record: "CHANGELOG.md / 0.2.2"
 release_expectations:
-  version_policy: "SemVer; exact pre-1.0 pins; protected main and immutable release enabled before first merge."
+  version_policy: "Exact stable sibling pins; promote compatible published successors together."
   expected_artifact_types:
-    - "Composer package ZIP"
+    - "Composer package archive"
     - "GitHub source archive"
   required_checks:
-    - "composer check on 64-bit PHP 8.5"
-    - "Real built ZIP as no-dev dependency in a fresh authoritative Composer consumer"
-    - "Native-boundary ownership review without claiming an implemented/frozen Engine ABI"
-    - "Independent release/source/artifact/manifest/Packagist verification"
-  required_registry_or_installer: "Packagist + Composer"
+    - "composer check"
+    - "Final hosted package CI"
+    - "Machine handoff and consumer schema validation"
+  required_registry_or_installer: "Composer"
   required_external_attestation: true
 next_task:
-  phase_name: "Verify complete native candidate and independent immutable releases before consumer adoption"
+  phase_name: "Review and verify the library successor release before separate App integration"
   permitted_only_when:
-    - "Human merge and immutable release after main protection and release immutability are enabled."
-    - "Independent external attestation verifies the exact artifact and full handoff."
-    - "Engine selects exact independently verified semantic owner APIs and corpus digests."
-  consumer_repository: "https://github.com/kumwe/engine"
-  dependency_or_native_change: "Adopt independently verified native, canonical port and adapter artifacts."
+    - "Final package CI passes at the proposed head"
+    - "Immutable package and all dependency releases are independently verified"
+    - "Reconcile current App drift against the recorded source inventories"
+  consumer_repository: "https://github.com/kumwe/app"
+  dependency_or_native_change: "Require verified Engine/extension releases and exact tuple; see docs/integration.md."
   namespace_or_api_replacements: []
   files_to_update:
-    - "Future Engine ABI/header/implementation and semantic dependency records after native review."
-    - "Future native binding lifecycle/marshalling/installer and joint ownership records."
+    - "composer.json"
+    - "composer.lock"
   files_to_remove: []
-  tests_to_remove: []
+  tests_to_remove:
+    - "Portable implementation assertions only, after App integration gates pass."
   tests_to_retain_or_add:
-    - "Keep all App execution tests until actual verified native cutover."
-    - "Add Engine algorithm parity, native ABI, fuzz, sanitizer and performance tests."
-    - "Add binding Zend lifecycle, resource cleanup, PHPT and installer tests."
+    - "Host composition and operational integration suites."
   di_or_provisioning_changes:
-    - "None in Phase 1A; native provisioning must merge before later App execution cutover."
+    - "Bind NativeCompatibility and package factories; host selects CanonicalEncoder binding."
   capability_index_changes:
-    - "None in App Phase 1A; regenerate only after verified dependency adoption."
+    - "Record verified package capability and API ownership."
   changelog_and_evidence_changes:
-    - "KUMWE-MIG-2026-008 / KUMWE-CS-2026-008 / NRM-2026-010; no App completion claim."
+    - "Record exact artifact and dependency identities in the external release attestation."
   verification_commands:
     - "composer check"
-    - "Independent exact release/archive/manifest/Packagist verification"
-    - "Engine and binding native release gates before Phase 1B or App adoption"
+    - "Affected App integration suites"
+    - "Complete App package governance gate"
 concurrency:
   likely_conflict_files:
-    - "Computation public API and native ownership manifests"
-    - "Engine ABI headers, semantic input records and implementation plans"
-    - "Native binding FQCN ownership, stubs/arginfo and lifecycle plans"
+    - "App composer.json"
+    - "App composer.lock"
+    - "App provider configuration"
   related_migrations: []
-  ownership_conflicts:
-    - "Native declarations belong only to Engine binding; Composer must not autoload stubs."
-    - "Semantic payload owners retain semantics and release/corpus authority."
+  ownership_conflicts: []
   integration_train: null
   resolution_rule: "semantic-preservation"
 governance:
   roadmap_source_sha256: "a202155ef1a65f5ab293d4f8397ebf4ac430db7f1e877c776bbe7851e6fe18d8"
   roadmap_refs: []
   non_roadmap_refs:
-    - "NRM-2026-010"
+    - "NRM-2026-008"
   completion_claim: false
 decisions:
-  - "Native adapter candidate: 26 public PHP types, zero immediate App removals."
-  - "CanonicalEncoder is an injected upstream port; the Engine owns semantic execution."
-  - "Explicit native services; no PHP semantic fallback or automatic host readiness."
+  - "Release compiled plans explicitly to reclaim bounded native capacity."
+  - "Engine owns algorithms; Computation owns transport and native adapters."
+  - "No App changes or release publication occurs in this successor."
 blockers:
-  - "Immutable publication and independent attestation are future gates, not completed evidence."
-  - "Native layout, platform/lifecycle implementation and semantic parity remain downstream work."
-  - "App cutover waits for verified baseline/Engine/binding/adapter releases and prior provisioning merge."
+  - "Final package gates and independent immutable release verification remain required."
+  - "Engine/extension remain development candidates; no verified stable tuple exists."
 ---
 
-# Computation migration handoff
+# computation implementation handoff
 
-The 0.2.0 candidate adds six public types for native compatibility, execution, canonical encoding and explicit
-container composition. Its 26 exports are reflected in the API manifest and five capability groups. App keeps
-all existing production code and tests until an independently verified adoption task performs the cutover.
+## Migration/implementation summary
 
-NativeAdapter owns request-local plan handles and makes coarse calls to the actual Zend Runtime. The two native
-factories require a host-selected exact NativeCompatibility tuple, including the independently recorded binding build
-digest that binds PHP patch, Zend API, platform, compiler/flags, debug/sanitizers and ABI manifest. Compiler and
-Executor resolve to the same
-shared adapter. NativeCanonicalEncoder implements the upstream GenericV1 port with native execution only.
-The host retains authorization, persistence, transactions, provisioning, readiness and request/container lifetime.
+Expose explicit compiled-plan release to reclaim native capacity in long-lived consumers and normalize
+consumer manifests. [PR #11](https://github.com/kumwe/computation/pull/11) contains this successor. The
+changelog version describes the proposed artifact; it is not a publication observation.
 
-Computation owns transport invariants, metadata identities, factory/compatibility boundaries and actual adapter
-integration. Engine owns algorithms and native parity evidence; the binding owns Zend lifecycle and marshalling.
-Native integration also exercises Unicode validators, exact normalized domain storage, create/update preparation,
-converted report output and refusal recovery through the coarse adapter. The transport corpus remains transport-only.
-The separate native suite must execute against the real extension
-and an independently supplied tuple, including through the no-dev archive's authoritative Composer autoloader.
+## Public API and responsibility
 
-Run `composer check` with the actual extension and `KUMWE_NATIVE_EXPECTED_TUPLE` set to the admitted candidate's
-configuration JSON. Absence or mismatch is a required failure. Source/static successes alone cannot establish
-native compatibility, release admission or App completion. The PR records observed results; final release and
-artifact identities belong in independent external evidence after publication.
+Portable transport and native adapters are implemented. Engine owns all algorithms; the PHP extension owns
+ABI/Zend binding. The available 0.0.0-dev native tuple remains a development candidate, so independent stable
+native release verification still gates App adoption. Every exported member is recorded in
+resources/public-api/v1.json and documented in docs/public-api.md. The current surface contains 26 types. 0
+types have recorded extraction provenance; package-native composition is identified separately.
 
-This source successor preserves the externally merged adapter and the current main release controls.
-Its native test dependency is binding `81a30990f24767b61f3b0d1cfe4c073389e09b97`, embedding Engine
-`24d43dd6b4755010f1eb8fea9c8f1d6373cc06fa`. The independently configured actual module passed all
-64 adapter integration assertions locally. Complete remote package and archive gates remain required;
-this candidate coordinate is not a published release or App adoption authorization.
+## Capability reuse/semantic input review
+
+The implementation consumes the exact canonical dependency contracts recorded in composer.json. Provision
+independently verified Engine and PHP-extension releases, select their exact ABI/profile/corpus tuple and
+provide NativeCompatibility before installing the successor. The tested 0.0.0-dev extension is candidate
+evidence only.
+
+## Consumer inventory
+
+The machine record lists actual source mappings, known consumer paths and concrete namespace replacements. No
+App code is moved by this successor; resources/native-ownership/v1.json and resources/conformance/v1.json
+record the native/transport boundary. Dynamic references and same-namespace names must be searched again
+during adoption; the inventory does not imply that App has already switched ownership.
+
+## Test ownership
+
+Package tests own portable values, validation, service behavior, explicit construction and malformed-input
+regressions. The machine record identifies the source suites to split. Host persistence, transactions,
+authority, transport and operational integration stay in App. After verified adoption, remove duplicate
+library implementation assertions from App together with their legacy source.
+
+## Next-task execution notes
+
+Independent successor release verification and the final package gate remain necessary before App adoption.
+Native extension and Engine are development candidates; no verified stable native release tuple exists.
+Provision independently verified Engine and PHP-extension releases, select their exact ABI/profile/corpus
+tuple and provide NativeCompatibility before installing the successor. The tested 0.0.0-dev extension is
+candidate evidence only. Run final source and clean archive gates before admitting the package; then update
+the App dependency lock, replace namespaces, retain host adapters and remove only the inventoried portable
+legacy implementations.
+
+## Drift check
+
+Reconcile the recorded source commit and per-file source digests with the current App before adoption.
+Recompute all public manifest hashes together. Keep actual release observations and final tested commit
+identities outside the tested source tree to avoid self-referential evidence.
+
+## Validation recipe and observed local results
+
+Run composer check with the documented PHP runtime and extensions. The review added and exercised the boundary
+regressions described in CHANGELOG.md. A final gate pass, remote CI status and immutable release verification
+are distinct observations; neither a proposed version nor this handoff attests publication. See
+docs/integration.md and the package check scripts for the exact archive and runtime recipe.
