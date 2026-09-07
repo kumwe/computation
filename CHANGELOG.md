@@ -1,7 +1,8 @@
 # Changelog
 
-## 0.2.2
+## 0.3.0
 
+- Breaking: the host now selects and binds CanonicalEncoder explicitly; the package retains its native encoder factory.
 - Add ownership-checked explicit native plan release and repeated-capacity reuse regression coverage.
 - Align consumer-facing Version 2 manifests with the actual governance schemas while retaining candidate-only
 native evidence separately.
