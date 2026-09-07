@@ -35,9 +35,6 @@ Before merging a release or its repair PR, a repository administrator must compl
    prerequisite. Enable this before publication: changing the setting does not retroactively protect an
    already published mutable release.
 
-These steps follow GitHub's [ruleset import procedure](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/managing-rulesets-for-a-repository#importing-a-ruleset)
-and [release immutability setup](https://docs.github.com/en/code-security/how-tos/secure-your-supply-chain/establish-provenance-and-integrity/prevent-release-changes).
-
 An administrator can alternatively apply the same settings from the repository root using their own
 authenticated GitHub CLI. The first command creates a new ruleset; run it only when equivalent protection
 has not already been configured. These are maintainer setup commands, never workflow steps:
