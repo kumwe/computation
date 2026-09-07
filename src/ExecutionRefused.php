@@ -11,10 +11,10 @@ namespace Kumwe\Computation;
 final class ExecutionRefused extends \RuntimeException
 {
     /**
- * Construct a bounded diagnostic from a closed refusal code only.
- * @param RefusalCode $reason Infrastructure failure category.
- * @since 0.1.0
- */
+     * Construct a bounded diagnostic from a closed refusal code only.
+     * @param RefusalCode $reason Infrastructure failure category.
+     * @since 0.1.0
+     */
     public function __construct(public readonly RefusalCode $reason)
     {
         parent::__construct('Computation request refused: ' . $reason->value . '.');

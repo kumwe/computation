@@ -24,7 +24,8 @@
       ],
       "documentation": [
         "docs/public-api.md",
-        "docs/integration.md"
+        "docs/integration.md",
+        "docs/conformance.md"
       ]
     },
     {

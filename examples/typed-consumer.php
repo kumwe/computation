@@ -21,8 +21,16 @@ $capabilities = new CapabilitySet('0.1.0', 1, '1.0.0', str_repeat('b', 64), ['co
 (new CompatibilityRequirement(1, '1.0.0', ['compile' => 1], [$contract]))->assertSatisfiedBy($capabilities);
 $limits = new ExecutionLimits();
 $source = new ProgramEnvelope($contract, '1.0.0', 'opaque-source');
-$plan = new PlanIdentity($contract, '1.0.0', $source->digest(), 'generation.1', str_repeat('c', 64),
-    str_repeat('d', 64), str_repeat('e', 64), $capabilities);
+$plan = new PlanIdentity(
+    $contract,
+    '1.0.0',
+    $source->digest(),
+    'generation.1',
+    str_repeat('c', 64),
+    str_repeat('d', 64),
+    str_repeat('e', 64),
+    $capabilities
+);
 $source->assertPlan($plan, $limits);
 $batch = new DocumentBatch([new DocumentInput('document.1', $contract, 'already-normalized')], $limits);
 $roundTrip = DocumentBatch::fromArray($batch->toArray(), $limits);

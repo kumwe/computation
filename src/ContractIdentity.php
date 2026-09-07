@@ -13,14 +13,14 @@ use Kumwe\Computation\Internal\Guard;
 final readonly class ContractIdentity
 {
     /**
- * Construct a complete validated value; does not verify an upstream release.
- * @param string $owner owner.
- * @param string $profile profile.
- * @param string $version version.
- * @param string $corpusDigest corpusDigest.
- * @throws ExecutionRefused If a value violates this boundary.
- * @since 0.1.0
- */
+     * Construct a complete validated value; does not verify an upstream release.
+     * @param string $owner owner.
+     * @param string $profile profile.
+     * @param string $version version.
+     * @param string $corpusDigest corpusDigest.
+     * @throws ExecutionRefused If a value violates this boundary.
+     * @since 0.1.0
+     */
     public function __construct(
         public string $owner,
         public string $profile,
@@ -35,29 +35,38 @@ final readonly class ContractIdentity
     }
 
     /**
- * @return array<string,mixed> Versioned portable record in prescribed field order.
- * @since 0.1.0
- */
+     * @return array<string,mixed> Versioned portable record in prescribed field order.
+     * @since 0.1.0
+     */
     public function toArray(): array
     {
-        return ['wire_version' => 1, 'owner' => $this->owner, 'profile' => $this->profile, 'version' => $this->version, 'corpus_digest' => $this->corpusDigest];
+        return ['wire_version' => 1,
+             'owner' => $this->owner,
+             'profile' => $this->profile,
+             'version' => $this->version,
+             'corpus_digest' => $this->corpusDigest];
     }
 
     /**
- * @param array<string,mixed> $data Exact wire record.
- * @return self Validated value.
- * @since 0.1.0
- */
+     * @param array<string,mixed> $data Exact wire record.
+     * @return self Validated value.
+     * @since 0.1.0
+     */
     public static function fromArray(array $data): self
     {
         Guard::shape($data, ['wire_version', 'owner', 'profile', 'version', 'corpus_digest']);
-        return new self(Guard::token($data['owner']), Guard::token($data['profile']), Guard::version($data['version']), Guard::digest($data['corpus_digest']));
+        return new self(
+            Guard::token($data['owner']),
+            Guard::token($data['profile']),
+            Guard::version($data['version']),
+            Guard::digest($data['corpus_digest'])
+        );
     }
 
     /**
- * @return string Unambiguous exact coordinate key.
- * @since 0.1.0
- */
+     * @return string Unambiguous exact coordinate key.
+     * @since 0.1.0
+     */
     public function key(): string
     {
         return Guard::encode($this->toArray());

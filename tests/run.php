@@ -30,15 +30,28 @@ use Throwable;
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 
-/** Meaningful portable boundary assertions, excluded from the runtime archive. @since 0.1.0 */
+/**
+ * Meaningful portable boundary assertions, excluded from the runtime archive.
+ * @since 0.1.0
+ */
 final class Check
 {
-    /** @var int Completed assertions. @since 0.1.0 */
+    /**
+     * @var int Completed assertions.
+     * @since 0.1.0
+     */
     public static int $assertions = 0;
-    /** @var int Completed test groups. @since 0.1.0 */
+    /**
+     * @var int Completed test groups.
+     * @since 0.1.0
+     */
     public static int $tests = 0;
 
-    /** @param bool $condition Expected truth. @return void @since 0.1.0 */
+    /**
+     * @param bool $condition Expected truth.
+     * @return void
+     * @since 0.1.0
+     */
     public static function that(bool $condition): void
     {
         self::$assertions++;
@@ -47,7 +60,12 @@ final class Check
         }
     }
 
-    /** @param callable():void $operation Hostile operation. @param RefusalCode $reason Expected refusal. @return void @since 0.1.0 */
+    /**
+     * @param callable():mixed $operation Hostile operation; any returned value is discarded.
+     * @param RefusalCode $reason Expected refusal.
+     * @return void
+     * @since 0.1.0
+     */
     public static function refuses(callable $operation, RefusalCode $reason = RefusalCode::InvalidInput): void
     {
         try {
@@ -60,7 +78,12 @@ final class Check
         throw new RuntimeException('An invalid boundary input was accepted.');
     }
 
-    /** @param string $name Responsibility. @param callable():void $operation Assertions. @return void @since 0.1.0 */
+    /**
+     * @param string $name Responsibility.
+     * @param callable():void $operation Assertions.
+     * @return void
+     * @since 0.1.0
+     */
     public static function test(string $name, callable $operation): void
     {
         try {
@@ -74,66 +97,132 @@ final class Check
     }
 }
 
-/** Synthetic transport fixtures; never represent a released semantic or native runtime. @since 0.1.0 */
+/**
+ * Synthetic transport fixtures; never represent a released semantic or native runtime.
+ * @since 0.1.0
+ */
 final class Fixture
 {
-    /** @return ContractIdentity Synthetic exact profile. @since 0.1.0 */
+    /**
+     * @return ContractIdentity Synthetic exact profile.
+     * @since 0.1.0
+     */
     public static function contract(): ContractIdentity
     {
         return new ContractIdentity('example/transport', 'test-only', '0.1.0', str_repeat('a', 64));
     }
 
-    /** @return CapabilitySet Synthetic observation for metadata tests. @since 0.1.0 */
+    /**
+     * @return CapabilitySet Synthetic observation for metadata tests.
+     * @since 0.1.0
+     */
     public static function capabilities(): CapabilitySet
     {
-        return new CapabilitySet('0.1.0', 1, '1.0.0', str_repeat('b', 64),
-            ['document.batch' => 1, 'compile' => 1], [self::contract()]);
+        return new CapabilitySet(
+            '0.1.0',
+            1,
+            '1.0.0',
+            str_repeat('b', 64),
+            ['document.batch' => 1, 'compile' => 1],
+            [self::contract()]
+        );
     }
 
-    /** @return ProgramEnvelope Opaque source, without AST semantics. @since 0.1.0 */
+    /**
+     * @return ProgramEnvelope Opaque source, without AST semantics.
+     * @since 0.1.0
+     */
     public static function source(): ProgramEnvelope
     {
         return new ProgramEnvelope(self::contract(), '1.0.0', 'opaque-source');
     }
 
-    /** @return PlanIdentity Complete synthetic plan identity. @since 0.1.0 */
+    /**
+     * @return PlanIdentity Complete synthetic plan identity.
+     * @since 0.1.0
+     */
     public static function plan(): PlanIdentity
     {
-        return new PlanIdentity(self::contract(), '1.0.0', self::source()->digest(), 'generation.1',
-            str_repeat('c', 64), str_repeat('d', 64), str_repeat('e', 64), self::capabilities());
+        return new PlanIdentity(
+            self::contract(),
+            '1.0.0',
+            self::source()->digest(),
+            'generation.1',
+            str_repeat('c', 64),
+            str_repeat('d', 64),
+            str_repeat('e', 64),
+            self::capabilities()
+        );
     }
 
-    /** @return CompiledProgram Opaque artifact for transport testing only. @since 0.1.0 */
+    /**
+     * @return CompiledProgram Opaque artifact for transport testing only.
+     * @since 0.1.0
+     */
     public static function compiled(): CompiledProgram
     {
-        return new CompiledProgram(self::source(), self::plan(), 'fixture.artifact.1', 'opaque-artifact',
-            new ExecutionLimits());
+        return new CompiledProgram(
+            self::source(),
+            self::plan(),
+            'fixture.artifact.1',
+            'opaque-artifact',
+            new ExecutionLimits()
+        );
     }
 
-    /** @param string $correlation Document identity. @return DocumentInput Opaque document. @since 0.1.0 */
+    /**
+     * @param string $correlation Document identity.
+     * @return DocumentInput Opaque document.
+     * @since 0.1.0
+     */
     public static function input(string $correlation = 'document.1'): DocumentInput
     {
         return new DocumentInput($correlation, self::contract(), 'opaque-document');
     }
 
-    /** @param int $ordinal Stable finding order. @return Finding Machine finding. @since 0.1.0 */
+    /**
+     * @param int $ordinal Stable finding order.
+     * @return Finding Machine finding.
+     * @since 0.1.0
+     */
     public static function finding(int $ordinal = 0): Finding
     {
-        return new Finding('required', FindingSeverity::Error, new FindingPath(['lines', 0, 'amount']),
-            new SourceLocation('program', 'rule.required', 0), $ordinal, ['field' => 'amount']);
+        return new Finding(
+            'required',
+            FindingSeverity::Error,
+            new FindingPath(['lines', 0, 'amount']),
+            new SourceLocation('program', 'rule.required', 0),
+            $ordinal,
+            ['field' => 'amount']
+        );
     }
 }
 
-/** Test-only port fake returns fixed fixture data and executes no semantic algorithms. @since 0.1.0 */
+/**
+ * Test-only port fake returns fixed fixture data and executes no semantic algorithms.
+ * @since 0.1.0
+ */
 final class PortFake implements Compiler, Executor
 {
-    /** @param ProgramEnvelope $program Source. @param PlanIdentity $plan Identity. @param ExecutionLimits $limits Budgets. @return CompiledProgram @since 0.1.0 */
+    /**
+     * @param ProgramEnvelope $program Source.
+     * @param PlanIdentity $plan Identity.
+     * @param ExecutionLimits $limits Budgets.
+     * @return CompiledProgram
+     * @since 0.1.0
+     */
     public function compile(ProgramEnvelope $program, PlanIdentity $plan, ExecutionLimits $limits): CompiledProgram
     {
         return new CompiledProgram($program, $plan, 'fixture.artifact.1', 'fixed-artifact', $limits);
     }
 
-    /** @param CompiledProgram $program Artifact. @param DocumentBatch $documents Inputs. @param ExecutionLimits $limits Budgets. @return BatchResult @since 0.1.0 */
+    /**
+     * @param CompiledProgram $program Artifact.
+     * @param DocumentBatch $documents Inputs.
+     * @param ExecutionLimits $limits Budgets.
+     * @return BatchResult
+     * @since 0.1.0
+     */
     public function execute(CompiledProgram $program, DocumentBatch $documents, ExecutionLimits $limits): BatchResult
     {
         $program->assertCompatible(Fixture::capabilities(), 'fixture.artifact.1', $limits);
@@ -189,8 +278,10 @@ Check::test('closed versions, shapes, UTF8, identifiers, no arbitrary payload ob
         Check::refuses(static fn () => new ProgramEnvelope(Fixture::contract(), $version, ''));
     }
     $wire = Fixture::source()->toArray();
-    Check::refuses(static fn () => ProgramEnvelope::fromArray([...$wire, 'wire_version' => 2]),
-        RefusalCode::UnsupportedVersion);
+    Check::refuses(
+        static fn () => ProgramEnvelope::fromArray([...$wire, 'wire_version' => 2]),
+        RefusalCode::UnsupportedVersion
+    );
     Check::refuses(static fn () => ProgramEnvelope::fromArray([...$wire, 'extra' => true]));
     Check::refuses(static fn () => ProgramEnvelope::fromArray([...$wire, 'payload' => new \stdClass()]));
     Check::refuses(static fn () => ProgramEnvelope::fromArray([...$wire, 'payload' => ['nested']]));
@@ -206,8 +297,10 @@ Check::test('strict base64 and caller limits before decoding', static function (
     }
     $limits = new ExecutionLimits(maxInputBytes: 1, maxOutputBytes: 1);
     Check::refuses(static fn () => ProgramEnvelope::fromArray($source, $limits), RefusalCode::ExhaustedLimit);
-    Check::refuses(static fn () => DocumentInput::fromArray(Fixture::input()->toArray(), $limits),
-        RefusalCode::ExhaustedLimit);
+    Check::refuses(
+        static fn () => DocumentInput::fromArray(Fixture::input()->toArray(), $limits),
+        RefusalCode::ExhaustedLimit
+    );
     Check::refuses(static fn () => Guard::unbase64(str_repeat('A', 8), 1), RefusalCode::ExhaustedLimit);
     Check::that(Guard::unbase64('', 0) === '');
     Check::that(Guard::unbase64('YQ==', 1) === 'a');
@@ -216,8 +309,10 @@ Check::test('strict base64 and caller limits before decoding', static function (
 
 Check::test('finite budgets and signed64 integer contract', static function (): void {
     Check::that(PHP_INT_SIZE === 8);
-    foreach (['max_input_bytes', 'max_output_bytes', 'max_documents', 'max_findings', 'max_path_depth',
-        'max_parameter_bytes', 'max_instructions', 'max_milliseconds'] as $key) {
+    foreach (
+        ['max_input_bytes', 'max_output_bytes', 'max_documents', 'max_findings', 'max_path_depth',
+        'max_parameter_bytes', 'max_instructions', 'max_milliseconds'] as $key
+    ) {
         foreach ([0, -1, PHP_INT_MAX] as $bad) {
             $data = (new ExecutionLimits())->toArray();
             $data[$key] = $bad;
@@ -252,15 +347,19 @@ Check::test('independent metadata grammar and complete plan golden vectors', sta
 Check::test('every plan field changes cache identity', static function (): void {
     $original = Fixture::plan()->toArray();
     $originalKey = (new PlanCacheKey(Fixture::plan()))->value;
-    foreach (['generation' => 'generation.2', 'program_version' => '1.0.1',
+    foreach (
+        ['generation' => 'generation.2', 'program_version' => '1.0.1',
         'source_digest' => str_repeat('f', 64), 'definition_digest' => str_repeat('f', 64),
-        'schema_digest' => str_repeat('f', 64), 'options_digest' => str_repeat('f', 64)] as $field => $value) {
+        'schema_digest' => str_repeat('f', 64), 'options_digest' => str_repeat('f', 64)] as $field => $value
+    ) {
         $changed = [...$original, $field => $value];
         Check::that((new PlanCacheKey(PlanIdentity::fromArray($changed)))->value !== $originalKey);
     }
     $caps = Fixture::capabilities()->toArray();
-    foreach (['engine_version' => '0.2.0', 'abi_major' => 2, 'api_version' => '2.0.0',
-        'build_digest' => str_repeat('f', 64)] as $field => $value) {
+    foreach (
+        ['engine_version' => '0.2.0', 'abi_major' => 2, 'api_version' => '2.0.0',
+        'build_digest' => str_repeat('f', 64)] as $field => $value
+    ) {
         $changed = [...$original, 'capabilities' => [...$caps, $field => $value]];
         Check::that((new PlanCacheKey(PlanIdentity::fromArray($changed)))->value !== $originalKey);
     }
@@ -270,10 +369,12 @@ Check::test('capability subset, exact corpus and tuple refusals', static functio
     $observed = Fixture::capabilities();
     (new CompatibilityRequirement(1, '1.0.0', ['compile' => 1], [Fixture::contract()]))->assertSatisfiedBy($observed);
     Check::that(true);
-    foreach ([new CompatibilityRequirement(2, '1.0.0', [], []),
+    foreach (
+        [new CompatibilityRequirement(2, '1.0.0', [], []),
         new CompatibilityRequirement(1, '1.0.1', [], []),
         new CompatibilityRequirement(1, '1.0.0', ['compile' => 2], []),
-        new CompatibilityRequirement(1, '1.0.0', ['missing' => 1], [])] as $required) {
+        new CompatibilityRequirement(1, '1.0.0', ['missing' => 1], [])] as $required
+    ) {
         Check::refuses(static fn () => $required->assertSatisfiedBy($observed), RefusalCode::IncompatibleCapability);
     }
     $foreign = new ContractIdentity('example/transport', 'test-only', '0.1.0', str_repeat('f', 64));
@@ -291,14 +392,29 @@ Check::test('source agreement and exact artifact hydration tuple', static functi
     $compiled = Fixture::compiled();
     $compiled->assertCompatible(Fixture::capabilities(), 'fixture.artifact.1', $limits);
     Check::that(true);
-    Check::refuses(static fn () => new CompiledProgram(
-        new ProgramEnvelope(Fixture::contract(), '1.0.0', 'changed'), Fixture::plan(), 'fixture.artifact.1', '', $limits),
-        RefusalCode::InvalidProgram);
-    Check::refuses(static fn () => $compiled->assertCompatible(Fixture::capabilities(), 'other', $limits),
-        RefusalCode::InvalidProgram);
-    $observed = CapabilitySet::fromArray([...Fixture::capabilities()->toArray(), 'build_digest' => str_repeat('f', 64)]);
-    Check::refuses(static fn () => $compiled->assertCompatible($observed, 'fixture.artifact.1', $limits),
-        RefusalCode::IncompatibleCapability);
+    Check::refuses(
+        static fn () => new CompiledProgram(
+            new ProgramEnvelope(Fixture::contract(), '1.0.0', 'changed'),
+            Fixture::plan(),
+            'fixture.artifact.1',
+            '',
+            $limits
+        ),
+        RefusalCode::InvalidProgram
+    );
+    Check::refuses(
+        static fn () => $compiled->assertCompatible(Fixture::capabilities(), 'other', $limits),
+        RefusalCode::InvalidProgram
+    );
+    $observed = CapabilitySet::fromArray([...Fixture::capabilities()->toArray(),
+         'build_digest' => str_repeat(
+             'f',
+             64
+         )]);
+    Check::refuses(
+        static fn () => $compiled->assertCompatible($observed, 'fixture.artifact.1', $limits),
+        RefusalCode::IncompatibleCapability
+    );
     $foreign = new ContractIdentity('example/foreign', 'p', '0.1.0', str_repeat('f', 64));
     $batch = new DocumentBatch([new DocumentInput('foreign', $foreign, '')], $limits);
     Check::refuses(static fn () => $batch->assertForProgram($compiled, $limits), RefusalCode::IncompatibleCorpus);
@@ -327,20 +443,40 @@ Check::test('finding order, typed paths and bounded machine parameters', static 
     Check::that($result->findings()[0]->severity === FindingSeverity::Error);
     Check::refuses(static fn () => new ExecutionResult('a', Fixture::contract(), '', [$finding, $finding]));
     Check::refuses(static fn () => new ExecutionResult('a', Fixture::contract(), '', [Fixture::finding(2), $finding]));
-    foreach ([['bad' => ['nested']], ['bad' => new \stdClass()], ['bad' => 1.25], [0 => 'numeric-key']] as $parameters) {
+    foreach (
+        [['bad' => ['nested']],
+         ['bad' => new \stdClass()],
+         ['bad' => 1.25],
+         [0 => 'numeric-key']] as $parameters
+    ) {
         Check::refuses(static fn () => Finding::fromArray([...$finding->toArray(), 'parameters' => $parameters]));
     }
-    Check::refuses(static fn () => Finding::fromArray([...$finding->toArray(), 'parameters' => ['bad' => str_repeat('x', 4097)]]));
-    Check::refuses(static fn () => $finding->assertWithin(new ExecutionLimits(maxPathDepth: 1)), RefusalCode::ExhaustedLimit);
-    Check::refuses(static fn () => $finding->assertWithin(new ExecutionLimits(maxParameterBytes: 1)), RefusalCode::ExhaustedLimit);
+    Check::refuses(static fn () => Finding::fromArray([...$finding->toArray(),
+         'parameters' => ['bad' => str_repeat(
+             'x',
+             4097
+         )]]));
+    Check::refuses(
+        static fn () => $finding->assertWithin(new ExecutionLimits(maxPathDepth: 1)),
+        RefusalCode::ExhaustedLimit
+    );
+    Check::refuses(
+        static fn () => $finding->assertWithin(new ExecutionLimits(maxParameterBytes: 1)),
+        RefusalCode::ExhaustedLimit
+    );
 });
 
 Check::test('aggregate budgets include metadata and preflight wire outputs', static function (): void {
     $limits = new ExecutionLimits();
     $batch = new DocumentBatch([Fixture::input()], $limits);
-    Check::refuses(static fn () => $batch->assertWithin(new ExecutionLimits(maxInputBytes: 16)), RefusalCode::ExhaustedLimit);
-    Check::refuses(static fn () => DocumentBatch::fromArray($batch->toArray(), new ExecutionLimits(maxInputBytes: 16)),
-        RefusalCode::ExhaustedLimit);
+    Check::refuses(
+        static fn () => $batch->assertWithin(new ExecutionLimits(maxInputBytes: 16)),
+        RefusalCode::ExhaustedLimit
+    );
+    Check::refuses(
+        static fn () => DocumentBatch::fromArray($batch->toArray(), new ExecutionLimits(maxInputBytes: 16)),
+        RefusalCode::ExhaustedLimit
+    );
     $result = new ExecutionResult('document.1', Fixture::contract(), '', [Fixture::finding()]);
     $low = new ExecutionLimits(maxOutputBytes: $result->byteSize() - 1);
     Check::refuses(static fn () => new BatchResult($batch, [$result], $low), RefusalCode::ExhaustedLimit);
@@ -363,8 +499,14 @@ Check::test('immutable snapshots detach external PHP references', static functio
     $segment = 'changed';
     Check::that($path->segments() === ['original']);
     $value = 'original';
-    $finding = new Finding('code', FindingSeverity::Info, $path, new SourceLocation('program', 'rule', 0), 0,
-        ['value' => &$value]);
+    $finding = new Finding(
+        'code',
+        FindingSeverity::Info,
+        $path,
+        new SourceLocation('program', 'rule', 0),
+        0,
+        ['value' => &$value]
+    );
     $value = 'changed';
     Check::that($finding->parameters() === ['value' => 'original']);
     $input = Fixture::input();

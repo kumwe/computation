@@ -13,23 +13,23 @@ use Kumwe\Computation\Internal\Guard;
 final readonly class CompatibilityRequirement
 {
     /**
- * @var array<string,int> Exact feature versions required.
- * @since 0.1.0
- */
+     * @var array<string,int> Exact feature versions required.
+     * @since 0.1.0
+     */
     private array $features;
     /**
- * @var list<ContractIdentity> Required profiles.
- * @since 0.1.0
- */
+     * @var list<ContractIdentity> Required profiles.
+     * @since 0.1.0
+     */
     private array $contracts;
 
     /**
- * @param int $abiMajor Required ABI major.
- * @param string $apiVersion Exact API version.
- * @param array<string,int> $features Exact required feature versions.
- * @param list<ContractIdentity> $contracts Required semantic identities.
- * @since 0.1.0
- */
+     * @param int $abiMajor Required ABI major.
+     * @param string $apiVersion Exact API version.
+     * @param array<string,int> $features Exact required feature versions.
+     * @param list<ContractIdentity> $contracts Required semantic identities.
+     * @since 0.1.0
+     */
     public function __construct(public int $abiMajor, public string $apiVersion, array $features, array $contracts)
     {
         Guard::integer($abiMajor, 1, 65535);
@@ -39,11 +39,11 @@ final readonly class CompatibilityRequirement
     }
 
     /**
- * @param CapabilitySet $observed Observed handshake.
- * @return void
- * @throws ExecutionRefused On mismatch.
- * @since 0.1.0
- */
+     * @param CapabilitySet $observed Observed handshake.
+     * @return void
+     * @throws ExecutionRefused On mismatch.
+     * @since 0.1.0
+     */
     public function assertSatisfiedBy(CapabilitySet $observed): void
     {
         Guard::require(
@@ -59,9 +59,9 @@ final readonly class CompatibilityRequirement
     }
 
     /**
- * @return array<string,mixed> Required tuple in fixed field order.
- * @since 0.1.0
- */
+     * @return array<string,mixed> Required tuple in fixed field order.
+     * @since 0.1.0
+     */
     public function toArray(): array
     {
         return ['wire_version' => 1, 'abi_major' => $this->abiMajor, 'api_version' => $this->apiVersion,
@@ -72,10 +72,10 @@ final readonly class CompatibilityRequirement
     }
 
     /**
- * @param array<string,mixed> $data Wire requirement.
- * @return self Validated requirement.
- * @since 0.1.0
- */
+     * @param array<string,mixed> $data Wire requirement.
+     * @return self Validated requirement.
+     * @since 0.1.0
+     */
     public static function fromArray(array $data): self
     {
         Guard::shape($data, ['wire_version', 'abi_major', 'api_version', 'features', 'contracts']);
