@@ -32,7 +32,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: kumwe/kumwe-engine
-          ref: 35b8db13b98698fdcdd92434b77794e1ae19b7a7
+          ref: 7a06fbd9d09d3bd81f65f3eed45986bad9a96bc2
           persist-credentials: false
           path: native
 
@@ -46,7 +46,7 @@ jobs:
       - name: Build and load the pinned native extension
         working-directory: native
         run: |
-          test "$(git rev-parse HEAD)" = 35b8db13b98698fdcdd92434b77794e1ae19b7a7
+          test "$(git rev-parse HEAD)" = 7a06fbd9d09d3bd81f65f3eed45986bad9a96bc2
           php tools/generate-arginfo.php --check
           php tools/verify-binding.php
           php tools/verify-engine.php
