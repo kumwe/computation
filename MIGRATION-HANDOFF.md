@@ -30,7 +30,7 @@ target:
   artifact_identity: "kumwe/computation"
   canonical_namespace_or_abi: "Kumwe\\Computation"
   branch: "codex/native-adapter-candidate"
-  pull_request: null
+  pull_request: "https://github.com/kumwe/computation/pull/7"
 ownership:
   responsibility: "Portable bounded execution transport, exact identities and compiler/executor contracts."
   non_responsibilities:
