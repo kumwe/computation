@@ -11,6 +11,8 @@ namespace Kumwe\Engine {
         public function compile(array $envelope): array {}
         /** @param array<string, mixed> $envelope @return array<string, mixed> */
         public function execute(array $envelope): array {}
+        /** @param string $planId Exact owned native plan identifier. */
+        public function release(string $planId): void {}
     }
 }
 namespace Kumwe\Engine\Exception {

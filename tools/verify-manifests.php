@@ -485,16 +485,11 @@ function computationVerifyCapabilities(array $exported, string $release): int
     if (!is_array($document['non_responsibilities'] ?? null)) {
         throw new RuntimeException($file . ' must list non_responsibilities.');
     }
-    $expectedNative = [
-        'extension' => 'kumwe_engine',
-        'composer_constraint' => '0.0.0-dev',
-        'owner' => 'kumwe/kumwe-engine',
-        'engine_owner' => 'kumwe/engine',
-        'wire_version' => 1,
-        'compatibility_service' => 'Kumwe\\Computation\\NativeCompatibility',
-        'verification' => 'required-actual-extension-and-independent-exact-tuple',
-        'release_status' => 'candidate-not-release-verified',
-    ];
+    $candidate = computationJsonObject('resources/native-adapter.json');
+    $expectedNative = $candidate['requirements'] ?? null;
+    if (($candidate['release_status'] ?? null) !== 'candidate-not-release-verified') {
+        throw new RuntimeException('The native adapter remains an unverified development candidate.');
+    }
     if (($document['native_requirements'] ?? null) !== $expectedNative) {
         throw new RuntimeException($file . ' must require the exact native candidate verification contract.');
     }
@@ -689,8 +684,8 @@ function computationVerifyServiceMap(array $exported, string $release): string
         throw new RuntimeException('Actual provider configuration disagrees with the reviewed service map.');
     }
     if (
-        ($document['required_services'] ?? null) !== ['Kumwe\\Computation\\NativeCompatibility']
-        || ($document['optional_services'] ?? null) !== ['Kumwe\\CanonicalJson\\Limits']
+        (computationJsonObject('resources/native-adapter.json')['required_services'] ?? null) !== ['Kumwe\\Computation\\NativeCompatibility']
+        || (computationJsonObject('resources/native-adapter.json')['optional_services'] ?? null) !== ['Kumwe\\CanonicalJson\\Limits']
     ) {
         throw new RuntimeException('Native factories require exact host-owned compatibility and optional limits.');
     }

@@ -1006,6 +1006,12 @@ Foreign, cloned or deserialized portable plan objects cannot acquire authority o
 `__clone()` refuses copying the adapter. Native failures become payload-free ExecutionRefused categories.
 PHP validates transport identities and bounds; the Engine owns all program and document semantics.
 
+`release(CompiledProgram $program): void` returns the plan's native count and source-byte capacity.
+Only the same live object compiled by this adapter is accepted; foreign, copied and already released
+plans raise ExecutionRefused with InvalidProgram. Native failures preserve ownership so the caller may
+retry cleanup. After successful release, execute refuses the artifact. Long-lived workers and caches
+must release each plan when its final use completes; this method performs no execution or algorithm.
+
 ## `Kumwe\Computation\NativeAdapterFactory`
 
 `__invoke()` reads NativeCompatibility from the PSR container and creates a verified native adapter. Missing

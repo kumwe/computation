@@ -1,32 +1,26 @@
 {
-  "schema": "kumwe-package-service-map/v1",
-  "package": "kumwe/computation",
-  "release": "0.2.1",
-  "config_provider": "Kumwe\\Computation\\ConfigProvider",
-  "factories": [
-    {
-      "service": "Kumwe\\Computation\\NativeAdapter",
-      "factory": "Kumwe\\Computation\\NativeAdapterFactory",
-      "lifetime": "shared"
+    "schema": "kumwe-package-service-map/v1",
+    "package": "kumwe/computation",
+    "release": "0.2.2",
+    "config_provider": "Kumwe\\Computation\\ConfigProvider",
+    "factories": [
+        {
+            "service": "Kumwe\\Computation\\NativeAdapter",
+            "factory": "Kumwe\\Computation\\NativeAdapterFactory",
+            "lifetime": "shared"
+        },
+        {
+            "service": "Kumwe\\Computation\\NativeCanonicalEncoder",
+            "factory": "Kumwe\\Computation\\NativeCanonicalEncoderFactory",
+            "lifetime": "shared"
+        }
+    ],
+    "aliases": {
+        "Kumwe\\Computation\\Compiler": "Kumwe\\Computation\\NativeAdapter",
+        "Kumwe\\Computation\\Executor": "Kumwe\\Computation\\NativeAdapter",
+        "Kumwe\\CanonicalJson\\CanonicalEncoder": "Kumwe\\Computation\\NativeCanonicalEncoder"
     },
-    {
-      "service": "Kumwe\\Computation\\NativeCanonicalEncoder",
-      "factory": "Kumwe\\Computation\\NativeCanonicalEncoderFactory",
-      "lifetime": "shared"
-    }
-  ],
-  "aliases": {
-    "Kumwe\\Computation\\Compiler": "Kumwe\\Computation\\NativeAdapter",
-    "Kumwe\\Computation\\Executor": "Kumwe\\Computation\\NativeAdapter",
-    "Kumwe\\CanonicalJson\\CanonicalEncoder": "Kumwe\\Computation\\NativeCanonicalEncoder"
-  },
-  "delegators": [],
-  "configuration_keys": [],
-  "required_services": [
-    "Kumwe\\Computation\\NativeCompatibility"
-  ],
-  "optional_services": [
-    "Kumwe\\CanonicalJson\\Limits"
-  ],
-  "lifetime_scope": "Host-owned request container; Compiler and Executor resolve to the same NativeAdapter instance."
+    "delegators": [],
+    "configuration_keys": [],
+    "provider_absence_reason": null
 }
