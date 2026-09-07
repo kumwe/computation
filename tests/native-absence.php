@@ -36,7 +36,33 @@ $compatibility = new NativeCompatibility(
     '0.0.0-dev',
     str_repeat('b', 40),
     str_repeat('c', 64),
+    str_repeat('d', 64),
 );
+$observed = [
+    'computation' => $compatibility->capabilities->toArray(),
+    'extension_version' => $compatibility->extensionVersion,
+    'embedded_engine_commit' => $compatibility->embeddedEngineCommit,
+    'embedded_source_sha256' => $compatibility->embeddedSourceSha256,
+    'binding_build_digest' => $compatibility->bindingBuildDigest,
+];
+$compatibility->assertObserved($observed);
+foreach ([null, str_repeat('e', 64), 123] as $wrongBuildDigest) {
+    $wrongBuild = $observed;
+    if ($wrongBuildDigest === null) {
+        unset($wrongBuild['binding_build_digest']);
+    } else {
+        $wrongBuild['binding_build_digest'] = $wrongBuildDigest;
+    }
+    $buildRefused = false;
+    try {
+        $compatibility->assertObserved($wrongBuild);
+    } catch (ExecutionRefused $failure) {
+        $buildRefused = $failure->reason === RefusalCode::IncompatibleCapability;
+    }
+    if (!$buildRefused) {
+        throw new RuntimeException('Missing, different or mistyped binding build digest was accepted.');
+    }
+}
 $refused = false;
 try {
     NativeRuntime::create($compatibility);

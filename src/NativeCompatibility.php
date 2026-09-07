@@ -17,6 +17,7 @@ final readonly class NativeCompatibility
      * @param string $extensionVersion Exact extension version, including a candidate suffix when applicable.
      * @param string $embeddedEngineCommit Exact source commit embedded by the extension build.
      * @param string $embeddedSourceSha256 Exact Engine source archive digest embedded by the extension build.
+     * @param string $bindingBuildDigest Exact digest of the independently recorded PHP, ABI and binding build tuple.
      * @since 0.2.0
      */
     public function __construct(
@@ -24,10 +25,12 @@ final readonly class NativeCompatibility
         public string $extensionVersion,
         public string $embeddedEngineCommit,
         public string $embeddedSourceSha256,
+        public string $bindingBuildDigest,
     ) {
         Guard::token($extensionVersion);
         Guard::require(preg_match('/^[0-9a-f]{40}$/D', $embeddedEngineCommit) === 1);
         Guard::digest($embeddedSourceSha256);
+        Guard::digest($bindingBuildDigest);
     }
 
     /**
@@ -42,7 +45,8 @@ final readonly class NativeCompatibility
         Guard::require(
             ($observed['extension_version'] ?? null) === $this->extensionVersion
             && ($observed['embedded_engine_commit'] ?? null) === $this->embeddedEngineCommit
-            && ($observed['embedded_source_sha256'] ?? null) === $this->embeddedSourceSha256,
+            && ($observed['embedded_source_sha256'] ?? null) === $this->embeddedSourceSha256
+            && ($observed['binding_build_digest'] ?? null) === $this->bindingBuildDigest,
             RefusalCode::IncompatibleCapability,
         );
         $native = CapabilitySet::fromArray(Guard::object($observed['computation'] ?? null));

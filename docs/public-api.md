@@ -991,10 +991,11 @@ The host supplies `NativeCompatibility`; Compiler and Executor must share the sa
 
 ## `Kumwe\Computation\NativeCompatibility`
 
-`__construct()` accepts the exact host-selected `$capabilities`, `$extensionVersion`, `$embeddedEngineCommit`
-and `$embeddedSourceSha256`. These readonly properties identify the configured candidate without asserting
-release admission. `assertObserved()` rejects a mismatch in any coordinate before execution; informational
-handshake fields do not change the comparison. Invalid coordinates produce bounded portable refusals.
+`__construct()` accepts the exact host-selected `$capabilities`, `$extensionVersion`, `$embeddedEngineCommit`,
+`$embeddedSourceSha256` and `$bindingBuildDigest`. The last coordinate binds the independently recorded PHP,
+ABI and binding build tuple. These readonly properties identify the configured candidate without asserting
+release admission. `assertObserved()` rejects a missing or mismatched coordinate before execution; extra
+informational fields do not change the comparison. Invalid coordinates produce bounded portable refusals.
 
 ## `Kumwe\Computation\NativeAdapter`
 

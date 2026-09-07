@@ -51,7 +51,9 @@ mutable branch dependency or parallel PHP executor to bypass release ordering.
 Version 0.2.0 adds explicit services requiring `ext-kumwe_engine` candidate `0.0.0-dev`, `psr/container` 2.x and
 the reviewed CanonicalEncoder branch. This dependency is a candidate; no stable native release or App
 adoption is asserted. The host must independently obtain the expected extension version, embedded Engine
-commit, source archive SHA-256 and complete CapabilitySet from its admitted artifact metadata.
+commit, source archive SHA-256, binding build digest and complete CapabilitySet from its admitted artifact
+metadata. The binding build digest covers the complete PHP, ABI and build configuration tuple; obtain it
+from the build's independent expected-identity output, never from the runtime being verified.
 
 Register that tuple as `NativeCompatibility`, then apply `ConfigProvider`. Its Compiler and Executor aliases
 must resolve to the same shared NativeAdapter in a request-scoped container. Native plans cannot move across
@@ -65,6 +67,6 @@ walk or normalize it. Native output is returned only after complete bounded exec
 
 For the required integration gate, set `KUMWE_NATIVE_EXPECTED_TUPLE` to an independently configured JSON file
 containing `capabilities` (the CapabilitySet transport object), `extension_version`, `embedded_engine_commit`
-and `embedded_source_sha256`, then run `composer check` with the actual extension loaded. Missing extension or
+`embedded_source_sha256` and `binding_build_digest`, then run `composer check` with the actual extension loaded. Missing extension or
 configuration is a failure. The no-dev consumer runs the same execution suite through the installed archive's
 authoritative autoloader. The separate absence test runs with `php -n` and proves no autoload callback is used.
