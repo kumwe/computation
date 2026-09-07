@@ -19,6 +19,11 @@ Computation uses SemVer; pre-1.0 adopters pin an exact verified version.
 
 ## Package scope and artifact qualification
 
+The native-backed successor is not the contract baseline required before Engine stable. Published history
+currently contains no identified extension-free baseline release. Normal tag publication does not qualify
+an artifact for that dependency role. Follow [baseline remediation](contract-baseline.md) before claiming
+the objective's ordered baseline, Engine, extension and native-adapter release prerequisites are satisfied.
+
 Run `composer check` on supported 64-bit PHP 8.5. It includes the security audit,
 max-level analysis, package tests and the actual Composer ZIP installed as a
 dependency in a fresh no-dev authoritative consumer. The archive ships the charter,

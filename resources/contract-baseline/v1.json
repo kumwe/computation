@@ -1,0 +1,48 @@
+{
+  "schema": "kumwe-computation-contract-baseline-status/v1",
+  "status": "missing-verified-portable-baseline",
+  "observed_on": "2026-09-07",
+  "verified_release": null,
+  "verified_attestation": null,
+  "native_adapter_is_baseline": false,
+  "observed_releases": [
+    {
+      "version": "0.2.0",
+      "tag": "v0.2.0",
+      "source_commit": "669d1c46b6f243826b1b952b16224c8a87991fb1",
+      "published_at": "2026-09-07T19:13:01Z",
+      "requires_extension": "0.0.0-dev",
+      "github_immutable": false,
+      "qualification": "native-adapter; not the portable contract baseline"
+    },
+    {
+      "version": "0.2.1",
+      "tag": "v0.2.1",
+      "source_commit": "6ac52321c2a5089f52d44e20cfa6374064960e8a",
+      "published_at": "2026-09-07T20:08:49Z",
+      "requires_extension": "0.0.0-dev",
+      "github_immutable": false,
+      "qualification": "native-adapter; not the portable contract baseline"
+    }
+  ],
+  "historical_source_candidate": {
+    "commit": "3520a11a4acb075562db9dea0d23fbd4922d2bbd",
+    "qualification": "untagged review/reconstruction input; not a released or verified dependency",
+    "public_types": 20,
+    "require": {
+      "php": "^8.5",
+      "php-64bit": "^8.5"
+    },
+    "config_provider": null,
+    "api_manifest_sha256": "39f7ded46a09531a34e24284e88bbfb946713eee9a9a9562b3c8fc6e059072ad",
+    "transport_corpus_sha256": "30a64cf682a46c38ca99544d5abcad43cda7071bb9702621226bf297411b8bfc"
+  },
+  "required_order": [
+    "Independently verified extension-free Computation contract baseline",
+    "Verified Engine stable artifact",
+    "Verified PHP-extension stable artifact",
+    "Verified native-backed Computation successor",
+    "Separate App provisioning and runtime integration"
+  ],
+  "remediation_document": "docs/contract-baseline.md"
+}

@@ -8,6 +8,10 @@ repositories. The released canonical contract is pinned exactly; native runtime 
 
 ## Release and adoption order
 
+First resolve the missing independently verified extension-free Computation contract baseline. Neither
+published native-backed 0.2.x nor this 0.3.0 proposal can supply that pre-Engine prerequisite. The observed
+history, historical source candidate and maintenance-release remedy are in [contract-baseline.md](contract-baseline.md).
+
 Review and publish compatible package/native successors, independently verify their exact artifacts and
 semantic corpus/build tuples, then provision the admitted extension before the separate App runtime cutover.
 A proposed version or passing source-candidate gate does not establish stable native admission.

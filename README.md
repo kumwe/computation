@@ -42,6 +42,10 @@ must remove superseded package-unit cases from App while retaining integration c
 
 ## Release status
 
+The independently verified extension-free Computation baseline required before Engine stable is missing.
+Published 0.2.x packages and this native-backed 0.3.0 proposal cannot satisfy that prerequisite. See the
+[observed history and ordered remediation](docs/contract-baseline.md).
+
 The changelog records a proposed release, not evidence of publication. Human merge and successful release
 checks precede immutable publication. Independent release verification precedes consumer adoption. See
 [releasing](docs/releasing.md) and [security](SECURITY.md).

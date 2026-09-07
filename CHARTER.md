@@ -16,6 +16,9 @@ host; construction does not attest that the owner, release or corpus was verifie
 actual extension and compare its complete build/corpus tuple with independently configured expectations.
 CanonicalEncoder uses the upstream GenericV1 contract. There is no App class or test removal.
 
+The required extension-free contract-baseline release has not been identified in published history.
+This native-backed successor cannot be its own pre-Engine prerequisite; see docs/contract-baseline.md.
+
 ## Exclusions
 
 - Engine algorithms, decimal parsing, expression evaluation and document normalization.
