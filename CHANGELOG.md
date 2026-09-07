@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.1
+
+- Require released Canonical JSON 0.1.1 so installs survive the upstream rebase merge and branch deletion.
+- Include the merged exact native adapter compatibility and corpus updates in a successor source release.
+- The native extension remains an unreleased candidate requiring explicit host provisioning.
+
 ## 0.2.0
 
 Proposed native adapter candidate; this record does not assert a verified native release.

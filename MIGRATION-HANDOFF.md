@@ -45,11 +45,11 @@ ownership:
   next_consumer: "kumwe/engine"
   public_manifests:
     - path: "resources/public-api/v1.json"
-      sha256: "66d01e94387496930320075f6340e8ad7c40da04f09026be89aaa94fadda466f"
+      sha256: "1e8a2001ccc8344b4b868755148ad54e9da93cf36c81e5eb6fdf6491e7fc8085"
     - path: "resources/capabilities/v1.json"
-      sha256: "f123a7693692f564d18030bc8925672d2dbbc34989015b477b46eabef888e5f0"
+      sha256: "f6af645b297fd8177737815cb5342ae140e5238868f7f61eed4c8f800702cbea"
     - path: "resources/service-map/v1.json"
-      sha256: "dfe0dab4f2b8a502cb2fe1105a6d022b463c9df00ca1315c0c5ce42327401191"
+      sha256: "d5012c52ce54bed285fc10506fd55f5e659d2e0acad2e9951b54329176c65467"
     - path: "resources/native-ownership/v1.json"
       sha256: "35cdddeb2cc2dc1557340ea282b1685da9c857724f9f55d84ca7f293bf6a3b4c"
     - path: "resources/conformance/v1.json"
@@ -115,7 +115,7 @@ documentation:
   integration_or_consumer: "docs/integration.md"
   examples:
     - "examples/typed-consumer.php"
-  changelog_record: "CHANGELOG.md / 0.2.0 (proposed native adapter candidate)"
+  changelog_record: "CHANGELOG.md / 0.2.1 (native adapter source successor)"
 release_expectations:
   version_policy: "SemVer; exact pre-1.0 pins; protected main and immutable release enabled before first merge."
   expected_artifact_types:

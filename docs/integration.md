@@ -49,7 +49,7 @@ mutable branch dependency or parallel PHP executor to bypass release ordering.
 ## Native adapter candidate
 
 Version 0.2.0 adds explicit services requiring `ext-kumwe_engine` candidate `0.0.0-dev`, `psr/container` 2.x and
-the reviewed CanonicalEncoder branch. This dependency is a candidate; no stable native release or App
+released `kumwe/canonical-json` 0.1.1. The native extension remains a candidate; no stable native release or App
 adoption is asserted. The host must independently obtain the expected extension version, embedded Engine
 commit, source archive SHA-256, binding build digest and complete CapabilitySet from its admitted artifact
 metadata. The binding build digest covers the complete PHP, ABI and build configuration tuple; obtain it
