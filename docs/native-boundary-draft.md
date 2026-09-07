@@ -88,6 +88,16 @@ Records use the order of their documented `toArray()` fields. Features are sorte
 semantic profiles are sorted by owner/profile/version/corpus. All duplicate identities are rejected.
 This private identity encoding is not an Engine request wire encoding or a generic canonical JSON API.
 The Engine header/layout and complete ABI request transport remain a future native-owned freeze.
+Feature and finding-parameter names cannot be digit-only strings: PHP coerces numeric array keys and
+would erase their declared string identity. Features serialize as ordered name/version records, with
+`[]` for no features. Empty finding parameters serialize as `[]`; nonempty parameters are a sorted
+string-key map. Empty paths and contract lists also use `[]`. These conventions are corpus-tested.
+Tokens use ASCII `[A-Za-z0-9][A-Za-z0-9_.:/-]*`, at most 128 bytes, without trimming or control bytes.
+Package owners use two lowercase `[a-z0-9][a-z0-9_.-]*` components separated by `/`. Versions are three
+unsigned decimal components without leading zeroes, bounded to 64 bytes. Digests are 64 lowercase hex
+digits. Paths admit nonnegative indexes through 2147483647 and valid UTF-8 string keys through 128 bytes;
+an empty string key is distinct from the empty root path. Machine string parameters admit valid UTF-8
+through 4096 bytes, including empty strings; all text rejects C0 controls and DEL.
 
 ## Plan and compiled artifact identity
 
@@ -129,8 +139,8 @@ compile/execute/result validation boundary, after constructor hard ceilings and 
 
 | Exact FQCN | Runtime owner | Public surface |
 |---|---|---|
-| Kumwe\Engine\Runtime | kumwe/kumwe-engine, Zend only | `capabilities(): array`, `compile(array): array`, `execute(array): array` |
-| Kumwe\Engine\Exception\BindingFailure | kumwe/kumwe-engine, Zend only | Safe infrastructure failure carrying documented status, no business finding ownership |
+| Kumwe\Engine\Runtime | kumwe/kumwe-engine, Zend only | Three coarse array calls described below. |
+| Kumwe\Engine\Exception\BindingFailure | kumwe/kumwe-engine, Zend only | Safe infrastructure status. |
 
 Runtime's three coarse calls exchange the closed version-1 arrays above. The later Computation Phase 1B
 adapter converts those arrays to/from the portable types and owns compatibility checks. Runtime does
@@ -138,6 +148,8 @@ not implement late-loaded Composer interfaces during MINIT. Native stub files ar
 The listed native types are proposed declarations, not PHP classes implemented by this package.
 Canonical JSON and other semantic packages own their FQCNs; the joint manifest will enumerate current
 portable and reserved native declarations, and reject duplicate or cross-namespace ownership.
+The Runtime methods are `capabilities(): array`, `compile(array): array`, and `execute(array): array`.
+BindingFailure carries infrastructure status and never owns business findings.
 
 ## C ABI proposal
 
@@ -151,8 +163,8 @@ bytes use the versioned closed transport described above, not raw host struct la
 | Function | Ownership and result |
 |---|---|
 | capabilities(view request, buffer** response) -> uint32 status | Complete observed tuple; bounded response. |
-| compile(view request, buffer** response) -> uint32 status | Complete program and limits; opaque versioned artifact on success. |
-| execute(view request, buffer** response) -> uint32 status | Complete program/document batch and limits; atomic ordered results. |
+| compile(view request, buffer** response) -> uint32 status | Complete program to opaque artifact. |
+| execute(view request, buffer** response) -> uint32 status | Complete batch to atomic ordered results. |
 | buffer_view(const buffer*, view* output) -> uint32 status | Borrowed immutable view valid until buffer release. |
 | buffer_release(buffer*) -> void | Matching Engine allocator release exactly once; null is harmless. |
 

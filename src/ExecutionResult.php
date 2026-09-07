@@ -13,18 +13,18 @@ use Kumwe\Computation\Internal\Guard;
 final readonly class ExecutionResult
 {
     /**
- * @var list<Finding> Validated strictly increasing declaration order.
- * @since 0.1.0
- */
+     * @var list<Finding> Validated strictly increasing declaration order.
+     * @since 0.1.0
+     */
     private array $findings;
 
     /**
- * @param string $correlation Input correlation identity.
- * @param ContractIdentity $contract Exact result semantic identity matching input.
- * @param string $bytes Opaque output bytes.
- * @param list<Finding> $findings Ordered machine findings.
- * @since 0.1.0
- */
+     * @param string $correlation Input correlation identity.
+     * @param ContractIdentity $contract Exact result semantic identity matching input.
+     * @param string $bytes Opaque output bytes.
+     * @param list<Finding> $findings Ordered machine findings.
+     * @since 0.1.0
+     */
     public function __construct(
         public string $correlation,
         public ContractIdentity $contract,
@@ -51,18 +51,18 @@ final readonly class ExecutionResult
     }
 
     /**
- * @return list<Finding> Stable immutable order.
- * @since 0.1.0
- */
+     * @return list<Finding> Stable immutable order.
+     * @since 0.1.0
+     */
     public function findings(): array
     {
         return $this->findings;
     }
 
     /**
- * @return int Output and all result/finding metadata bytes.
- * @since 0.1.0
- */
+     * @return int Output and all result/finding metadata bytes.
+     * @since 0.1.0
+     */
     public function byteSize(): int
     {
         $bytes = strlen($this->bytes) + strlen($this->correlation) + strlen(Guard::encode($this->contract->toArray()));
@@ -73,9 +73,9 @@ final readonly class ExecutionResult
     }
 
     /**
- * @return array<string,mixed> Complete versioned result.
- * @since 0.1.0
- */
+     * @return array<string,mixed> Complete versioned result.
+     * @since 0.1.0
+     */
     public function toArray(): array
     {
         return ['wire_version' => 1, 'correlation' => $this->correlation, 'contract' => $this->contract->toArray(),
@@ -86,11 +86,11 @@ final readonly class ExecutionResult
     }
 
     /**
- * @param array<string,mixed> $data Complete wire result.
- * @return self Validated result.
- * @since 0.1.0
- * @param ?ExecutionLimits $limits Caller budgets before decoding; defaults remain bounded.
- */
+     * @param array<string,mixed> $data Complete wire result.
+     * @return self Validated result.
+     * @since 0.1.0
+     * @param ?ExecutionLimits $limits Caller budgets before decoding; defaults remain bounded.
+     */
     public static function fromArray(array $data, ?ExecutionLimits $limits = null): self
     {
         Guard::shape($data, ['wire_version', 'correlation', 'contract', 'payload', 'findings']);

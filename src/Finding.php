@@ -13,20 +13,20 @@ use Kumwe\Computation\Internal\Guard;
 final readonly class Finding
 {
     /**
- * @var array<string,string|int|bool|null> Detached sorted machine parameters.
- * @since 0.1.0
- */
+     * @var array<string,string|int|bool|null> Detached sorted machine parameters.
+     * @since 0.1.0
+     */
     private array $parameters;
 
     /**
- * @param string $code Stable bounded finding token.
- * @param FindingSeverity $severity Severity independent of infrastructure status.
- * @param FindingPath $path Typed semantic value path.
- * @param SourceLocation $location Source program/rule position.
- * @param int $ordinal Stable declaration/execution order, not a lexical sort.
- * @param array<string,string|int|bool|null> $parameters Bounded machine data without objects.
- * @since 0.1.0
- */
+     * @param string $code Stable bounded finding token.
+     * @param FindingSeverity $severity Severity independent of infrastructure status.
+     * @param FindingPath $path Typed semantic value path.
+     * @param SourceLocation $location Source program/rule position.
+     * @param int $ordinal Stable declaration/execution order, not a lexical sort.
+     * @param array<string,string|int|bool|null> $parameters Bounded machine data without objects.
+     * @since 0.1.0
+     */
     public function __construct(
         public string $code,
         public FindingSeverity $severity,
@@ -55,37 +55,37 @@ final readonly class Finding
     }
 
     /**
- * @return array<string,string|int|bool|null> Detached parameters.
- * @since 0.1.0
- */
+     * @return array<string,string|int|bool|null> Detached parameters.
+     * @since 0.1.0
+     */
     public function parameters(): array
     {
         return $this->parameters;
     }
 
     /**
- * @return int Parameter metadata bytes including keys, types and lengths.
- * @since 0.1.0
- */
+     * @return int Parameter metadata bytes including keys, types and lengths.
+     * @since 0.1.0
+     */
     public function parameterBytes(): int
     {
         return strlen(Guard::encode($this->parameters));
     }
 
     /**
- * @return int All finding metadata bytes including path and parameters.
- * @since 0.1.0
- */
+     * @return int All finding metadata bytes including path and parameters.
+     * @since 0.1.0
+     */
     public function byteSize(): int
     {
         return strlen(Guard::encode($this->toArray()));
     }
 
     /**
- * @param ExecutionLimits $limits Caller finding budgets.
- * @return void
- * @since 0.1.0
- */
+     * @param ExecutionLimits $limits Caller finding budgets.
+     * @return void
+     * @since 0.1.0
+     */
     public function assertWithin(ExecutionLimits $limits): void
     {
         Guard::require(count($this->path->segments()) <= $limits->maxPathDepth
@@ -93,9 +93,9 @@ final readonly class Finding
     }
 
     /**
- * @return array<string,mixed> Exact ordered machine data.
- * @since 0.1.0
- */
+     * @return array<string,mixed> Exact ordered machine data.
+     * @since 0.1.0
+     */
     public function toArray(): array
     {
         return ['wire_version' => 1, 'code' => $this->code, 'severity' => $this->severity->value,
@@ -104,10 +104,10 @@ final readonly class Finding
     }
 
     /**
- * @param array<string,mixed> $data Wire finding.
- * @return self Validated finding.
- * @since 0.1.0
- */
+     * @param array<string,mixed> $data Wire finding.
+     * @return self Validated finding.
+     * @since 0.1.0
+     */
     public static function fromArray(array $data): self
     {
         Guard::shape($data, ['wire_version', 'code', 'severity', 'path', 'location', 'ordinal', 'parameters']);

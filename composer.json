@@ -52,13 +52,15 @@
       "@docs",
       "@architecture",
       "@manifests",
+      "@native-ownership",
       "@autoload:smoke",
       "@examples",
       "@cs",
       "@analyse",
       "@test",
       "@clean-consumer"
-    ]
+    ],
+    "native-ownership": "php tools/verify-native-ownership.php --self-test"
   },
   "config": {
     "sort-packages": true

@@ -13,17 +13,17 @@ use Kumwe\Computation\Internal\Guard;
 final readonly class BatchResult
 {
     /**
- * @var list<ExecutionResult> Complete ordered results, never partial output.
- * @since 0.1.0
- */
+     * @var list<ExecutionResult> Complete ordered results, never partial output.
+     * @since 0.1.0
+     */
     private array $results;
 
     /**
- * @param DocumentBatch $expected Exact original batch, required for correlation validation.
- * @param list<ExecutionResult> $results One result per document in identical order.
- * @param ExecutionLimits $limits Caller input/output and finding budgets.
- * @since 0.1.0
- */
+     * @param DocumentBatch $expected Exact original batch, required for correlation validation.
+     * @param list<ExecutionResult> $results One result per document in identical order.
+     * @param ExecutionLimits $limits Caller input/output and finding budgets.
+     * @since 0.1.0
+     */
     public function __construct(DocumentBatch $expected, array $results, ExecutionLimits $limits)
     {
         $expected->assertWithin($limits);
@@ -53,18 +53,18 @@ final readonly class BatchResult
     }
 
     /**
- * @return list<ExecutionResult> Complete detached immutable results.
- * @since 0.1.0
- */
+     * @return list<ExecutionResult> Complete detached immutable results.
+     * @since 0.1.0
+     */
     public function results(): array
     {
         return $this->results;
     }
 
     /**
- * @return array<string,mixed> Complete versioned batch result.
- * @since 0.1.0
- */
+     * @return array<string,mixed> Complete versioned batch result.
+     * @since 0.1.0
+     */
     public function toArray(): array
     {
         return ['wire_version' => 1, 'results' => array_map(
@@ -74,12 +74,12 @@ final readonly class BatchResult
     }
 
     /**
- * @param array<string,mixed> $data Wire batch result.
- * @param DocumentBatch $expected Original request, not data supplied by an untrusted result.
- * @param ExecutionLimits $limits Caller budgets.
- * @return self Validated complete result.
- * @since 0.1.0
- */
+     * @param array<string,mixed> $data Wire batch result.
+     * @param DocumentBatch $expected Original request, not data supplied by an untrusted result.
+     * @param ExecutionLimits $limits Caller budgets.
+     * @return self Validated complete result.
+     * @since 0.1.0
+     */
     public static function fromArray(array $data, DocumentBatch $expected, ExecutionLimits $limits): self
     {
         Guard::shape($data, ['wire_version', 'results']);

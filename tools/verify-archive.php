@@ -111,6 +111,7 @@ $requiredRoots = [
 ];
 $requiredShipped = [
     'docs/architecture.md',
+    'docs/conformance.md',
     'docs/native-boundary-draft.md',
     'docs/boundary-review.md',
     'docs/consumer-inventory.json',

@@ -13,25 +13,25 @@ use Kumwe\Computation\Internal\Guard;
 final readonly class CapabilitySet
 {
     /**
- * @var array<string,int> Detached sorted feature versions.
- * @since 0.1.0
- */
+     * @var array<string,int> Detached sorted feature versions.
+     * @since 0.1.0
+     */
     private array $features;
     /**
- * @var list<ContractIdentity> Sorted exact supported contracts.
- * @since 0.1.0
- */
+     * @var list<ContractIdentity> Sorted exact supported contracts.
+     * @since 0.1.0
+     */
     private array $contracts;
 
     /**
- * @param string $engineVersion Exact observed engine version.
- * @param int $abiMajor ABI major.
- * @param string $apiVersion Exact API version.
- * @param string $buildDigest Exact build identity.
- * @param array<string,int> $features Available feature versions.
- * @param list<ContractIdentity> $contracts Exact supported profiles/corpora.
- * @since 0.1.0
- */
+     * @param string $engineVersion Exact observed engine version.
+     * @param int $abiMajor ABI major.
+     * @param string $apiVersion Exact API version.
+     * @param string $buildDigest Exact build identity.
+     * @param array<string,int> $features Available feature versions.
+     * @param list<ContractIdentity> $contracts Exact supported profiles/corpora.
+     * @since 0.1.0
+     */
     public function __construct(
         public string $engineVersion,
         public int $abiMajor,
@@ -49,28 +49,28 @@ final readonly class CapabilitySet
     }
 
     /**
- * @return array<string,int> Immutable feature snapshot.
- * @since 0.1.0
- */
+     * @return array<string,int> Immutable feature snapshot.
+     * @since 0.1.0
+     */
     public function features(): array
     {
         return $this->features;
     }
 
     /**
- * @return list<ContractIdentity> Exact supported profiles.
- * @since 0.1.0
- */
+     * @return list<ContractIdentity> Exact supported profiles.
+     * @since 0.1.0
+     */
     public function contracts(): array
     {
         return $this->contracts;
     }
 
     /**
- * @param ContractIdentity $contract Exact required profile.
- * @return bool Whether advertised.
- * @since 0.1.0
- */
+     * @param ContractIdentity $contract Exact required profile.
+     * @return bool Whether advertised.
+     * @since 0.1.0
+     */
     public function supports(ContractIdentity $contract): bool
     {
         foreach ($this->contracts as $supported) {
@@ -82,9 +82,9 @@ final readonly class CapabilitySet
     }
 
     /**
- * @return array<string,mixed> Ordered versioned metadata.
- * @since 0.1.0
- */
+     * @return array<string,mixed> Ordered versioned metadata.
+     * @since 0.1.0
+     */
     public function toArray(): array
     {
         $features = Guard::featureRecords($this->features);
@@ -94,10 +94,10 @@ final readonly class CapabilitySet
     }
 
     /**
- * @param array<string,mixed> $data Wire record.
- * @return self Validated observation.
- * @since 0.1.0
- */
+     * @param array<string,mixed> $data Wire record.
+     * @return self Validated observation.
+     * @since 0.1.0
+     */
     public static function fromArray(array $data): self
     {
         Guard::shape($data, ['wire_version', 'engine_version', 'abi_major', 'api_version', 'build_digest',
@@ -115,9 +115,9 @@ final readonly class CapabilitySet
     }
 
     /**
- * @return string Complete exact tuple identity.
- * @since 0.1.0
- */
+     * @return string Complete exact tuple identity.
+     * @since 0.1.0
+     */
     public function key(): string
     {
         return Guard::encode($this->toArray());

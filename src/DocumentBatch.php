@@ -13,16 +13,16 @@ use Kumwe\Computation\Internal\Guard;
 final readonly class DocumentBatch
 {
     /**
- * @var list<DocumentInput> Exact immutable input order.
- * @since 0.1.0
- */
+     * @var list<DocumentInput> Exact immutable input order.
+     * @since 0.1.0
+     */
     private array $documents;
 
     /**
- * @param list<DocumentInput> $documents Complete input batch.
- * @param ExecutionLimits $limits Caller budgets.
- * @since 0.1.0
- */
+     * @param list<DocumentInput> $documents Complete input batch.
+     * @param ExecutionLimits $limits Caller budgets.
+     * @since 0.1.0
+     */
     public function __construct(array $documents, ExecutionLimits $limits)
     {
         Guard::require(array_is_list($documents) && $documents !== [] && count($documents) <= 4096);
@@ -41,18 +41,18 @@ final readonly class DocumentBatch
     }
 
     /**
- * @return list<DocumentInput> Complete immutable ordered inputs.
- * @since 0.1.0
- */
+     * @return list<DocumentInput> Complete immutable ordered inputs.
+     * @since 0.1.0
+     */
     public function documents(): array
     {
         return $this->documents;
     }
 
     /**
- * @return int Opaque and transport metadata bytes counted before native input.
- * @since 0.1.0
- */
+     * @return int Opaque and transport metadata bytes counted before native input.
+     * @since 0.1.0
+     */
     public function byteSize(): int
     {
         $bytes = 0;
@@ -64,10 +64,10 @@ final readonly class DocumentBatch
     }
 
     /**
- * @param ExecutionLimits $limits Caller budgets.
- * @return void
- * @since 0.1.0
- */
+     * @param ExecutionLimits $limits Caller budgets.
+     * @return void
+     * @since 0.1.0
+     */
     public function assertWithin(ExecutionLimits $limits): void
     {
         Guard::require(count($this->documents) <= $limits->maxDocuments
@@ -75,12 +75,12 @@ final readonly class DocumentBatch
     }
 
     /**
- * Check all input profiles and combined artifact/document bytes before native execution.
- * @param CompiledProgram $program Exact compiled artifact.
- * @param ExecutionLimits $limits Caller budgets.
- * @return void
- * @since 0.1.0
- */
+     * Check all input profiles and combined artifact/document bytes before native execution.
+     * @param CompiledProgram $program Exact compiled artifact.
+     * @param ExecutionLimits $limits Caller budgets.
+     * @return void
+     * @since 0.1.0
+     */
     public function assertForProgram(CompiledProgram $program, ExecutionLimits $limits): void
     {
         $this->assertWithin($limits);
@@ -97,9 +97,9 @@ final readonly class DocumentBatch
     }
 
     /**
- * @return array<string,mixed> Versioned complete ordered batch.
- * @since 0.1.0
- */
+     * @return array<string,mixed> Versioned complete ordered batch.
+     * @since 0.1.0
+     */
     public function toArray(): array
     {
         return ['wire_version' => 1, 'documents' => array_map(
@@ -109,11 +109,11 @@ final readonly class DocumentBatch
     }
 
     /**
- * @param array<string,mixed> $data Wire batch.
- * @param ExecutionLimits $limits Budgets.
- * @return self
- * @since 0.1.0
- */
+     * @param array<string,mixed> $data Wire batch.
+     * @param ExecutionLimits $limits Budgets.
+     * @return self
+     * @since 0.1.0
+     */
     public static function fromArray(array $data, ExecutionLimits $limits): self
     {
         Guard::shape($data, ['wire_version', 'documents']);

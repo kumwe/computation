@@ -101,5 +101,6 @@
     "cancelled",
     "internal_failure"
   ],
-  "empty_collection_convention": "Features serialize as an empty list; finding parameters serialize as [] when empty, with a prescribed map shape when nonempty."
+  "empty_collection_convention": "Empty features/parameters use []; nonempty parameters use a map.",
+  "native_implementation": false
 }

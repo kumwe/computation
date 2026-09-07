@@ -13,15 +13,15 @@ use Kumwe\Computation\Internal\Guard;
 final readonly class PlanCacheKey
 {
     /**
- * @var string Lowercase SHA-256 cache identity.
- * @since 0.1.0
- */
+     * @var string Lowercase SHA-256 cache identity.
+     * @since 0.1.0
+     */
     public string $value;
 
     /**
- * @param PlanIdentity $plan Complete plan identity.
- * @since 0.1.0
- */
+     * @param PlanIdentity $plan Complete plan identity.
+     * @since 0.1.0
+     */
     public function __construct(PlanIdentity $plan)
     {
         $this->value = hash('sha256', 'kumwe.computation.plan.v1' . Guard::encode($plan->toArray()));

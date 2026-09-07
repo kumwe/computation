@@ -16,12 +16,12 @@ use Kumwe\Computation\RefusalCode;
 final class Guard
 {
     /**
- * Refuse without echoing hostile values.
- * @param bool $condition Accepted condition.
- * @return void
- * @since 0.1.0
- * @param RefusalCode $reason Safe refusal identity.
- */
+     * Refuse without echoing hostile values.
+     * @param bool $condition Accepted condition.
+     * @return void
+     * @since 0.1.0
+     * @param RefusalCode $reason Safe refusal identity.
+     */
     public static function require(bool $condition, RefusalCode $reason = RefusalCode::InvalidInput): void
     {
         if (PHP_INT_SIZE !== 8 || !$condition) {
@@ -30,12 +30,12 @@ final class Guard
     }
 
     /**
- * @param mixed $value Wire text.
- * @return string Valid UTF-8 text.
- * @since 0.1.0
- * @param int $maximum Maximum UTF-8 bytes.
- * @param bool $empty Whether empty text is allowed.
- */
+     * @param mixed $value Wire text.
+     * @return string Valid UTF-8 text.
+     * @since 0.1.0
+     * @param int $maximum Maximum UTF-8 bytes.
+     * @param bool $empty Whether empty text is allowed.
+     */
     public static function text(mixed $value, int $maximum = 128, bool $empty = false): string
     {
         self::require(is_string($value));
@@ -48,10 +48,10 @@ final class Guard
     }
 
     /**
- * @param mixed $value Identifier.
- * @return string Valid identifier.
- * @since 0.1.0
- */
+     * @param mixed $value Identifier.
+     * @return string Valid identifier.
+     * @since 0.1.0
+     */
     public static function token(mixed $value): string
     {
         $text = self::text($value);
@@ -60,10 +60,10 @@ final class Guard
     }
 
     /**
- * @param mixed $value Semantic version.
- * @return string Valid exact version.
- * @since 0.1.0
- */
+     * @param mixed $value Semantic version.
+     * @return string Valid exact version.
+     * @since 0.1.0
+     */
     public static function version(mixed $value): string
     {
         $text = self::text($value, 64);
@@ -72,10 +72,10 @@ final class Guard
     }
 
     /**
- * @param mixed $value SHA-256 hex.
- * @return string Lowercase digest.
- * @since 0.1.0
- */
+     * @param mixed $value SHA-256 hex.
+     * @return string Lowercase digest.
+     * @since 0.1.0
+     */
     public static function digest(mixed $value): string
     {
         $text = self::text($value, 64);
@@ -84,12 +84,12 @@ final class Guard
     }
 
     /**
- * @param mixed $value Integer.
- * @return int Bounded integer.
- * @since 0.1.0
- * @param int $minimum Inclusive minimum.
- * @param int $maximum Inclusive maximum.
- */
+     * @param mixed $value Integer.
+     * @return int Bounded integer.
+     * @since 0.1.0
+     * @param int $minimum Inclusive minimum.
+     * @param int $maximum Inclusive maximum.
+     */
     public static function integer(mixed $value, int $minimum = 0, int $maximum = 2147483647): int
     {
         if (!is_int($value) || $value < $minimum || $value > $maximum) {
@@ -99,11 +99,11 @@ final class Guard
     }
 
     /**
- * @param mixed $value Opaque bytes.
- * @return string Bounded bytes.
- * @since 0.1.0
- * @param int $maximum Maximum opaque bytes.
- */
+     * @param mixed $value Opaque bytes.
+     * @return string Bounded bytes.
+     * @since 0.1.0
+     * @param int $maximum Maximum opaque bytes.
+     */
     public static function bytes(mixed $value, int $maximum = 16777216): string
     {
         if (!is_string($value)) {
@@ -114,11 +114,11 @@ final class Guard
     }
 
     /**
- * @param mixed $value Canonical base64.
- * @return string Decoded bytes.
- * @since 0.1.0
- * @param int $maximum Caller byte ceiling before decoding.
- */
+     * @param mixed $value Canonical base64.
+     * @return string Decoded bytes.
+     * @since 0.1.0
+     * @param int $maximum Caller byte ceiling before decoding.
+     */
     public static function unbase64(mixed $value, int $maximum = 16777216): string
     {
         self::base64Size($value, $maximum);
@@ -132,11 +132,11 @@ final class Guard
     }
 
     /**
- * @param mixed $value Base64 text.
- * @return int Exact decoded length before allocation.
- * @since 0.1.0
- * @param int $maximum Caller decoded byte ceiling.
- */
+     * @param mixed $value Base64 text.
+     * @return int Exact decoded length before allocation.
+     * @since 0.1.0
+     * @param int $maximum Caller decoded byte ceiling.
+     */
     public static function base64Size(mixed $value, int $maximum = 16777216): int
     {
         $maximum = self::integer($maximum, 0, 16777216);
@@ -151,10 +151,10 @@ final class Guard
     }
 
     /**
- * @param mixed $value Object-shaped array.
- * @return array<string,mixed> Wire object.
- * @since 0.1.0
- */
+     * @param mixed $value Object-shaped array.
+     * @return array<string,mixed> Wire object.
+     * @since 0.1.0
+     */
     public static function object(mixed $value): array
     {
         if (!is_array($value) || count($value) > 32 || array_is_list($value)) {
@@ -172,11 +172,11 @@ final class Guard
     }
 
     /**
- * @param mixed $value List.
- * @return list<mixed> Bounded list.
- * @since 0.1.0
- * @param int $maximum Maximum list entries.
- */
+     * @param mixed $value List.
+     * @return list<mixed> Bounded list.
+     * @since 0.1.0
+     * @param int $maximum Maximum list entries.
+     */
     public static function items(mixed $value, int $maximum = 65536): array
     {
         if (!is_array($value) || !array_is_list($value) || count($value) > $maximum) {
@@ -186,11 +186,11 @@ final class Guard
     }
 
     /**
- * @param array<string,mixed> $value Object.
- * @param list<string> $keys Exact fields.
- * @return void
- * @since 0.1.0
- */
+     * @param array<string,mixed> $value Object.
+     * @param list<string> $keys Exact fields.
+     * @return void
+     * @since 0.1.0
+     */
     public static function shape(array $value, array $keys): void
     {
         self::require(count($value) === count($keys));
@@ -202,10 +202,10 @@ final class Guard
     }
 
     /**
- * @param array<string,int> $features Feature versions.
- * @return array<string,int> Detached sorted map.
- * @since 0.1.0
- */
+     * @param array<string,int> $features Feature versions.
+     * @return array<string,int> Detached sorted map.
+     * @since 0.1.0
+     */
     public static function features(array $features): array
     {
         self::require(count($features) <= 256);
@@ -220,10 +220,10 @@ final class Guard
     }
 
     /**
- * @param list<ContractIdentity> $contracts Profiles.
- * @return list<ContractIdentity> Sorted detached profiles.
- * @since 0.1.0
- */
+     * @param list<ContractIdentity> $contracts Profiles.
+     * @return list<ContractIdentity> Sorted detached profiles.
+     * @since 0.1.0
+     */
     public static function contracts(array $contracts): array
     {
         self::require(array_is_list($contracts) && count($contracts) <= 256);
@@ -245,10 +245,10 @@ final class Guard
     }
 
     /**
- * @param mixed $value Wire features.
- * @return array<string,int> Validated detached features.
- * @since 0.1.0
- */
+     * @param mixed $value Wire features.
+     * @return array<string,int> Validated detached features.
+     * @since 0.1.0
+     */
     public static function featuresFromWire(mixed $value): array
     {
         $features = [];
@@ -265,10 +265,10 @@ final class Guard
     }
 
     /**
- * @param mixed $value Wire profiles.
- * @return list<ContractIdentity> Profiles.
- * @since 0.1.0
- */
+     * @param mixed $value Wire profiles.
+     * @return list<ContractIdentity> Profiles.
+     * @since 0.1.0
+     */
     public static function contractsFromWire(mixed $value): array
     {
         $contracts = [];
@@ -279,10 +279,10 @@ final class Guard
     }
 
     /**
- * @param array<string,int> $features Normalized features.
- * @return list<array{name:string,version:int}>
- * @since 0.1.0
- */
+     * @param array<string,int> $features Normalized features.
+     * @return list<array{name:string,version:int}>
+     * @since 0.1.0
+     */
     public static function featureRecords(array $features): array
     {
         $records = [];
@@ -293,11 +293,11 @@ final class Guard
     }
 
     /**
- * @param mixed $value Closed validated metadata.
- * @return string Typed length encoding.
- * @since 0.1.0
- * @param int $depth Private bounded recursion depth.
- */
+     * @param mixed $value Closed validated metadata.
+     * @return string Typed length encoding.
+     * @since 0.1.0
+     * @param int $depth Private bounded recursion depth.
+     */
     public static function encode(mixed $value, int $depth = 0): string
     {
         self::require($depth <= 20);
