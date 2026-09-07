@@ -229,3 +229,10 @@ Run `composer check` on 64-bit PHP 8.5 for metadata/security, release parsing, l
 examples, PSR-12, max PHPStan, contract tests and the actual built ZIP dependency consumer. The PR records observed
 results. Final tested commit, immutable release and artifact digests belong in independent external evidence after
 publication. This handoff claims neither release verification nor App/native implementation completion.
+
+## Enforced package test ownership
+
+Portable behavior, boundary and conformance evidence is maintained in `tests/ownership.json`,
+validated against the public API and actual test-runner discovery by `composer test:ownership`.
+See `docs/test-ownership.md` for the future-change rule and the precise host boundary.
+This follow-up changes package tests/tooling only; it does not authorize early App test deletion.
