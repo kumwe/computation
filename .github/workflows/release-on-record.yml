@@ -75,16 +75,10 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
-      - name: Require maintainer-protected main before publication
+      - name: Require protected main before release mutations
         env:
-          REF_PROTECTED: ${{ github.ref_protected }}
-        shell: bash
-        run: |
-          set -euo pipefail
-          if [ "$REF_PROTECTED" != true ]; then
-            echo "::error::Maintainers must protect main before any release tag or publication."
-            exit 1
-          fi
+          RELEASE_REF_PROTECTED: ${{ github.ref_protected }}
+        run: bash tools/check-release-integrity.sh protected "$RELEASE_REF_PROTECTED"
 
       # The newest release record is the FIRST second-level heading, so a
       # malformed record fails this run loudly instead of silently
@@ -117,6 +111,7 @@ jobs:
           probe_status=0
           probe="$(gh api "repos/$GITHUB_REPOSITORY/releases/tags/v$VERSION" 2>&1)" || probe_status=$?
           if [ "$probe_status" -eq 0 ]; then
+            bash tools/check-release-integrity.sh published "$VERSION" <<< "$probe"
             echo "exists=true" >> "$GITHUB_OUTPUT"
           elif grep -q 'HTTP 404' <<<"$probe"; then
             echo "exists=false" >> "$GITHUB_OUTPUT"
@@ -196,9 +191,5 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          immutable="$(gh api "repos/$GITHUB_REPOSITORY/releases/tags/v$VERSION" --jq '.immutable')"
-          if [ "$immutable" != true ]; then
-            echo "::error::Release v$VERSION is not immutable; downstream adoption is blocked."
-            echo "::error::Maintainers must enable release immutability before initial publication."
-            exit 1
-          fi
+          gh api "repos/$GITHUB_REPOSITORY/releases/tags/v$VERSION" \
+            | bash tools/check-release-integrity.sh published "$VERSION"
