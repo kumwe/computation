@@ -41,7 +41,7 @@ final readonly class Finding
         $copy = [];
         foreach ($parameters as $key => $value) {
             $name = Guard::token($key);
-            Guard::require(!ctype_digit($name));
+            Guard::require(preg_match('/^[0-9]+$/D', $name) !== 1);
             if (is_string($value)) {
                 $value = Guard::text($value, 4096, true);
             } elseif (!is_int($value) && !is_bool($value) && $value !== null) {

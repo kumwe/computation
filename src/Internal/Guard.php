@@ -212,7 +212,7 @@ final class Guard
         $copy = [];
         foreach ($features as $key => $version) {
             $token = self::token($key);
-            self::require(!ctype_digit($token));
+            self::require(preg_match('/^[0-9]+$/D', $token) !== 1);
             $copy[$token] = self::integer($version, 1, 65535);
         }
         ksort($copy, SORT_STRING);
