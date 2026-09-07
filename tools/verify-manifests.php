@@ -517,6 +517,9 @@ function computationVerifyCapabilities(array $exported, string $release): int
     }
     $candidate = computationJsonObject('resources/native-adapter.json');
     $expectedNative = $candidate['requirements'] ?? null;
+    if (($candidate['binding_features'] ?? null) !== ['opaque-compiled-results/1']) {
+        throw new RuntimeException('The native adapter must require its explicit binding feature.');
+    }
     if (($candidate['release_status'] ?? null) !== 'candidate-not-release-verified') {
         throw new RuntimeException('The native adapter remains an unverified development candidate.');
     }

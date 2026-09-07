@@ -37,11 +37,19 @@ final readonly class NativeCompatibility
      * Verify the observed build without invoking autoload, downloading code, or selecting a fallback.
      * @param array<string,mixed> $observed Native handshake; unknown extra informational fields are permitted.
      * @return void
-     * @throws ExecutionRefused On any tuple mismatch.
+     * @throws ExecutionRefused On any tuple mismatch or missing required binding feature.
      * @since 0.2.0
      */
     public function assertObserved(array $observed): void
     {
+        $features = $observed['binding_features'] ?? null;
+        if (!is_array($features) || !array_is_list($features)) {
+            throw new ExecutionRefused(RefusalCode::IncompatibleCapability);
+        }
+        foreach ($features as $feature) {
+            Guard::require(is_string($feature), RefusalCode::IncompatibleCapability);
+        }
+        Guard::require(in_array('opaque-compiled-results/1', $features, true), RefusalCode::IncompatibleCapability);
         Guard::require(
             ($observed['extension_version'] ?? null) === $this->extensionVersion
             && ($observed['embedded_engine_commit'] ?? null) === $this->embeddedEngineCommit

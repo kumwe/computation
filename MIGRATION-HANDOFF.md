@@ -173,6 +173,7 @@ decisions:
   - "Release compiled plans explicitly to reclaim bounded native capacity."
   - "Engine owns algorithms; Computation owns transport and native adapters."
   - "No App changes or release publication occurs in this successor."
+  - "Require opaque-compiled-results/1 at composition; preserve raw native result bytes."
   - "This native-backed 0.3.0 proposal cannot serve as its own pre-Engine contract baseline."
 blockers:
   - "No published, independently verified extension-free Computation baseline was identified."
@@ -184,9 +185,9 @@ blockers:
 
 ## Migration/implementation summary
 
-Expose explicit compiled-plan release to reclaim native capacity in long-lived consumers and normalize
-consumer manifests. [PR #11](https://github.com/kumwe/computation/pull/11) contains this successor. The
-changelog version describes the proposed artifact; it is not a publication observation.
+Expose compiled-plan release and opaque results with explicit binding-feature admission; normalize consumer
+manifests. [PR #11](https://github.com/kumwe/computation/pull/11) contains this successor. The changelog
+version describes the proposed artifact; it is not a publication observation.
 
 ## Public API and responsibility
 

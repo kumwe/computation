@@ -131,7 +131,7 @@ final class NativeAdapter implements Compiler, Executor
             $inputs[] = ['correlation' => $document->correlation, 'input' => $document->bytes];
         }
         try {
-            $output = $this->runtime->execute(['plan_id' => $id, 'batch' => [
+            $output = $this->runtime->execute(['plan_id' => $id, 'result_format' => 'opaque', 'batch' => [
                 'wire_version' => 1,
                 'documents' => $inputs,
                 'limits' => [

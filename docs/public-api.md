@@ -996,13 +996,17 @@ The host supplies `NativeCompatibility`; Compiler and Executor must share the sa
 `$embeddedSourceSha256` and `$bindingBuildDigest`. The last coordinate binds the independently recorded PHP,
 ABI and binding build tuple. These readonly properties identify the configured candidate without asserting
 release admission. `assertObserved()` rejects a missing or mismatched coordinate before execution; extra
-informational fields do not change the comparison. Invalid coordinates produce bounded portable refusals.
+informational fields do not change the comparison. The binding_features string list must advertise
+opaque-compiled-results/1. This common package minimum also applies to NativeCanonicalEncoder even though
+its own canonical request shape is unchanged. Invalid coordinates or features produce bounded portable refusals.
 
 ## `Kumwe\Computation\NativeAdapter`
 
 `__construct()` requires the actual extension Runtime and exact NativeCompatibility. `compile()` accepts a
 portable ProgramEnvelope and bounded ExecutionLimits, calls native compilation, and retains the resulting
-opaque plan handle on this adapter. `execute()` sends one ordered DocumentBatch to that same native Runtime.
+opaque plan handle on this adapter. `execute()` sends one ordered DocumentBatch to that same native Runtime,
+requesting result_format=opaque. Engine-authored result_json bytes remain unchanged; the extension skips
+constructing an unused PHP semantic result tree. Correlation, count, finding and byte-budget checks still apply.
 Foreign, cloned or deserialized portable plan objects cannot acquire authority over a native plan handle.
 `__clone()` refuses copying the adapter. Native failures become payload-free ExecutionRefused categories.
 PHP validates transport identities and bounds; the Engine owns all program and document semantics.

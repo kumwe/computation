@@ -143,7 +143,7 @@ function ownershipVerify(array $record, array $api, array $corpus): void
             'api_manifest' => 'resources/api/v1.json',
             'state' => 'candidate-cross-build',
             'release_verified' => false,
-            'source_commit' => '566f6ff650290627275cca836363165608391469',
+            'source_commit' => '584e910b5902c7d3c2bda006586692d572ac1154',
         ], 'Native candidate provenance must not assert release verification.');
         $key = strtolower($name);
         ownershipRequire(!isset($seen[$key]), 'Portable/native FQCN collision.');
