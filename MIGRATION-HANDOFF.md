@@ -29,8 +29,8 @@ target:
   repository: "https://github.com/kumwe/computation"
   artifact_identity: "kumwe/computation"
   canonical_namespace_or_abi: "Kumwe\\Computation"
-  branch: "codex/native-adapter-candidate"
-  pull_request: "https://github.com/kumwe/computation/pull/7"
+  branch: "agent/native-runtime-closure-v3"
+  pull_request: null
 ownership:
   responsibility: "Portable bounded execution transport, exact identities and compiler/executor contracts."
   non_responsibilities:
@@ -207,3 +207,9 @@ Run `composer check` with the actual extension and `KUMWE_NATIVE_EXPECTED_TUPLE`
 configuration JSON. Absence or mismatch is a required failure. Source/static successes alone cannot establish
 native compatibility, release admission or App completion. The PR records observed results; final release and
 artifact identities belong in independent external evidence after publication.
+
+This source successor preserves the externally merged adapter and the current main release controls.
+Its native test dependency is binding `81a30990f24767b61f3b0d1cfe4c073389e09b97`, embedding Engine
+`24d43dd6b4755010f1eb8fea9c8f1d6373cc06fa`. The independently configured actual module passed all
+64 adapter integration assertions locally. Complete remote package and archive gates remain required;
+this candidate coordinate is not a published release or App adoption authorization.
