@@ -10,9 +10,10 @@ declare(strict_types=1);
 
 /**
  * @param string $source PHP source to inspect without executing it.
+ * @param bool $nativeGuard Whether this is the reviewed native availability guard.
  * @return list<string> Boundary findings.
  */
-$inspect = static function (string $source): array {
+$inspect = static function (string $source, bool $nativeGuard = false): array {
     $findings = [];
     $previous = null;
     $beforePrevious = null;
@@ -55,7 +56,9 @@ $inspect = static function (string $source): array {
             'class_exists', 'interface_exists', 'enum_exists', 'function_exists', 'setlocale',
             ], true)
         ) {
-            $findings[] = 'Host runtime primitive: ' . $name;
+            if (!$nativeGuard || $name !== 'class_exists') {
+                $findings[] = 'Host runtime primitive: ' . $name;
+            }
         }
     }
     return $findings;
@@ -74,7 +77,8 @@ foreach ($iterator as $file) {
         throw new RuntimeException('Source cannot be read.');
     }
     $count++;
-    foreach ($inspect($source) as $finding) {
+    $nativeGuard = $file->getPathname() === $root . '/src/Internal/NativeRuntime.php';
+    foreach ($inspect($source, $nativeGuard) as $finding) {
         $failures[] = substr($file->getPathname(), strlen($root) + 1) . ': ' . $finding;
     }
 }

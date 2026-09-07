@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.0
+
+Proposed native adapter candidate; this record does not assert a verified native release.
+
+- Add exact native compatibility, compiler/executor and GenericV1 canonical encoding adapters.
+- Add explicit request-scoped container factories and interface aliases.
+- Require the real extension for execution and isolated consumer verification; no PHP semantic fallback.
+
 ## 0.1.0
 
 - Unify PR and post-rebase release gates, dynamic release identity, tested publication retries,

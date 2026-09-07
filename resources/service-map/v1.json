@@ -1,11 +1,32 @@
 {
   "schema": "kumwe-package-service-map/v1",
   "package": "kumwe/computation",
-  "release": "0.1.0",
-  "config_provider": null,
-  "provider_absence_reason": "Direct immutable contracts; Phase 1A supplies no native adapter or runtime service.",
-  "factories": [],
-  "aliases": {},
+  "release": "0.2.0",
+  "config_provider": "Kumwe\\Computation\\ConfigProvider",
+  "factories": [
+    {
+      "service": "Kumwe\\Computation\\NativeAdapter",
+      "factory": "Kumwe\\Computation\\NativeAdapterFactory",
+      "lifetime": "shared"
+    },
+    {
+      "service": "Kumwe\\Computation\\NativeCanonicalEncoder",
+      "factory": "Kumwe\\Computation\\NativeCanonicalEncoderFactory",
+      "lifetime": "shared"
+    }
+  ],
+  "aliases": {
+    "Kumwe\\Computation\\Compiler": "Kumwe\\Computation\\NativeAdapter",
+    "Kumwe\\Computation\\Executor": "Kumwe\\Computation\\NativeAdapter",
+    "Kumwe\\CanonicalJson\\CanonicalEncoder": "Kumwe\\Computation\\NativeCanonicalEncoder"
+  },
   "delegators": [],
-  "configuration_keys": []
+  "configuration_keys": [],
+  "required_services": [
+    "Kumwe\\Computation\\NativeCompatibility"
+  ],
+  "optional_services": [
+    "Kumwe\\CanonicalJson\\Limits"
+  ],
+  "lifetime_scope": "Host-owned request container; Compiler and Executor resolve to the same NativeAdapter instance."
 }

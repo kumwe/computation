@@ -12,8 +12,11 @@ permissions:
 jobs:
   check:
     name: PHP ${{ matrix.php }}
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: package
     strategy:
       fail-fast: false
       matrix:
@@ -23,6 +26,15 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+          path: package
+
+      - name: Check out the exact native candidate
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: kumwe/kumwe-engine
+          ref: 1a7ecccbaa723bf863de3d21047410ac2fd949af
+          persist-credentials: false
+          path: native
 
       - name: Set up PHP
         uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # v2.37.2
@@ -30,6 +42,23 @@ jobs:
           php-version: ${{ matrix.php }}
           coverage: none
           tools: composer:v2
+
+      - name: Build and load the pinned native extension
+        working-directory: native
+        run: |
+          test "$(git rev-parse HEAD)" = 1a7ecccbaa723bf863de3d21047410ac2fd949af
+          php tools/generate-arginfo.php --check
+          php tools/verify-binding.php
+          php tools/verify-engine.php
+          phpize
+          ./configure --enable-kumwe_engine
+          make -j2
+          php tools/expected-tuple.php > candidate-compatibility.json
+          native_ini="$RUNNER_TEMP/kumwe-native.ini"
+          cp "$(php -r 'echo php_ini_loaded_file();')" "$native_ini"
+          printf '\nextension=%s/modules/kumwe_engine.so\n' "$PWD" >> "$native_ini"
+          echo "PHPRC=$native_ini" >> "$GITHUB_ENV"
+          echo "KUMWE_NATIVE_EXPECTED_TUPLE=$PWD/candidate-compatibility.json" >> "$GITHUB_ENV"
 
       - name: Cache Composer package downloads
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
@@ -52,6 +81,7 @@ jobs:
           composer install --no-interaction --prefer-dist --no-dev --classmap-authoritative
           composer autoload:smoke
           composer examples
+          composer test:native
 
   release-tests:
     name: Release automation tests

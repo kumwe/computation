@@ -1,6 +1,6 @@
 {
   "name": "kumwe/computation",
-  "description": "Portable bounded computation contracts and transport identities for native execution.",
+  "description": "Native computation and canonical encoding adapters with bounded portable transport.",
   "type": "library",
   "license": "Apache-2.0",
   "homepage": "https://github.com/kumwe/computation",
@@ -10,7 +10,10 @@
   },
   "require": {
     "php": "^8.5",
-    "php-64bit": "^8.5"
+    "php-64bit": "^8.5",
+    "ext-kumwe_engine": "0.0.0-dev",
+    "kumwe/canonical-json": "dev-agent/canonical-encoder-port-v2",
+    "psr/container": "^2.0"
   },
   "require-dev": {
     "phpstan/phpstan": "^2.1",
@@ -60,17 +63,27 @@
       "@analyse",
       "@test:ownership",
       "@test",
+      "@test:native-absence",
+      "@test:native",
       "@clean-consumer",
       "@release:integrity"
     ],
     "native-ownership": "php tools/verify-native-ownership.php --self-test",
     "test:ownership": "php tools/verify-test-ownership.php --self-test",
     "boundary:tokens": "php tools/verify-boundary-tokens.php --self-test",
-    "release:integrity": "bash tools/test-release-integrity.sh"
+    "release:integrity": "bash tools/test-release-integrity.sh",
+    "test:native": "php tests/native.php \"$KUMWE_NATIVE_EXPECTED_TUPLE\"",
+    "test:native-absence": "php -n tests/native-absence.php"
   },
   "config": {
     "sort-packages": true
   },
   "minimum-stability": "stable",
-  "prefer-stable": true
+  "prefer-stable": true,
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/kumwe/canonical-json"
+    }
+  ]
 }

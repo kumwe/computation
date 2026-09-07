@@ -1,6 +1,7 @@
 # Architecture
 
-The canonical portable namespace is `Kumwe\Computation\`. The package has no runtime dependency beyond 64-bit PHP 8.5.
+The canonical portable namespace is `Kumwe\Computation\`. Runtime dependencies are 64-bit PHP 8.5, the native
+extension, the upstream canonical contract and PSR container interfaces.
 Public DTOs are final and readonly; enums and the two execution interfaces define their respective contracts.
 Internal validators and deterministic metadata encoding stay outside the public API manifest.
 
@@ -12,11 +13,13 @@ Plan identity incorporates semantic identity, source/program version, generation
 digests and the full required capability tuple. Its domain-separated digest uses a closed typed metadata
 encoder, never a generic JSON/AST/decimal implementation. Typed paths distinguish string keys and integer indexes.
 
-Direct construction is intentional: this phase has no native adapter or provider to register. App retains all
-existing execution and tests. Engine and the Zend binding are separately owned. Read the native boundary draft
-for FQCN reservations, transport proposals, ABI ownership and the remaining native implementation decisions.
+Immutable transport values are directly constructed. ConfigProvider registers two shared native services in
+the host request container. The host supplies exact NativeCompatibility; factories fail closed when the real
+extension or matching tuple is unavailable. Engine and Zend binding implementations remain separately owned.
 
-The architecture gate rejects foreign namespaces, runtime extension/class probing, aliases and additional
-runtime dependencies. The manifest gate reflects every exported member, rejects missing documentation and
+The architecture gate admits only exact reviewed cross-package interfaces in named adapter files. The internal
+NativeRuntime guard alone may probe extension availability, with class autoload disabled. PHP semantic processing
+and all unreviewed dependencies are rejected. The manifest gate reflects every exported member, rejects
+missing documentation and
 requires each public type to be covered by a capability. The archive gate rejects all test/dev files and verifies
 the explicitly reviewed internal source files as well as the public manifest surface.
