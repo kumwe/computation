@@ -1,18 +1,18 @@
 # Kumwe Computation
 
-Portable computation contracts for a separately implemented native Engine. This Phase 1A `contract_baseline`
-provides bounded immutable transport values, exact compatibility identities and coarse compiler/executor
-interfaces. It requires 64-bit PHP 8.5 and no native extension or other runtime package.
+Bounded computation transport and explicit adapters to the native Engine. The 0.2.0 candidate adds exact
+compatibility checks, compiler/executor services and the GenericV1 CanonicalEncoder implementation. It requires
+64-bit PHP 8.5, the actual `kumwe_engine` extension, the reviewed canonical contract and PSR container 2.x.
 
 This package does not evaluate expressions, parse decimals, normalize documents or implement canonical JSON.
 It treats program, normalized document and result bytes as opaque values with explicitly supplied semantic
-identities. No Conversion or Canonical JSON API/corpus has been selected by this baseline.
+identities. NativeCanonicalEncoder delegates GenericV1 semantics and its exact corpus to the native Engine.
 
 ## Development
 
 ```bash
 composer install --no-interaction --prefer-dist
-composer check
+KUMWE_NATIVE_EXPECTED_TUPLE=/absolute/path/compatibility.json composer check
 ```
 
 `composer check` runs strict metadata/security/release checks, documentation and architecture checks,
@@ -27,9 +27,9 @@ public member. The [native boundary draft](docs/native-boundary-draft.md) names 
 and separates portable metadata from Engine algorithms. The [integration notes](docs/integration.md) and
 [migration handoff](MIGRATION-HANDOFF.md) describe the ordered release and adoption barriers.
 
-Construct values directly. There is no container provider, binding adapter, fallback interpreter or hidden
-service lookup. An Engine implementation will supply the compiler and executor interfaces after the exact
-contract and semantic releases are independently verified.
+Construct transport values directly. Register host-selected NativeCompatibility and apply ConfigProvider in a
+request-scoped container. Compiler and Executor share one NativeAdapter; CanonicalEncoder resolves to the native
+canonical service. See integration notes for the required independent compatibility JSON and native test gate.
 
 ## Test ownership
 
@@ -42,5 +42,5 @@ must remove superseded package-unit cases from App while retaining integration c
 ## Release status
 
 The changelog records a proposed release, not evidence of publication. Human merge and successful release
-checks precede immutable publication. Independent release verification precedes native implementation or
-consumer adoption. See [releasing](docs/releasing.md) and [security](SECURITY.md).
+checks precede immutable publication. Independent release verification precedes consumer adoption. See
+[releasing](docs/releasing.md) and [security](SECURITY.md).

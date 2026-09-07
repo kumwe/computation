@@ -5,15 +5,16 @@
 Own portable, finite, immutable execution metadata and transport contracts: semantic identity coordinates,
 Engine capability tuples, exact compatibility requirements, program and compiled-artifact envelopes,
 complete plan/cache identities, ordered document batches, machine findings, results and typed refusals.
-Own the coarse `Compiler` and `Executor` contracts. All portable public declarations use the canonical
+Own the coarse `Compiler` and `Executor` contracts and explicit native implementations, including
+CanonicalEncoder. All portable public declarations use the canonical
 `Kumwe\Computation\` namespace; `Internal` declarations are implementation details.
 
-## Scope of Phase 1A
+## Scope of the native adapter candidate
 
-This is the `contract_baseline` phase. Inputs and outputs are opaque strings. Semantic identities describe
-coordinates supplied by a host; construction does not attest that the owner, release or corpus was verified.
-No semantic package API/corpus is selected. This package requires 64-bit PHP 8.5 alone and runs without a native
-extension. There is no App class removal and no assertion of expression or document algorithm parity.
+Program and document transport remain opaque bytes. Semantic identities describe coordinates supplied by a
+host; construction does not attest that the owner, release or corpus was verified. Native adapters require the
+actual extension and compare its complete build/corpus tuple with independently configured expectations.
+CanonicalEncoder uses the upstream GenericV1 contract. There is no App class or test removal.
 
 ## Exclusions
 
@@ -21,15 +22,15 @@ extension. There is no App class removal and no assertion of expression or docum
 - Canonical JSON semantics or a public generic serialization facility.
 - Native allocation, C ABI implementation, Zend registration, PIE and extension provisioning.
 - Authorization, actor/site identity, active generations, persistence and transactions.
-- Container providers, adapters, aliases, global service locators and PHP execution fallbacks.
+- Global service locators, automatic provisioning and PHP execution fallbacks.
 - Plan-cache lifetime, stale-generation decisions and host localization or rendering.
 
 ## Dependencies and native ownership
 
-Runtime dependency ceiling: 64-bit PHP 8.5. Native Engine and binding declarations remain owned by their own
-repositories. The proposed native FQCNs must never appear as autoloadable classes or stubs in this package.
-A later adapter phase may depend only on verified immutable native and semantic releases. Joint ownership,
-ABI layout and native evidence must be independently reviewed before implementation.
+Runtime dependency ceiling: 64-bit PHP 8.5, ext-kumwe_engine, kumwe/canonical-json and psr/container. The current
+constraints identify development candidates; immutable release admission remains a separate required gate.
+Native Engine and binding declarations remain owned by their repositories. Native FQCNs must never appear as
+autoloadable PHP classes or runtime stubs in this package. Static analysis declarations are excluded from the archive.
 
 ## Package contract
 

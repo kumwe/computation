@@ -112,16 +112,11 @@ function computationManifestsMain(array $arguments): int
  */
 function computationRegisterAutoloader(): void
 {
-    spl_autoload_register(static function (string $class): void {
-        if (!str_starts_with($class, COMPUTATION_NAMESPACE)) {
-            return;
-        }
-        $relative = substr($class, strlen(COMPUTATION_NAMESPACE));
-        $path = COMPUTATION_SOURCE . '/' . str_replace('\\', '/', $relative) . '.php';
-        if (is_file($path)) {
-            require $path;
-        }
-    });
+    $autoload = computationPath('vendor/autoload.php');
+    if (!is_file($autoload)) {
+        throw new RuntimeException('Install declared Composer dependencies before reflecting the API.');
+    }
+    require_once $autoload;
 }
 
 /**
@@ -490,8 +485,18 @@ function computationVerifyCapabilities(array $exported, string $release): int
     if (!is_array($document['non_responsibilities'] ?? null)) {
         throw new RuntimeException($file . ' must list non_responsibilities.');
     }
-    if (!array_key_exists('native_requirements', $document) || $document['native_requirements'] !== null) {
-        throw new RuntimeException($file . ' must record native_requirements as null: no extension is needed.');
+    $expectedNative = [
+        'extension' => 'kumwe_engine',
+        'composer_constraint' => '0.0.0-dev',
+        'owner' => 'kumwe/kumwe-engine',
+        'engine_owner' => 'kumwe/engine',
+        'wire_version' => 1,
+        'compatibility_service' => 'Kumwe\\Computation\\NativeCompatibility',
+        'verification' => 'required-actual-extension-and-independent-exact-tuple',
+        'release_status' => 'candidate-not-release-verified',
+    ];
+    if (($document['native_requirements'] ?? null) !== $expectedNative) {
+        throw new RuntimeException($file . ' must require the exact native candidate verification contract.');
     }
 
     $capabilities = $document['capabilities'] ?? null;
@@ -639,7 +644,9 @@ function computationVerifyServiceMap(array $exported, string $release): string
             throw new RuntimeException($file . ' carries a malformed alias.');
         }
         foreach ([$alias, $target] as $symbol) {
-            if (!in_array($symbol, $exported, true)) {
+            $externalAlias = $symbol === $alias && $alias === 'Kumwe\\CanonicalJson\\CanonicalEncoder'
+                && interface_exists($alias);
+            if (!in_array($symbol, $exported, true) && !$externalAlias) {
                 throw new RuntimeException($file . ' alias ' . $alias . ' names an unexported symbol.');
             }
         }
@@ -662,6 +669,30 @@ function computationVerifyServiceMap(array $exported, string $release): string
         if (!is_array($entry) || !array_key_exists('default', $entry) || !is_string($entry['description'] ?? null)) {
             throw new RuntimeException($file . ' configuration key ' . $key . ' lacks a default or a description.');
         }
+    }
+
+    $configured = (new \Kumwe\Computation\ConfigProvider())();
+    $expectedFactories = [];
+    $expectedShared = [];
+    foreach ($factories as $factory) {
+        if (!is_string($factory['service']) || !is_string($factory['factory'])) {
+            throw new RuntimeException('Factory configuration cannot be compared.');
+        }
+        $expectedFactories[$factory['service']] = $factory['factory'];
+        $expectedShared[$factory['service']] = $factory['lifetime'] === 'shared';
+    }
+    if (
+        $configured !== ['dependencies' => [
+        'factories' => $expectedFactories, 'aliases' => $aliases, 'shared' => $expectedShared,
+        ]]
+    ) {
+        throw new RuntimeException('Actual provider configuration disagrees with the reviewed service map.');
+    }
+    if (
+        ($document['required_services'] ?? null) !== ['Kumwe\\Computation\\NativeCompatibility']
+        || ($document['optional_services'] ?? null) !== ['Kumwe\\CanonicalJson\\Limits']
+    ) {
+        throw new RuntimeException('Native factories require exact host-owned compatibility and optional limits.');
     }
 
     return $summary;

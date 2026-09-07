@@ -28,9 +28,10 @@ handoff, docs, public manifests, internal implementation, smoke tool and example
 It excludes tests, development tools, workflows, vendor, caches and the development
 lock file.
 
-This release scope is Computation Phase 1A `contract_baseline` only. It selects no
-semantic API/corpus and makes no Engine algorithm, native binding, provisioning or
-App integration claim. Downstream work requires independent verification of the
+The 0.2.0 candidate adds native compiler/executor and GenericV1 canonical adapters.
+The actual extension and independently configured compatibility tuple are mandatory
+for the full gate and isolated consumer. No native provisioning or App integration is claimed. Downstream work
+requires independent verification of the
 source, exact commit/tag, archive, API/capability/service digests and installer
 visibility. The embedded migration handoff must not claim its own final commit or
 archive hash; external evidence records these after publication and review.

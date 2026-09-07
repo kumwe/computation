@@ -238,7 +238,12 @@ try {
         $command === ['php', 'tests/run.php', '--list-json']
         && ($scripts['test'] ?? 'php tests/run.php') === 'php tests/run.php'
         ) && !(
-        $command === ['php', 'tools/test-inventory.php'] && ($scripts['test'] ?? null) === 'phpunit'
+        $command === ['php', 'tools/test-inventory.php'] && ($scripts['test'] ?? null) === 'php tests/run.php'
+        && ($scripts['test:native'] ?? null) === 'php tests/native.php "$KUMWE_NATIVE_EXPECTED_TUPLE"'
+        && ($scripts['test:native-absence'] ?? null) === 'php -n tests/native-absence.php'
+        && is_array($scripts['check'] ?? null)
+        && in_array('@test:native', $scripts['check'], true)
+        && in_array('@test:native-absence', $scripts['check'], true)
         )
     ) {
         throw new RuntimeException('Ownership inventory must use the package Composer test runner.');

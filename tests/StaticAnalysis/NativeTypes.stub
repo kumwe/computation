@@ -1,0 +1,18 @@
+<?php
+
+// Static analysis declarations only, derived from kumwe/kumwe-engine/stubs/kumwe_engine.stub.php.
+// Never autoload or require this file. The real declarations must come from the Zend extension.
+namespace Kumwe\Engine {
+    final class Runtime
+    {
+        /** @return array<string, mixed> */
+        public function capabilities(): array {}
+        /** @param array<string, mixed> $envelope @return array<string, mixed> */
+        public function compile(array $envelope): array {}
+        /** @param array<string, mixed> $envelope @return array<string, mixed> */
+        public function execute(array $envelope): array {}
+    }
+}
+namespace Kumwe\Engine\Exception {
+    final class BindingFailure extends \RuntimeException {}
+}
