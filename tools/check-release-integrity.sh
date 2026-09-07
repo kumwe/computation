@@ -38,7 +38,8 @@ case "${1:-}" in
     fi
     ;;
   *)
-    echo 'Usage: check-release-integrity.sh protected true | branch < branch.json | published VERSION < release.json' >&2
+    echo 'Usage: check-release-integrity.sh protected true | branch < branch.json' >&2
+    echo '       check-release-integrity.sh published VERSION < release.json' >&2
     exit 2
     ;;
 esac
