@@ -12,7 +12,7 @@
     "php": "^8.5",
     "php-64bit": "^8.5",
     "ext-kumwe_engine": "0.0.0-dev",
-    "kumwe/canonical-json": "dev-agent/canonical-encoder-port-v2",
+    "kumwe/canonical-json": "dev-main",
     "psr/container": "^2.0"
   },
   "require-dev": {
