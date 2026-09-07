@@ -1609,6 +1609,11 @@
             "interfaces": [],
             "constants": {},
             "properties": {
+                "bindingBuildDigest": {
+                    "type": "string",
+                    "static": false,
+                    "readonly": true
+                },
                 "capabilities": {
                     "type": "Kumwe\\Computation\\CapabilitySet",
                     "static": false,
@@ -1658,6 +1663,13 @@
                         },
                         {
                             "name": "embeddedSourceSha256",
+                            "type": "string",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "bindingBuildDigest",
                             "type": "string",
                             "optional": false,
                             "variadic": false,
