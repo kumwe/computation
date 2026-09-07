@@ -30,7 +30,7 @@ target:
   artifact_identity: "kumwe/computation"
   canonical_namespace_or_abi: "Kumwe\\Computation"
   branch: "agent/native-runtime-closure-v3"
-  pull_request: null
+  pull_request: "https://github.com/kumwe/computation/pull/8"
 ownership:
   responsibility: "Portable bounded execution transport, exact identities and compiler/executor contracts."
   non_responsibilities:
