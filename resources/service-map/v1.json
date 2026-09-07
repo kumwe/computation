@@ -1,0 +1,11 @@
+{
+  "schema": "kumwe-package-service-map/v1",
+  "package": "kumwe/computation",
+  "release": "0.1.0",
+  "config_provider": null,
+  "provider_absence_reason": "Direct immutable contracts; Phase 1A supplies no native adapter or runtime service.",
+  "factories": [],
+  "aliases": {},
+  "delegators": [],
+  "configuration_keys": []
+}

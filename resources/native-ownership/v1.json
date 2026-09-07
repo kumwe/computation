@@ -1,0 +1,171 @@
+{
+  "schema": "kumwe-computation-native-ownership/v1",
+  "status": "reviewed-draft",
+  "phase": "contract_baseline",
+  "native_implementation": false,
+  "semantic_dependencies": [],
+  "corpus": "resources/conformance/v1.json",
+  "php": [
+    {
+      "fqcn": "Kumwe\\Computation\\ContractIdentity",
+      "owner": "kumwe/computation",
+      "runtime": "composer",
+      "api_manifest": "resources/public-api/v1.json"
+    },
+    {
+      "fqcn": "Kumwe\\Computation\\CapabilitySet",
+      "owner": "kumwe/computation",
+      "runtime": "composer",
+      "api_manifest": "resources/public-api/v1.json"
+    },
+    {
+      "fqcn": "Kumwe\\Computation\\CompatibilityRequirement",
+      "owner": "kumwe/computation",
+      "runtime": "composer",
+      "api_manifest": "resources/public-api/v1.json"
+    },
+    {
+      "fqcn": "Kumwe\\Computation\\ExecutionLimits",
+      "owner": "kumwe/computation",
+      "runtime": "composer",
+      "api_manifest": "resources/public-api/v1.json"
+    },
+    {
+      "fqcn": "Kumwe\\Computation\\ProgramEnvelope",
+      "owner": "kumwe/computation",
+      "runtime": "composer",
+      "api_manifest": "resources/public-api/v1.json"
+    },
+    {
+      "fqcn": "Kumwe\\Computation\\PlanIdentity",
+      "owner": "kumwe/computation",
+      "runtime": "composer",
+      "api_manifest": "resources/public-api/v1.json"
+    },
+    {
+      "fqcn": "Kumwe\\Computation\\PlanCacheKey",
+      "owner": "kumwe/computation",
+      "runtime": "composer",
+      "api_manifest": "resources/public-api/v1.json"
+    },
+    {
+      "fqcn": "Kumwe\\Computation\\CompiledProgram",
+      "owner": "kumwe/computation",
+      "runtime": "composer",
+      "api_manifest": "resources/public-api/v1.json"
+    },
+    {
+      "fqcn": "Kumwe\\Computation\\DocumentInput",
+      "owner": "kumwe/computation",
+      "runtime": "composer",
+      "api_manifest": "resources/public-api/v1.json"
+    },
+    {
+      "fqcn": "Kumwe\\Computation\\DocumentBatch",
+      "owner": "kumwe/computation",
+      "runtime": "composer",
+      "api_manifest": "resources/public-api/v1.json"
+    },
+    {
+      "fqcn": "Kumwe\\Computation\\FindingPath",
+      "owner": "kumwe/computation",
+      "runtime": "composer",
+      "api_manifest": "resources/public-api/v1.json"
+    },
+    {
+      "fqcn": "Kumwe\\Computation\\FindingSeverity",
+      "owner": "kumwe/computation",
+      "runtime": "composer",
+      "api_manifest": "resources/public-api/v1.json"
+    },
+    {
+      "fqcn": "Kumwe\\Computation\\SourceLocation",
+      "owner": "kumwe/computation",
+      "runtime": "composer",
+      "api_manifest": "resources/public-api/v1.json"
+    },
+    {
+      "fqcn": "Kumwe\\Computation\\Finding",
+      "owner": "kumwe/computation",
+      "runtime": "composer",
+      "api_manifest": "resources/public-api/v1.json"
+    },
+    {
+      "fqcn": "Kumwe\\Computation\\ExecutionResult",
+      "owner": "kumwe/computation",
+      "runtime": "composer",
+      "api_manifest": "resources/public-api/v1.json"
+    },
+    {
+      "fqcn": "Kumwe\\Computation\\BatchResult",
+      "owner": "kumwe/computation",
+      "runtime": "composer",
+      "api_manifest": "resources/public-api/v1.json"
+    },
+    {
+      "fqcn": "Kumwe\\Computation\\RefusalCode",
+      "owner": "kumwe/computation",
+      "runtime": "composer",
+      "api_manifest": "resources/public-api/v1.json"
+    },
+    {
+      "fqcn": "Kumwe\\Computation\\ExecutionRefused",
+      "owner": "kumwe/computation",
+      "runtime": "composer",
+      "api_manifest": "resources/public-api/v1.json"
+    },
+    {
+      "fqcn": "Kumwe\\Computation\\Compiler",
+      "owner": "kumwe/computation",
+      "runtime": "composer",
+      "api_manifest": "resources/public-api/v1.json"
+    },
+    {
+      "fqcn": "Kumwe\\Computation\\Executor",
+      "owner": "kumwe/computation",
+      "runtime": "composer",
+      "api_manifest": "resources/public-api/v1.json"
+    }
+  ],
+  "native": [
+    {
+      "fqcn": "Kumwe\\Engine\\Runtime",
+      "owner": "kumwe/kumwe-engine",
+      "runtime": "zend-reserved",
+      "methods": [
+        "capabilities(): array",
+        "compile(array): array",
+        "execute(array): array"
+      ]
+    },
+    {
+      "fqcn": "Kumwe\\Engine\\Exception\\BindingFailure",
+      "owner": "kumwe/kumwe-engine",
+      "runtime": "zend-reserved",
+      "methods": []
+    }
+  ],
+  "c_abi_proposal": {
+    "owner": "kumwe/engine",
+    "frozen": false,
+    "prefix": "kumwe_engine_v1_",
+    "operations": [
+      "capabilities",
+      "compile",
+      "execute",
+      "buffer_view",
+      "buffer_release"
+    ],
+    "statuses": {
+      "success": 0,
+      "invalid_input": 1,
+      "unsupported_version": 2,
+      "incompatible_capability": 3,
+      "incompatible_corpus": 4,
+      "invalid_program": 5,
+      "exhausted_limit": 6,
+      "cancelled": 7,
+      "internal_failure": 8
+    }
+  }
+}

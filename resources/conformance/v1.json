@@ -1,0 +1,105 @@
+{
+  "schema": "kumwe-computation-transport-corpus/v1",
+  "profile": "transport-only-v1",
+  "semantic_implementations": [],
+  "scope": "Closed metadata identity, bounds and portable transport only; no native or domain algorithm parity.",
+  "metadata_vectors": [
+    {
+      "value": null,
+      "encoded": "N"
+    },
+    {
+      "value": false,
+      "encoded": "F"
+    },
+    {
+      "value": true,
+      "encoded": "T"
+    },
+    {
+      "value": -42,
+      "encoded": "I3:-42"
+    },
+    {
+      "value": "é",
+      "encoded": "S2:é"
+    },
+    {
+      "value": [
+        null,
+        2,
+        "0"
+      ],
+      "encoded": "L3:NI1:2S1:0"
+    },
+    {
+      "value": {
+        "wire_version": 1,
+        "alpha": "x"
+      },
+      "encoded": "M2:S12:wire_versionI1:1S5:alphaS1:x"
+    }
+  ],
+  "plan_vector": {
+    "source": "opaque-source",
+    "plan": {
+      "wire_version": 1,
+      "contract": {
+        "wire_version": 1,
+        "owner": "example/transport",
+        "profile": "test-only",
+        "version": "0.1.0",
+        "corpus_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "program_version": "1.0.0",
+      "source_digest": "9603c736d32d1b664979fbdd7d54a764146ce113027ab2843a02b077b7dfe2e7",
+      "generation": "generation.1",
+      "definition_digest": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+      "schema_digest": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+      "options_digest": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "capabilities": {
+        "wire_version": 1,
+        "engine_version": "0.1.0",
+        "abi_major": 1,
+        "api_version": "1.0.0",
+        "build_digest": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "features": [
+          {
+            "name": "compile",
+            "version": 1
+          },
+          {
+            "name": "document.batch",
+            "version": 1
+          }
+        ],
+        "contracts": [
+          {
+            "wire_version": 1,
+            "owner": "example/transport",
+            "profile": "test-only",
+            "version": "0.1.0",
+            "corpus_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ]
+      }
+    },
+    "cache_key": "c8607c0a0193455d4271ba7edd12f45b3ebb923142bfa67a6a3a8f141b71c148"
+  },
+  "severity_tokens": [
+    "info",
+    "warning",
+    "error"
+  ],
+  "refusal_tokens": [
+    "invalid_input",
+    "unsupported_version",
+    "incompatible_capability",
+    "incompatible_corpus",
+    "invalid_program",
+    "exhausted_limit",
+    "cancelled",
+    "internal_failure"
+  ],
+  "empty_collection_convention": "Features serialize as an empty list; finding parameters serialize as [] when empty, with a prescribed map shape when nonempty."
+}
