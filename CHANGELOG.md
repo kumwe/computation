@@ -2,6 +2,9 @@
 
 ## 0.1.0
 
+- Unify PR and post-rebase release gates, dynamic release identity, tested publication retries,
+  and administrator setup across the package family. Preserve immutable release and dependency evidence requirements.
+
 Proposed initial Computation Phase 1A `contract_baseline` release.
 
 - Add bounded immutable execution metadata, exact capability/semantic identities and coarse compiler/executor ports.
