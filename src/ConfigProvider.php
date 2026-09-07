@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Kumwe\Computation;
 
-use Kumwe\CanonicalJson\CanonicalEncoder;
-
 /**
  * Explicit service map; the host supplies NativeCompatibility and a request-scoped container lifetime.
  * @since 0.2.0
@@ -26,7 +24,6 @@ final class ConfigProvider
             'aliases' => [
                 Compiler::class => NativeAdapter::class,
                 Executor::class => NativeAdapter::class,
-                CanonicalEncoder::class => NativeCanonicalEncoder::class,
             ],
             'shared' => [NativeAdapter::class => true, NativeCanonicalEncoder::class => true],
         ]];

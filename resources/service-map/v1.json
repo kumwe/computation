@@ -17,8 +17,7 @@
     ],
     "aliases": {
         "Kumwe\\Computation\\Compiler": "Kumwe\\Computation\\NativeAdapter",
-        "Kumwe\\Computation\\Executor": "Kumwe\\Computation\\NativeAdapter",
-        "Kumwe\\CanonicalJson\\CanonicalEncoder": "Kumwe\\Computation\\NativeCanonicalEncoder"
+        "Kumwe\\Computation\\Executor": "Kumwe\\Computation\\NativeAdapter"
     },
     "delegators": [],
     "configuration_keys": [],

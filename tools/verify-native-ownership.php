@@ -119,7 +119,9 @@ function ownershipVerify(array $record, array $api, array $corpus): void
     }
     ownershipRequire(array_diff_key($symbols, $declared) === [], 'Public API has an unowned type.');
     $expectedNative = [
-        'Kumwe\\Engine\\Runtime' => ['capabilities(): array', 'compile(array): array', 'execute(array): array'],
+        'Kumwe\\Engine\\Runtime' => [
+            'capabilities(): array', 'compile(array): array', 'execute(array): array', 'release(string): void',
+        ],
         'Kumwe\\Engine\\Exception\\BindingFailure' => [],
     ];
     $native = ownershipList($record['native'] ?? null);
@@ -137,11 +139,11 @@ function ownershipVerify(array $record, array $api, array $corpus): void
         ownershipRequire(($type['candidate_binding'] ?? null) === [
             'owner' => 'kumwe/kumwe-engine',
             'runtime' => 'zend',
-            'pull_request' => 'https://github.com/kumwe/kumwe-engine/pull/1',
+            'pull_request' => 'https://github.com/kumwe/kumwe-engine/pull/3',
             'api_manifest' => 'resources/api/v1.json',
             'state' => 'candidate-cross-build',
             'release_verified' => false,
-            'source_commit' => '1a7ecccbaa723bf863de3d21047410ac2fd949af',
+            'source_commit' => 'b28b119214e4c29f1a3b75af952009711202e7e4',
         ], 'Native candidate provenance must not assert release verification.');
         $key = strtolower($name);
         ownershipRequire(!isset($seen[$key]), 'Portable/native FQCN collision.');
@@ -221,8 +223,9 @@ try {
     ownershipRequire(array_key_exists('native_requirements', $capabilities), 'Native requirement decision missing.');
     $requirements = ownershipObject($capabilities['native_requirements']);
     ownershipRequire(($requirements['extension'] ?? null) === 'kumwe_engine', 'The native extension is required.');
+    $adapter = ownershipRead($root . '/resources/native-adapter.json');
     ownershipRequire(
-        (ownershipRead($root . '/resources/native-adapter.json')['verification'] ?? null) === 'required-actual-extension-and-independent-exact-tuple',
+        ($adapter['verification'] ?? null) === 'required-actual-extension-and-independent-exact-tuple',
         'Actual native execution and an independent compatibility tuple are required.',
     );
     $linked = false;

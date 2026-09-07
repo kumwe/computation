@@ -173,16 +173,17 @@
       "methods": [
         "capabilities(): array",
         "compile(array): array",
-        "execute(array): array"
+        "execute(array): array",
+        "release(string): void"
       ],
       "candidate_binding": {
         "owner": "kumwe/kumwe-engine",
         "runtime": "zend",
-        "pull_request": "https://github.com/kumwe/kumwe-engine/pull/1",
+        "pull_request": "https://github.com/kumwe/kumwe-engine/pull/3",
         "api_manifest": "resources/api/v1.json",
         "state": "candidate-cross-build",
         "release_verified": false,
-        "source_commit": "1a7ecccbaa723bf863de3d21047410ac2fd949af"
+        "source_commit": "b28b119214e4c29f1a3b75af952009711202e7e4"
       }
     },
     {
@@ -193,11 +194,11 @@
       "candidate_binding": {
         "owner": "kumwe/kumwe-engine",
         "runtime": "zend",
-        "pull_request": "https://github.com/kumwe/kumwe-engine/pull/1",
+        "pull_request": "https://github.com/kumwe/kumwe-engine/pull/3",
         "api_manifest": "resources/api/v1.json",
         "state": "candidate-cross-build",
         "release_verified": false,
-        "source_commit": "1a7ecccbaa723bf863de3d21047410ac2fd949af"
+        "source_commit": "b28b119214e4c29f1a3b75af952009711202e7e4"
       }
     }
   ],

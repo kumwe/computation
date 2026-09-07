@@ -88,6 +88,9 @@ function computationManifestsMain(array $arguments): int
     }
 
     $exported = array_keys($symbols);
+    if ($options !== ['--write']) {
+        computationVerifyHandoff();
+    }
     $capabilities = computationVerifyCapabilities($exported, $release);
     $provider = computationVerifyServiceMap($exported, $release);
     computationVerifyDocumentation($symbols);
@@ -101,6 +104,33 @@ function computationManifestsMain(array $arguments): int
     ));
 
     return 0;
+}
+
+/**
+ * Keep the shipped handoff and its consumer-facing manifest identities synchronized.
+ *
+ * @return void
+ * @since 0.2.2
+ */
+function computationVerifyHandoff(): void
+{
+    $handoff = computationReadFile('MIGRATION-HANDOFF.md');
+    foreach ([COMPUTATION_PUBLIC_API, COMPUTATION_CAPABILITIES, COMPUTATION_SERVICE_MAP] as $path) {
+        $digest = hash('sha256', computationReadFile($path));
+        $pattern = '~path: "?' . preg_quote($path, '~') . '"?\s+sha256: "?' . $digest . '"?(?:\s|$)~';
+        if (preg_match($pattern, $handoff) !== 1) {
+            throw new RuntimeException('Handoff manifest digest is absent or stale: ' . $path);
+        }
+    }
+    $sections = [
+        'Migration/implementation summary', 'Public API and responsibility',
+        'Capability reuse/semantic input review', 'Consumer inventory', 'Test ownership',
+        'Next-task execution notes', 'Drift check', 'Validation recipe and observed local results',
+    ];
+    preg_match_all('/^## (.+)$/m', $handoff, $matches);
+    if ($matches[1] !== $sections || !str_starts_with($handoff, "---\n")) {
+        throw new RuntimeException('Handoff requires v2 front matter and eight ordered narrative sections.');
+    }
 }
 
 /**
@@ -683,9 +713,10 @@ function computationVerifyServiceMap(array $exported, string $release): string
     ) {
         throw new RuntimeException('Actual provider configuration disagrees with the reviewed service map.');
     }
+    $nativeAdapter = computationJsonObject('resources/native-adapter.json');
     if (
-        (computationJsonObject('resources/native-adapter.json')['required_services'] ?? null) !== ['Kumwe\\Computation\\NativeCompatibility']
-        || (computationJsonObject('resources/native-adapter.json')['optional_services'] ?? null) !== ['Kumwe\\CanonicalJson\\Limits']
+        ($nativeAdapter['required_services'] ?? null) !== ['Kumwe\\Computation\\NativeCompatibility']
+        || ($nativeAdapter['optional_services'] ?? null) !== ['Kumwe\\CanonicalJson\\Limits']
     ) {
         throw new RuntimeException('Native factories require exact host-owned compatibility and optional limits.');
     }
