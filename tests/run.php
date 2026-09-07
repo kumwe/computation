@@ -48,6 +48,18 @@ final class Check
     public static int $tests = 0;
 
     /**
+     * @var bool Discover without executing callbacks.
+     * @since 0.1.0
+     */
+    public static bool $listing = false;
+
+    /**
+     * @var array<string, string> Real registered test groups and their source paths.
+     * @since 0.1.0
+     */
+    public static array $inventory = [];
+
+    /**
      * @param bool $condition Expected truth.
      * @return void
      * @since 0.1.0
@@ -86,6 +98,10 @@ final class Check
      */
     public static function test(string $name, callable $operation): void
     {
+        self::$inventory[$name] = 'tests/run.php';
+        if (self::$listing) {
+            return;
+        }
         try {
             $operation();
             self::$tests++;
@@ -235,6 +251,8 @@ final class PortFake implements Compiler, Executor
     }
 }
 
+Check::$listing = in_array('--list-json', $argv ?? [], true);
+
 Check::test('portable records and exact empty collection round trips', static function (): void {
     $limits = new ExecutionLimits();
     $contract = Fixture::contract();
@@ -288,6 +306,31 @@ Check::test('closed versions, shapes, UTF8, identifiers, no arbitrary payload ob
     Check::refuses(static fn () => Guard::object(array_fill_keys(range('a', 'z'), 'x') + array_fill(0, 10, 1)));
     Check::refuses(static fn () => new FindingPath(array_fill(0, 65, 'a')));
     Check::refuses(static fn () => new FindingPath([-1]));
+});
+
+Check::test('source locations and semantic identities reject malformed coordinates', static function (): void {
+    foreach (['', "bad\0token", ' leading', str_repeat('a', 129)] as $token) {
+        Check::refuses(static fn () => new SourceLocation($token, 'rule', 0));
+        Check::refuses(static fn () => new SourceLocation('program', $token, 0));
+        Check::refuses(static fn () => new ContractIdentity('example/transport', $token, '0.1.0', str_repeat('a', 64)));
+    }
+    foreach ([-1, 2147483648] as $ordinal) {
+        Check::refuses(static fn () => new SourceLocation('program', 'rule', $ordinal));
+    }
+    foreach (['example', 'Example/transport', 'example/transport/other', '/transport'] as $owner) {
+        Check::refuses(static fn () => new ContractIdentity($owner, 'profile', '0.1.0', str_repeat('a', 64)));
+    }
+    foreach (['', str_repeat('A', 64), str_repeat('a', 63), str_repeat('a', 65)] as $digest) {
+        Check::refuses(static fn () => new ContractIdentity('example/transport', 'profile', '0.1.0', $digest));
+    }
+    $location = new SourceLocation('program', 'rule', 2147483647);
+    Check::that(SourceLocation::fromArray($location->toArray())->ordinal === 2147483647);
+    foreach (['unit', 'rule', 'ordinal', 'wire_version'] as $field) {
+        $wire = $location->toArray();
+        unset($wire[$field]);
+        Check::refuses(static fn () => SourceLocation::fromArray($wire));
+    }
+    Check::refuses(static fn () => SourceLocation::fromArray([...$location->toArray(), 'extra' => 'unowned']));
 });
 
 Check::test('strict base64 and caller limits before decoding', static function (): void {
@@ -363,6 +406,8 @@ Check::test('every plan field changes cache identity', static function (): void 
         $changed = [...$original, 'capabilities' => [...$caps, $field => $value]];
         Check::that((new PlanCacheKey(PlanIdentity::fromArray($changed)))->value !== $originalKey);
     }
+    Check::refuses(static fn () => PlanIdentity::fromArray([...$original, 'generation' => '']));
+    Check::refuses(static fn () => PlanIdentity::fromArray([...$original, 'source_digest' => str_repeat('A', 64)]));
 });
 
 Check::test('capability subset, exact corpus and tuple refusals', static function (): void {
@@ -439,6 +484,7 @@ Check::test('batch correspondence, result identity and whole-batch port fake', s
 
 Check::test('finding order, typed paths and bounded machine parameters', static function (): void {
     $finding = Fixture::finding();
+    Check::refuses(static fn () => Finding::fromArray([...$finding->toArray(), 'severity' => 'unknown']));
     $result = new ExecutionResult('a', Fixture::contract(), '', [$finding, Fixture::finding(2)]);
     Check::that($result->findings()[0]->severity === FindingSeverity::Error);
     Check::refuses(static fn () => new ExecutionResult('a', Fixture::contract(), '', [$finding, $finding]));
@@ -524,5 +570,10 @@ Check::test('deterministic property cases preserve binary payload and typed iden
         Check::that(FindingPath::fromArray($path->toArray())->segments() === [(string) $index, $index]);
     }
 });
+
+if (Check::$listing) {
+    echo json_encode(Check::$inventory, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT) . "\n";
+    exit(0);
+}
 
 echo sprintf("%d tests / %d assertions passed.\n", Check::$tests, Check::$assertions);

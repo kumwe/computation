@@ -57,10 +57,12 @@
       "@examples",
       "@cs",
       "@analyse",
+      "@test:ownership",
       "@test",
       "@clean-consumer"
     ],
-    "native-ownership": "php tools/verify-native-ownership.php --self-test"
+    "native-ownership": "php tools/verify-native-ownership.php --self-test",
+    "test:ownership": "php tools/verify-test-ownership.php --self-test"
   },
   "config": {
     "sort-packages": true

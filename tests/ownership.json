@@ -1,0 +1,199 @@
+{
+  "schema": "kumwe-test-ownership/v1",
+  "package": "kumwe/computation",
+  "api_manifest": "resources/public-api/v1.json",
+  "suite": {
+    "inventory_command": [
+      "php",
+      "tests/run.php",
+      "--list-json"
+    ]
+  },
+  "exports": {
+    "Kumwe\\Computation\\BatchResult": {
+      "behavior": [
+        "batch correspondence, result identity and whole-batch port fake"
+      ],
+      "boundary": [
+        "batch correspondence, result identity and whole-batch port fake"
+      ]
+    },
+    "Kumwe\\Computation\\CapabilitySet": {
+      "behavior": [
+        "capability subset, exact corpus and tuple refusals"
+      ],
+      "boundary": [
+        "capability subset, exact corpus and tuple refusals"
+      ]
+    },
+    "Kumwe\\Computation\\CompatibilityRequirement": {
+      "behavior": [
+        "capability subset, exact corpus and tuple refusals"
+      ],
+      "boundary": [
+        "capability subset, exact corpus and tuple refusals"
+      ]
+    },
+    "Kumwe\\Computation\\CompiledProgram": {
+      "behavior": [
+        "source agreement and exact artifact hydration tuple"
+      ],
+      "boundary": [
+        "source agreement and exact artifact hydration tuple"
+      ]
+    },
+    "Kumwe\\Computation\\Compiler": {
+      "behavior": [
+        "batch correspondence, result identity and whole-batch port fake"
+      ],
+      "boundary": [
+        "batch correspondence, result identity and whole-batch port fake"
+      ],
+      "note": "The package owns the port contract; listed cases exercise its signature or consumer path. Concrete host adapter behavior remains with its implementing repository."
+    },
+    "Kumwe\\Computation\\ContractIdentity": {
+      "behavior": [
+        "portable records and exact empty collection round trips"
+      ],
+      "boundary": [
+        "source locations and semantic identities reject malformed coordinates"
+      ]
+    },
+    "Kumwe\\Computation\\DocumentBatch": {
+      "behavior": [
+        "batch correspondence, result identity and whole-batch port fake"
+      ],
+      "boundary": [
+        "batch correspondence, result identity and whole-batch port fake"
+      ]
+    },
+    "Kumwe\\Computation\\DocumentInput": {
+      "behavior": [
+        "portable records and exact empty collection round trips"
+      ],
+      "boundary": [
+        "closed versions, shapes, UTF8, identifiers, no arbitrary payload objects",
+        "strict base64 and caller limits before decoding"
+      ]
+    },
+    "Kumwe\\Computation\\ExecutionLimits": {
+      "behavior": [
+        "finite budgets and signed64 integer contract"
+      ],
+      "boundary": [
+        "finite budgets and signed64 integer contract"
+      ]
+    },
+    "Kumwe\\Computation\\ExecutionRefused": {
+      "behavior": [
+        "capability subset, exact corpus and tuple refusals"
+      ],
+      "boundary": [
+        "capability subset, exact corpus and tuple refusals"
+      ]
+    },
+    "Kumwe\\Computation\\ExecutionResult": {
+      "behavior": [
+        "finding order, typed paths and bounded machine parameters"
+      ],
+      "boundary": [
+        "finding order, typed paths and bounded machine parameters"
+      ]
+    },
+    "Kumwe\\Computation\\Executor": {
+      "behavior": [
+        "batch correspondence, result identity and whole-batch port fake"
+      ],
+      "boundary": [
+        "batch correspondence, result identity and whole-batch port fake"
+      ],
+      "note": "The package owns the port contract; listed cases exercise its signature or consumer path. Concrete host adapter behavior remains with its implementing repository."
+    },
+    "Kumwe\\Computation\\Finding": {
+      "behavior": [
+        "finding order, typed paths and bounded machine parameters"
+      ],
+      "boundary": [
+        "finding order, typed paths and bounded machine parameters"
+      ]
+    },
+    "Kumwe\\Computation\\FindingPath": {
+      "behavior": [
+        "finding order, typed paths and bounded machine parameters"
+      ],
+      "boundary": [
+        "finding order, typed paths and bounded machine parameters"
+      ]
+    },
+    "Kumwe\\Computation\\FindingSeverity": {
+      "behavior": [
+        "independent metadata grammar and complete plan golden vectors"
+      ],
+      "boundary": [
+        "finding order, typed paths and bounded machine parameters"
+      ]
+    },
+    "Kumwe\\Computation\\PlanCacheKey": {
+      "behavior": [
+        "every plan field changes cache identity"
+      ],
+      "boundary": [
+        "every plan field changes cache identity"
+      ]
+    },
+    "Kumwe\\Computation\\PlanIdentity": {
+      "behavior": [
+        "every plan field changes cache identity"
+      ],
+      "boundary": [
+        "every plan field changes cache identity"
+      ]
+    },
+    "Kumwe\\Computation\\ProgramEnvelope": {
+      "behavior": [
+        "strict base64 and caller limits before decoding"
+      ],
+      "boundary": [
+        "strict base64 and caller limits before decoding"
+      ]
+    },
+    "Kumwe\\Computation\\RefusalCode": {
+      "behavior": [
+        "independent metadata grammar and complete plan golden vectors"
+      ],
+      "boundary": [
+        "closed versions, shapes, UTF8, identifiers, no arbitrary payload objects"
+      ]
+    },
+    "Kumwe\\Computation\\SourceLocation": {
+      "behavior": [
+        "portable records and exact empty collection round trips"
+      ],
+      "boundary": [
+        "source locations and semantic identities reject malformed coordinates"
+      ]
+    }
+  },
+  "conformance": {
+    "status": "owned",
+    "rationale": "Portable transport metadata and closed plan-identity vectors are owned here. Synthetic transport fixtures do not represent released domain semantics.",
+    "tests": [
+      "independent metadata grammar and complete plan golden vectors",
+      "deterministic property cases preserve binary payload and typed identity"
+    ],
+    "corpora": [
+      "resources/conformance/v1.json"
+    ]
+  },
+  "architecture": [
+    "tools/verify-architecture.php"
+  ],
+  "host": {
+    "repository": "kumwe/app",
+    "baseline": "960ce8ec00cf724a7cae03e5ba09c4852c9ab54e",
+    "transfers": [],
+    "retained_responsibilities": [
+      "Native algorithms/ABI in Engine; Zend marshalling in extension; App readiness, authorization, lookup, transactions, invalidation and delivery."
+    ]
+  }
+}
