@@ -49,7 +49,7 @@
       "boundary": [
         "batch correspondence, result identity and whole-batch port fake"
       ],
-      "note": "The package owns the port contract; listed cases exercise its signature or consumer path. Concrete host adapter behavior remains with its implementing repository."
+      "note": "Owns port signature/consumer contract; concrete adapters own their implementation behavior."
     },
     "Kumwe\\Computation\\ContractIdentity": {
       "behavior": [
@@ -107,7 +107,7 @@
       "boundary": [
         "batch correspondence, result identity and whole-batch port fake"
       ],
-      "note": "The package owns the port contract; listed cases exercise its signature or consumer path. Concrete host adapter behavior remains with its implementing repository."
+      "note": "Owns port signature/consumer contract; concrete adapters own their implementation behavior."
     },
     "Kumwe\\Computation\\Finding": {
       "behavior": [
@@ -176,7 +176,7 @@
   },
   "conformance": {
     "status": "owned",
-    "rationale": "Portable transport metadata and closed plan-identity vectors are owned here. Synthetic transport fixtures do not represent released domain semantics.",
+    "rationale": "Owns transport metadata and plan-identity vectors; fixtures are synthetic transport data.",
     "tests": [
       "independent metadata grammar and complete plan golden vectors",
       "deterministic property cases preserve binary payload and typed identity"
@@ -186,14 +186,16 @@
     ]
   },
   "architecture": [
-    "tools/verify-architecture.php"
+    "tools/verify-architecture.php",
+    "tools/verify-boundary-tokens.php"
   ],
   "host": {
     "repository": "kumwe/app",
     "baseline": "960ce8ec00cf724a7cae03e5ba09c4852c9ab54e",
     "transfers": [],
     "retained_responsibilities": [
-      "Native algorithms/ABI in Engine; Zend marshalling in extension; App readiness, authorization, lookup, transactions, invalidation and delivery."
+      "Engine algorithms/ABI and extension Zend marshalling remain native-owned.",
+      "App owns readiness, authority, lookup, transactions, invalidation and delivery."
     ]
   }
 }

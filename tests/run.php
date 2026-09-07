@@ -98,6 +98,9 @@ final class Check
      */
     public static function test(string $name, callable $operation): void
     {
+        if (array_key_exists($name, self::$inventory)) {
+            throw new RuntimeException('Duplicate package test identity: ' . $name);
+        }
         self::$inventory[$name] = 'tests/run.php';
         if (self::$listing) {
             return;
@@ -571,6 +574,9 @@ Check::test('deterministic property cases preserve binary payload and typed iden
     }
 });
 
+if (Check::$inventory === []) {
+    throw new RuntimeException('Computation suite discovered no test groups.');
+}
 if (Check::$listing) {
     echo json_encode(Check::$inventory, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT) . "\n";
     exit(0);
