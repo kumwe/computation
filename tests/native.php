@@ -115,6 +115,16 @@ $refuses = static function (callable $operation, RefusalCode $reason) use ($that
     }
     throw new RuntimeException('Expected a native refusal.');
 };
+$expectedFeatures = $expected['binding_features'] ?? null;
+$that(
+    is_array($expectedFeatures) && array_is_list($expectedFeatures)
+    && in_array('opaque-compiled-results/1', $expectedFeatures, true),
+    'Independent expected binding identity lacks required opaque-result support.',
+);
+$that(
+    (new \Kumwe\Engine\Runtime())->capabilities()['binding_features'] === $expectedFeatures,
+    'Observed binding features differ from independent build identity.',
+);
 $contract = static function (string $profile) use ($compatibility): ContractIdentity {
     foreach ($compatibility->capabilities->contracts() as $contract) {
         if ($contract->profile === $profile) {

@@ -7,7 +7,10 @@ namespace Kumwe\Computation\Tests;
 use Kumwe\Computation\CapabilitySet;
 use Kumwe\Computation\ConfigProvider;
 use Kumwe\Computation\ExecutionRefused;
+use Kumwe\Computation\Internal\Guard;
 use Kumwe\Computation\Internal\NativeRuntime;
+use Kumwe\Computation\NativeAdapter;
+use Kumwe\Computation\NativeCanonicalEncoder;
 use Kumwe\Computation\NativeCompatibility;
 use Kumwe\Computation\RefusalCode;
 use RuntimeException;
@@ -20,7 +23,8 @@ if (in_array('--list-json', $argv ?? [], true)) {
 }
 
 $missingReleaseApi = ($argv[1] ?? null) === '--missing-release-api';
-$autoload = ($missingReleaseApi ? ($argv[2] ?? null) : ($argv[1] ?? null))
+$missingOpaqueResults = ($argv[1] ?? null) === '--missing-opaque-results';
+$autoload = (($missingReleaseApi || $missingOpaqueResults) ? ($argv[2] ?? null) : ($argv[1] ?? null))
     ?? dirname(__DIR__) . '/vendor/autoload.php';
 require $autoload;
 
@@ -42,6 +46,40 @@ if ($missingReleaseApi) {
         throw new RuntimeException('The older native API was admitted without required plan release support.');
     }
     echo "Historical native API is refused before adapter construction.\n";
+    exit(0);
+}
+
+if ($missingOpaqueResults) {
+    NativeRuntime::assertAvailable();
+    $observed = (new \Kumwe\Engine\Runtime())->capabilities();
+    $features = $observed['binding_features'] ?? [];
+    if (is_array($features) && in_array('opaque-compiled-results/1', $features, true)) {
+        throw new RuntimeException('This gate requires an actual historical extension without opaque results.');
+    }
+    $compatibility = new NativeCompatibility(
+        CapabilitySet::fromArray(Guard::object($observed['computation'] ?? null)),
+        Guard::token($observed['extension_version'] ?? null),
+        Guard::token($observed['embedded_engine_commit'] ?? null),
+        Guard::digest($observed['embedded_source_sha256'] ?? null),
+        Guard::digest($observed['binding_build_digest'] ?? null),
+    );
+    $constructors = [
+        static fn () => NativeRuntime::create($compatibility),
+        static fn () => new NativeAdapter(new \Kumwe\Engine\Runtime(), $compatibility),
+        static fn () => new NativeCanonicalEncoder(new \Kumwe\Engine\Runtime(), $compatibility),
+    ];
+    foreach ($constructors as $construct) {
+        $refused = false;
+        try {
+            $construct();
+        } catch (ExecutionRefused $failure) {
+            $refused = $failure->reason === RefusalCode::IncompatibleCapability;
+        }
+        if (!$refused) {
+            throw new RuntimeException('The exact older native tuple was admitted without required opaque results.');
+        }
+    }
+    echo "Historical binding is refused before execution when opaque results are unavailable.\n";
     exit(0);
 }
 
@@ -68,8 +106,34 @@ $observed = [
     'embedded_engine_commit' => $compatibility->embeddedEngineCommit,
     'embedded_source_sha256' => $compatibility->embeddedSourceSha256,
     'binding_build_digest' => $compatibility->bindingBuildDigest,
+    'binding_features' => ['opaque-compiled-results/1'],
 ];
 $compatibility->assertObserved($observed);
+$malformedFeatures = [
+    null,
+    [],
+    'opaque-compiled-results/1',
+    ['unrelated/1'],
+    ['x' => 'opaque-compiled-results/1'],
+    ['opaque-compiled-results/1', 123],
+];
+foreach ($malformedFeatures as $wrongFeatures) {
+    $wrongFeatureTuple = $observed;
+    if ($wrongFeatures === null) {
+        unset($wrongFeatureTuple['binding_features']);
+    } else {
+        $wrongFeatureTuple['binding_features'] = $wrongFeatures;
+    }
+    $featureRefused = false;
+    try {
+        $compatibility->assertObserved($wrongFeatureTuple);
+    } catch (ExecutionRefused $failure) {
+        $featureRefused = $failure->reason === RefusalCode::IncompatibleCapability;
+    }
+    if (!$featureRefused) {
+        throw new RuntimeException('Missing, unsupported or malformed binding features were accepted.');
+    }
+}
 foreach ([null, str_repeat('e', 64), 123] as $wrongBuildDigest) {
     $wrongBuild = $observed;
     if ($wrongBuildDigest === null) {

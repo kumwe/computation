@@ -2,6 +2,8 @@
 
 ## 0.3.0
 
+- Request opaque compiled results to avoid unused PHP result allocation; require explicit binding feature admission.
+
 - Record the unresolved extension-free contract-baseline prerequisite and verified publication-history observations.
 
 - Breaking: the host now selects and binds CanonicalEncoder explicitly; the package retains its native encoder factory.

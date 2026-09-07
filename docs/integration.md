@@ -59,7 +59,8 @@ walk or normalize it. Native output is returned only after complete bounded exec
 
 For the required integration gate, set `KUMWE_NATIVE_EXPECTED_TUPLE` to an independently configured JSON file
 containing `capabilities` (the CapabilitySet transport object), `extension_version`, `embedded_engine_commit`
-`embedded_source_sha256` and `binding_build_digest`, then run `composer check` with the actual extension loaded.
+`embedded_source_sha256`, `binding_build_digest` and `binding_features`, then run `composer check` with the
+actual extension loaded. The required binding feature is `opaque-compiled-results/1`.
 Missing extension or
 configuration is a failure. The no-dev consumer runs the same execution suite through the installed archive's
 authoritative autoloader. The separate absence test runs with `php -n` and proves no autoload callback is used.
@@ -78,3 +79,11 @@ string, so an exact older host tuple must not admit a Runtime that lacks the ope
 The package-owned historical-module regression is `tests/native-absence.php --missing-release-api`; run it
 with the actual earlier extension loaded and its matching PHP ABI. It refuses a current module as an invalid
 negative fixture. The historical 81a30990 candidate exercises this refusal without a userland native shadow.
+
+Compiled execution requests `result_format=opaque` and consumes unchanged Engine-authored result_json bytes.
+This avoids an unused PHP semantic result allocation without changing result counts, correlation or findings.
+The binding must advertise `opaque-compiled-results/1` in its binding_features list. NativeCompatibility
+checks this common minimum for both adapter and canonical encoder composition before any execution; exact
+older tuples cannot bypass it. The canonical encoder request itself is unchanged. The regression
+`tests/native-absence.php --missing-opaque-results` requires an actual older module that has release() but
+lacks this feature; candidate 566f6ff is such a fixture. No runtime shadow or execution fallback is involved.

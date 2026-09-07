@@ -146,6 +146,9 @@ provide explicit PSR-11 composition. There are 26 public package types in total.
 Runtime and BindingFailure are extension-owned; no Composer class or autoloadable stub implements them.
 The binding also owns the canonical operation and precise marshalling boundary. The Computation adapter uses
 capabilities(), compile(), execute() and release(string); native canonical encoding remains one coarse call.
+Compiled execution selects result_format=opaque, preserving Engine-authored JSON bytes while avoiding an
+unused semantic PHP result tree. The explicit opaque-compiled-results/1 binding feature is required at
+composition for both native services; correlation, findings, result counts and byte budgets remain enforced.
 Every native candidate identity is recorded in resources/native-ownership/v1.json and CI pins that exact source.
 A source pin and passing candidate tests never constitute a stable release attestation.
 
