@@ -91,7 +91,7 @@ final class NativeAdapter implements Compiler, Executor
      * @param CompiledProgram $program Artifact returned by this same adapter instance.
      * @return void No execution or semantic transformation is performed.
      * @throws ExecutionRefused On a foreign/released artifact or native release refusal.
-     * @since 0.2.2
+     * @since 0.3.0
      */
     public function release(CompiledProgram $program): void
     {

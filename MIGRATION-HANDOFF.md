@@ -49,13 +49,13 @@ ownership:
   public_manifests:
     -
       path: "resources/public-api/v1.json"
-      sha256: "cd1a3e6abe265e043fc2a245f12a3fdddb5af95fb8762b6a34dc7de12578f97a"
+      sha256: "5c92ecc03d5fe299ef2472143809c8403570e629eb1921a056ef63519257e8dd"
     -
       path: "resources/capabilities/v1.json"
-      sha256: "a7034c5b068d17f07e7f983e0c32bbf72069841b5643e59193a433cabbdb414d"
+      sha256: "c9461a9c365483805e386a1bba5ff0d823c968ae399fbe9107908500d0931c74"
     -
       path: "resources/service-map/v1.json"
-      sha256: "2f83cffac717f24e7911dfd7860657342bf19f1736a5d9f0b2b74f67f81a4dfd"
+      sha256: "5ea8e1eb02d0008bd293ae9a68dd3f36bf37617b49a0a0d86acdf7126312860e"
   intentionally_excluded:
     - "Engine owns algorithms; extension owns C ABI/Zend binding."
     - "No App extraction or runtime adoption occurs in this successor."
@@ -111,7 +111,7 @@ documentation:
   integration_or_consumer: "docs/integration.md"
   examples:
     - "examples/typed-consumer.php"
-  changelog_record: "CHANGELOG.md / 0.2.2"
+  changelog_record: "CHANGELOG.md / 0.3.0"
 release_expectations:
   version_policy: "Exact stable sibling pins; promote compatible published successors together."
   expected_artifact_types:

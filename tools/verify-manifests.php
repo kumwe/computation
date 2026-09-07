@@ -110,7 +110,7 @@ function computationManifestsMain(array $arguments): int
  * Keep the shipped handoff and its consumer-facing manifest identities synchronized.
  *
  * @return void
- * @since 0.2.2
+ * @since 0.3.0
  */
 function computationVerifyHandoff(): void
 {
