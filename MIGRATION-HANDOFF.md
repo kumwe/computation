@@ -190,13 +190,17 @@ container composition. Its 26 exports are reflected in the API manifest and five
 all existing production code and tests until an independently verified adoption task performs the cutover.
 
 NativeAdapter owns request-local plan handles and makes coarse calls to the actual Zend Runtime. The two native
-factories require a host-selected exact NativeCompatibility tuple, including the independently recorded binding build digest that binds PHP patch, Zend API, platform, compiler/flags, debug/sanitizers and ABI manifest. Compiler and Executor resolve to the same
+factories require a host-selected exact NativeCompatibility tuple, including the independently recorded binding build
+digest that binds PHP patch, Zend API, platform, compiler/flags, debug/sanitizers and ABI manifest. Compiler and
+Executor resolve to the same
 shared adapter. NativeCanonicalEncoder implements the upstream GenericV1 port with native execution only.
 The host retains authorization, persistence, transactions, provisioning, readiness and request/container lifetime.
 
 Computation owns transport invariants, metadata identities, factory/compatibility boundaries and actual adapter
 integration. Engine owns algorithms and native parity evidence; the binding owns Zend lifecycle and marshalling.
-Native integration also exercises Unicode validators, exact normalized domain storage, create/update preparation, converted report output and refusal recovery through the coarse adapter. The transport corpus remains transport-only. The separate native suite must execute against the real extension
+Native integration also exercises Unicode validators, exact normalized domain storage, create/update preparation,
+converted report output and refusal recovery through the coarse adapter. The transport corpus remains transport-only.
+The separate native suite must execute against the real extension
 and an independently supplied tuple, including through the no-dev archive's authoritative Composer autoloader.
 
 Run `composer check` with the actual extension and `KUMWE_NATIVE_EXPECTED_TUPLE` set to the admitted candidate's

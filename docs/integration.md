@@ -67,6 +67,7 @@ walk or normalize it. Native output is returned only after complete bounded exec
 
 For the required integration gate, set `KUMWE_NATIVE_EXPECTED_TUPLE` to an independently configured JSON file
 containing `capabilities` (the CapabilitySet transport object), `extension_version`, `embedded_engine_commit`
-`embedded_source_sha256` and `binding_build_digest`, then run `composer check` with the actual extension loaded. Missing extension or
+`embedded_source_sha256` and `binding_build_digest`, then run `composer check` with the actual extension loaded.
+Missing extension or
 configuration is a failure. The no-dev consumer runs the same execution suite through the installed archive's
 authoritative autoloader. The separate absence test runs with `php -n` and proves no autoload callback is used.
