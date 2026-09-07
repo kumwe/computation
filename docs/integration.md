@@ -68,3 +68,9 @@ dependency-owned global interface binding.
 Release finished plans with `NativeAdapter::release($program)`. Foreign, copied, released and repeated-release
 plans fail closed. Explicit release reclaims the bounded native plan pool for long-lived hosts; Runtime
 destruction remains the final cleanup boundary. No durable artifact/cache portability is implied.
+
+Admission also requires the native plan-release API. Older development modules share the 0.0.0-dev version
+string, so an exact older host tuple must not admit a Runtime that lacks the operations this adapter needs.
+The package-owned historical-module regression is `tests/native-absence.php --missing-release-api`; run it
+with the actual earlier extension loaded and its matching PHP ABI. It refuses a current module as an invalid
+negative fixture. The historical 81a30990 candidate exercises this refusal without a userland native shadow.

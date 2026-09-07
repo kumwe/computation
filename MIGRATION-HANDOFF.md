@@ -52,7 +52,7 @@ ownership:
       sha256: "5c92ecc03d5fe299ef2472143809c8403570e629eb1921a056ef63519257e8dd"
     -
       path: "resources/capabilities/v1.json"
-      sha256: "c9461a9c365483805e386a1bba5ff0d823c968ae399fbe9107908500d0931c74"
+      sha256: "fed26f33c8c8b5f8a51a4a7d2d478197843e95eae8910180b38c4d3bedbc708c"
     -
       path: "resources/service-map/v1.json"
       sha256: "5ea8e1eb02d0008bd293ae9a68dd3f36bf37617b49a0a0d86acdf7126312860e"

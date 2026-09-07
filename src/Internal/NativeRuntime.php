@@ -39,7 +39,7 @@ final class NativeRuntime
     /**
      * Check native ownership even when an adapter is directly constructed outside the provider.
      * @return void
-     * @throws ExecutionRefused If a missing native class or userland shadow cannot prove extension ownership.
+     * @throws ExecutionRefused If native ownership or the required plan-release API is unavailable.
      * @since 0.2.0
      */
     public static function assertAvailable(): void
@@ -48,7 +48,11 @@ final class NativeRuntime
             throw new ExecutionRefused(RefusalCode::IncompatibleCapability);
         }
         $class = new ReflectionClass(Runtime::class);
-        if (!$class->isInternal() || $class->getExtensionName() !== 'kumwe_engine') {
+        if (
+            !$class->isInternal()
+            || $class->getExtensionName() !== 'kumwe_engine'
+            || !$class->hasMethod('release')
+        ) {
             throw new ExecutionRefused(RefusalCode::IncompatibleCapability);
         }
     }

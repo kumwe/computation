@@ -4,6 +4,7 @@
 
 - Breaking: the host now selects and binds CanonicalEncoder explicitly; the package retains its native encoder factory.
 - Add ownership-checked explicit native plan release and repeated-capacity reuse regression coverage.
+- Refuse historical development extensions without plan release at admission, before an undefined-method failure.
 - Align consumer-facing Version 2 manifests with the actual governance schemas while retaining candidate-only
 native evidence separately.
 
