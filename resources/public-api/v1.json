@@ -1,0 +1,1762 @@
+{
+    "schema": "kumwe-package-public-api/v1",
+    "package": "kumwe/computation",
+    "release": "0.1.0",
+    "namespace": "Kumwe\\Computation\\",
+    "symbols": {
+        "Kumwe\\Computation\\BatchResult": {
+            "kind": "class",
+            "stability": "stable",
+            "file": "src/BatchResult.php",
+            "abstract": false,
+            "final": true,
+            "readonly": true,
+            "parent": null,
+            "interfaces": [],
+            "constants": {},
+            "properties": {},
+            "methods": {
+                "__construct": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [
+                        {
+                            "name": "expected",
+                            "type": "Kumwe\\Computation\\DocumentBatch",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "results",
+                            "type": "array",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "limits",
+                            "type": "Kumwe\\Computation\\ExecutionLimits",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        }
+                    ],
+                    "return": null
+                },
+                "fromArray": {
+                    "visibility": "public",
+                    "static": true,
+                    "parameters": [
+                        {
+                            "name": "data",
+                            "type": "array",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "expected",
+                            "type": "Kumwe\\Computation\\DocumentBatch",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "limits",
+                            "type": "Kumwe\\Computation\\ExecutionLimits",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        }
+                    ],
+                    "return": "Kumwe\\Computation\\BatchResult"
+                },
+                "results": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "array"
+                },
+                "toArray": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "array"
+                }
+            },
+            "deprecated": null
+        },
+        "Kumwe\\Computation\\CapabilitySet": {
+            "kind": "class",
+            "stability": "stable",
+            "file": "src/CapabilitySet.php",
+            "abstract": false,
+            "final": true,
+            "readonly": true,
+            "parent": null,
+            "interfaces": [],
+            "constants": {},
+            "properties": {
+                "abiMajor": {
+                    "type": "int",
+                    "static": false,
+                    "readonly": true
+                },
+                "apiVersion": {
+                    "type": "string",
+                    "static": false,
+                    "readonly": true
+                },
+                "buildDigest": {
+                    "type": "string",
+                    "static": false,
+                    "readonly": true
+                },
+                "engineVersion": {
+                    "type": "string",
+                    "static": false,
+                    "readonly": true
+                }
+            },
+            "methods": {
+                "__construct": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [
+                        {
+                            "name": "engineVersion",
+                            "type": "string",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "abiMajor",
+                            "type": "int",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "apiVersion",
+                            "type": "string",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "buildDigest",
+                            "type": "string",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "features",
+                            "type": "array",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "contracts",
+                            "type": "array",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        }
+                    ],
+                    "return": null
+                },
+                "contracts": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "array"
+                },
+                "features": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "array"
+                },
+                "fromArray": {
+                    "visibility": "public",
+                    "static": true,
+                    "parameters": [
+                        {
+                            "name": "data",
+                            "type": "array",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        }
+                    ],
+                    "return": "Kumwe\\Computation\\CapabilitySet"
+                },
+                "key": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "string"
+                },
+                "supports": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [
+                        {
+                            "name": "contract",
+                            "type": "Kumwe\\Computation\\ContractIdentity",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        }
+                    ],
+                    "return": "bool"
+                },
+                "toArray": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "array"
+                }
+            },
+            "deprecated": null
+        },
+        "Kumwe\\Computation\\CompatibilityRequirement": {
+            "kind": "class",
+            "stability": "stable",
+            "file": "src/CompatibilityRequirement.php",
+            "abstract": false,
+            "final": true,
+            "readonly": true,
+            "parent": null,
+            "interfaces": [],
+            "constants": {},
+            "properties": {
+                "abiMajor": {
+                    "type": "int",
+                    "static": false,
+                    "readonly": true
+                },
+                "apiVersion": {
+                    "type": "string",
+                    "static": false,
+                    "readonly": true
+                }
+            },
+            "methods": {
+                "__construct": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [
+                        {
+                            "name": "abiMajor",
+                            "type": "int",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "apiVersion",
+                            "type": "string",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "features",
+                            "type": "array",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "contracts",
+                            "type": "array",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        }
+                    ],
+                    "return": null
+                },
+                "assertSatisfiedBy": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [
+                        {
+                            "name": "observed",
+                            "type": "Kumwe\\Computation\\CapabilitySet",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        }
+                    ],
+                    "return": "void"
+                },
+                "fromArray": {
+                    "visibility": "public",
+                    "static": true,
+                    "parameters": [
+                        {
+                            "name": "data",
+                            "type": "array",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        }
+                    ],
+                    "return": "Kumwe\\Computation\\CompatibilityRequirement"
+                },
+                "toArray": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "array"
+                }
+            },
+            "deprecated": null
+        },
+        "Kumwe\\Computation\\CompiledProgram": {
+            "kind": "class",
+            "stability": "stable",
+            "file": "src/CompiledProgram.php",
+            "abstract": false,
+            "final": true,
+            "readonly": true,
+            "parent": null,
+            "interfaces": [],
+            "constants": {},
+            "properties": {
+                "bytes": {
+                    "type": "string",
+                    "static": false,
+                    "readonly": true
+                },
+                "format": {
+                    "type": "string",
+                    "static": false,
+                    "readonly": true
+                },
+                "plan": {
+                    "type": "Kumwe\\Computation\\PlanIdentity",
+                    "static": false,
+                    "readonly": true
+                }
+            },
+            "methods": {
+                "__construct": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [
+                        {
+                            "name": "source",
+                            "type": "Kumwe\\Computation\\ProgramEnvelope",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "plan",
+                            "type": "Kumwe\\Computation\\PlanIdentity",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "format",
+                            "type": "string",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "bytes",
+                            "type": "string",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "limits",
+                            "type": "Kumwe\\Computation\\ExecutionLimits",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        }
+                    ],
+                    "return": null
+                },
+                "assertCompatible": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [
+                        {
+                            "name": "observed",
+                            "type": "Kumwe\\Computation\\CapabilitySet",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "format",
+                            "type": "string",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "limits",
+                            "type": "Kumwe\\Computation\\ExecutionLimits",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        }
+                    ],
+                    "return": "void"
+                },
+                "fromArray": {
+                    "visibility": "public",
+                    "static": true,
+                    "parameters": [
+                        {
+                            "name": "data",
+                            "type": "array",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "source",
+                            "type": "Kumwe\\Computation\\ProgramEnvelope",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "limits",
+                            "type": "Kumwe\\Computation\\ExecutionLimits",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        }
+                    ],
+                    "return": "Kumwe\\Computation\\CompiledProgram"
+                },
+                "toArray": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "array"
+                }
+            },
+            "deprecated": null
+        },
+        "Kumwe\\Computation\\Compiler": {
+            "kind": "interface",
+            "stability": "stable",
+            "file": "src/Compiler.php",
+            "abstract": false,
+            "final": false,
+            "readonly": false,
+            "parent": null,
+            "interfaces": [],
+            "constants": {},
+            "properties": {},
+            "methods": {
+                "compile": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [
+                        {
+                            "name": "program",
+                            "type": "Kumwe\\Computation\\ProgramEnvelope",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "plan",
+                            "type": "Kumwe\\Computation\\PlanIdentity",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "limits",
+                            "type": "Kumwe\\Computation\\ExecutionLimits",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        }
+                    ],
+                    "return": "Kumwe\\Computation\\CompiledProgram"
+                }
+            },
+            "deprecated": null
+        },
+        "Kumwe\\Computation\\ContractIdentity": {
+            "kind": "class",
+            "stability": "stable",
+            "file": "src/ContractIdentity.php",
+            "abstract": false,
+            "final": true,
+            "readonly": true,
+            "parent": null,
+            "interfaces": [],
+            "constants": {},
+            "properties": {
+                "corpusDigest": {
+                    "type": "string",
+                    "static": false,
+                    "readonly": true
+                },
+                "owner": {
+                    "type": "string",
+                    "static": false,
+                    "readonly": true
+                },
+                "profile": {
+                    "type": "string",
+                    "static": false,
+                    "readonly": true
+                },
+                "version": {
+                    "type": "string",
+                    "static": false,
+                    "readonly": true
+                }
+            },
+            "methods": {
+                "__construct": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [
+                        {
+                            "name": "owner",
+                            "type": "string",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "profile",
+                            "type": "string",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "version",
+                            "type": "string",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "corpusDigest",
+                            "type": "string",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        }
+                    ],
+                    "return": null
+                },
+                "fromArray": {
+                    "visibility": "public",
+                    "static": true,
+                    "parameters": [
+                        {
+                            "name": "data",
+                            "type": "array",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        }
+                    ],
+                    "return": "Kumwe\\Computation\\ContractIdentity"
+                },
+                "key": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "string"
+                },
+                "toArray": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "array"
+                }
+            },
+            "deprecated": null
+        },
+        "Kumwe\\Computation\\DocumentBatch": {
+            "kind": "class",
+            "stability": "stable",
+            "file": "src/DocumentBatch.php",
+            "abstract": false,
+            "final": true,
+            "readonly": true,
+            "parent": null,
+            "interfaces": [],
+            "constants": {},
+            "properties": {},
+            "methods": {
+                "__construct": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [
+                        {
+                            "name": "documents",
+                            "type": "array",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "limits",
+                            "type": "Kumwe\\Computation\\ExecutionLimits",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        }
+                    ],
+                    "return": null
+                },
+                "assertForProgram": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [
+                        {
+                            "name": "program",
+                            "type": "Kumwe\\Computation\\CompiledProgram",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "limits",
+                            "type": "Kumwe\\Computation\\ExecutionLimits",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        }
+                    ],
+                    "return": "void"
+                },
+                "assertWithin": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [
+                        {
+                            "name": "limits",
+                            "type": "Kumwe\\Computation\\ExecutionLimits",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        }
+                    ],
+                    "return": "void"
+                },
+                "byteSize": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "int"
+                },
+                "documents": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "array"
+                },
+                "fromArray": {
+                    "visibility": "public",
+                    "static": true,
+                    "parameters": [
+                        {
+                            "name": "data",
+                            "type": "array",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "limits",
+                            "type": "Kumwe\\Computation\\ExecutionLimits",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        }
+                    ],
+                    "return": "Kumwe\\Computation\\DocumentBatch"
+                },
+                "toArray": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "array"
+                }
+            },
+            "deprecated": null
+        },
+        "Kumwe\\Computation\\DocumentInput": {
+            "kind": "class",
+            "stability": "stable",
+            "file": "src/DocumentInput.php",
+            "abstract": false,
+            "final": true,
+            "readonly": true,
+            "parent": null,
+            "interfaces": [],
+            "constants": {},
+            "properties": {
+                "bytes": {
+                    "type": "string",
+                    "static": false,
+                    "readonly": true
+                },
+                "contract": {
+                    "type": "Kumwe\\Computation\\ContractIdentity",
+                    "static": false,
+                    "readonly": true
+                },
+                "correlation": {
+                    "type": "string",
+                    "static": false,
+                    "readonly": true
+                }
+            },
+            "methods": {
+                "__construct": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [
+                        {
+                            "name": "correlation",
+                            "type": "string",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "contract",
+                            "type": "Kumwe\\Computation\\ContractIdentity",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "bytes",
+                            "type": "string",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        }
+                    ],
+                    "return": null
+                },
+                "fromArray": {
+                    "visibility": "public",
+                    "static": true,
+                    "parameters": [
+                        {
+                            "name": "data",
+                            "type": "array",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "limits",
+                            "type": "?Kumwe\\Computation\\ExecutionLimits",
+                            "optional": true,
+                            "variadic": false,
+                            "by_reference": false
+                        }
+                    ],
+                    "return": "Kumwe\\Computation\\DocumentInput"
+                },
+                "toArray": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "array"
+                }
+            },
+            "deprecated": null
+        },
+        "Kumwe\\Computation\\ExecutionLimits": {
+            "kind": "class",
+            "stability": "stable",
+            "file": "src/ExecutionLimits.php",
+            "abstract": false,
+            "final": true,
+            "readonly": true,
+            "parent": null,
+            "interfaces": [],
+            "constants": {},
+            "properties": {
+                "maxDocuments": {
+                    "type": "int",
+                    "static": false,
+                    "readonly": true
+                },
+                "maxFindings": {
+                    "type": "int",
+                    "static": false,
+                    "readonly": true
+                },
+                "maxInputBytes": {
+                    "type": "int",
+                    "static": false,
+                    "readonly": true
+                },
+                "maxInstructions": {
+                    "type": "int",
+                    "static": false,
+                    "readonly": true
+                },
+                "maxMilliseconds": {
+                    "type": "int",
+                    "static": false,
+                    "readonly": true
+                },
+                "maxOutputBytes": {
+                    "type": "int",
+                    "static": false,
+                    "readonly": true
+                },
+                "maxParameterBytes": {
+                    "type": "int",
+                    "static": false,
+                    "readonly": true
+                },
+                "maxPathDepth": {
+                    "type": "int",
+                    "static": false,
+                    "readonly": true
+                }
+            },
+            "methods": {
+                "__construct": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [
+                        {
+                            "name": "maxInputBytes",
+                            "type": "int",
+                            "optional": true,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "maxOutputBytes",
+                            "type": "int",
+                            "optional": true,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "maxDocuments",
+                            "type": "int",
+                            "optional": true,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "maxFindings",
+                            "type": "int",
+                            "optional": true,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "maxPathDepth",
+                            "type": "int",
+                            "optional": true,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "maxParameterBytes",
+                            "type": "int",
+                            "optional": true,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "maxInstructions",
+                            "type": "int",
+                            "optional": true,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "maxMilliseconds",
+                            "type": "int",
+                            "optional": true,
+                            "variadic": false,
+                            "by_reference": false
+                        }
+                    ],
+                    "return": null
+                },
+                "fromArray": {
+                    "visibility": "public",
+                    "static": true,
+                    "parameters": [
+                        {
+                            "name": "data",
+                            "type": "array",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        }
+                    ],
+                    "return": "Kumwe\\Computation\\ExecutionLimits"
+                },
+                "toArray": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "array"
+                }
+            },
+            "deprecated": null
+        },
+        "Kumwe\\Computation\\ExecutionRefused": {
+            "kind": "class",
+            "stability": "stable",
+            "file": "src/ExecutionRefused.php",
+            "abstract": false,
+            "final": true,
+            "readonly": false,
+            "parent": "RuntimeException",
+            "interfaces": [
+                "Stringable",
+                "Throwable"
+            ],
+            "constants": {},
+            "properties": {
+                "reason": {
+                    "type": "Kumwe\\Computation\\RefusalCode",
+                    "static": false,
+                    "readonly": true
+                }
+            },
+            "methods": {
+                "__construct": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [
+                        {
+                            "name": "reason",
+                            "type": "Kumwe\\Computation\\RefusalCode",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        }
+                    ],
+                    "return": null
+                }
+            },
+            "deprecated": null
+        },
+        "Kumwe\\Computation\\ExecutionResult": {
+            "kind": "class",
+            "stability": "stable",
+            "file": "src/ExecutionResult.php",
+            "abstract": false,
+            "final": true,
+            "readonly": true,
+            "parent": null,
+            "interfaces": [],
+            "constants": {},
+            "properties": {
+                "bytes": {
+                    "type": "string",
+                    "static": false,
+                    "readonly": true
+                },
+                "contract": {
+                    "type": "Kumwe\\Computation\\ContractIdentity",
+                    "static": false,
+                    "readonly": true
+                },
+                "correlation": {
+                    "type": "string",
+                    "static": false,
+                    "readonly": true
+                }
+            },
+            "methods": {
+                "__construct": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [
+                        {
+                            "name": "correlation",
+                            "type": "string",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "contract",
+                            "type": "Kumwe\\Computation\\ContractIdentity",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "bytes",
+                            "type": "string",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "findings",
+                            "type": "array",
+                            "optional": true,
+                            "variadic": false,
+                            "by_reference": false
+                        }
+                    ],
+                    "return": null
+                },
+                "byteSize": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "int"
+                },
+                "findings": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "array"
+                },
+                "fromArray": {
+                    "visibility": "public",
+                    "static": true,
+                    "parameters": [
+                        {
+                            "name": "data",
+                            "type": "array",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "limits",
+                            "type": "?Kumwe\\Computation\\ExecutionLimits",
+                            "optional": true,
+                            "variadic": false,
+                            "by_reference": false
+                        }
+                    ],
+                    "return": "Kumwe\\Computation\\ExecutionResult"
+                },
+                "toArray": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "array"
+                }
+            },
+            "deprecated": null
+        },
+        "Kumwe\\Computation\\Executor": {
+            "kind": "interface",
+            "stability": "stable",
+            "file": "src/Executor.php",
+            "abstract": false,
+            "final": false,
+            "readonly": false,
+            "parent": null,
+            "interfaces": [],
+            "constants": {},
+            "properties": {},
+            "methods": {
+                "execute": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [
+                        {
+                            "name": "program",
+                            "type": "Kumwe\\Computation\\CompiledProgram",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "documents",
+                            "type": "Kumwe\\Computation\\DocumentBatch",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "limits",
+                            "type": "Kumwe\\Computation\\ExecutionLimits",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        }
+                    ],
+                    "return": "Kumwe\\Computation\\BatchResult"
+                }
+            },
+            "deprecated": null
+        },
+        "Kumwe\\Computation\\Finding": {
+            "kind": "class",
+            "stability": "stable",
+            "file": "src/Finding.php",
+            "abstract": false,
+            "final": true,
+            "readonly": true,
+            "parent": null,
+            "interfaces": [],
+            "constants": {},
+            "properties": {
+                "code": {
+                    "type": "string",
+                    "static": false,
+                    "readonly": true
+                },
+                "location": {
+                    "type": "Kumwe\\Computation\\SourceLocation",
+                    "static": false,
+                    "readonly": true
+                },
+                "ordinal": {
+                    "type": "int",
+                    "static": false,
+                    "readonly": true
+                },
+                "path": {
+                    "type": "Kumwe\\Computation\\FindingPath",
+                    "static": false,
+                    "readonly": true
+                },
+                "severity": {
+                    "type": "Kumwe\\Computation\\FindingSeverity",
+                    "static": false,
+                    "readonly": true
+                }
+            },
+            "methods": {
+                "__construct": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [
+                        {
+                            "name": "code",
+                            "type": "string",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "severity",
+                            "type": "Kumwe\\Computation\\FindingSeverity",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "path",
+                            "type": "Kumwe\\Computation\\FindingPath",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "location",
+                            "type": "Kumwe\\Computation\\SourceLocation",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "ordinal",
+                            "type": "int",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "parameters",
+                            "type": "array",
+                            "optional": true,
+                            "variadic": false,
+                            "by_reference": false
+                        }
+                    ],
+                    "return": null
+                },
+                "assertWithin": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [
+                        {
+                            "name": "limits",
+                            "type": "Kumwe\\Computation\\ExecutionLimits",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        }
+                    ],
+                    "return": "void"
+                },
+                "byteSize": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "int"
+                },
+                "fromArray": {
+                    "visibility": "public",
+                    "static": true,
+                    "parameters": [
+                        {
+                            "name": "data",
+                            "type": "array",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        }
+                    ],
+                    "return": "Kumwe\\Computation\\Finding"
+                },
+                "parameterBytes": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "int"
+                },
+                "parameters": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "array"
+                },
+                "toArray": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "array"
+                }
+            },
+            "deprecated": null
+        },
+        "Kumwe\\Computation\\FindingPath": {
+            "kind": "class",
+            "stability": "stable",
+            "file": "src/FindingPath.php",
+            "abstract": false,
+            "final": true,
+            "readonly": true,
+            "parent": null,
+            "interfaces": [],
+            "constants": {},
+            "properties": {},
+            "methods": {
+                "__construct": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [
+                        {
+                            "name": "segments",
+                            "type": "array",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        }
+                    ],
+                    "return": null
+                },
+                "byteSize": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "int"
+                },
+                "fromArray": {
+                    "visibility": "public",
+                    "static": true,
+                    "parameters": [
+                        {
+                            "name": "data",
+                            "type": "array",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        }
+                    ],
+                    "return": "Kumwe\\Computation\\FindingPath"
+                },
+                "segments": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "array"
+                },
+                "toArray": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "array"
+                }
+            },
+            "deprecated": null
+        },
+        "Kumwe\\Computation\\FindingSeverity": {
+            "kind": "enum",
+            "stability": "stable",
+            "file": "src/FindingSeverity.php",
+            "abstract": false,
+            "final": true,
+            "readonly": false,
+            "parent": null,
+            "interfaces": [
+                "BackedEnum",
+                "UnitEnum"
+            ],
+            "constants": {
+                "Error": {
+                    "type": "Kumwe\\Computation\\FindingSeverity"
+                },
+                "Info": {
+                    "type": "Kumwe\\Computation\\FindingSeverity"
+                },
+                "Warning": {
+                    "type": "Kumwe\\Computation\\FindingSeverity"
+                }
+            },
+            "properties": {},
+            "methods": {},
+            "deprecated": null
+        },
+        "Kumwe\\Computation\\PlanCacheKey": {
+            "kind": "class",
+            "stability": "stable",
+            "file": "src/PlanCacheKey.php",
+            "abstract": false,
+            "final": true,
+            "readonly": true,
+            "parent": null,
+            "interfaces": [],
+            "constants": {},
+            "properties": {
+                "value": {
+                    "type": "string",
+                    "static": false,
+                    "readonly": true
+                }
+            },
+            "methods": {
+                "__construct": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [
+                        {
+                            "name": "plan",
+                            "type": "Kumwe\\Computation\\PlanIdentity",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        }
+                    ],
+                    "return": null
+                }
+            },
+            "deprecated": null
+        },
+        "Kumwe\\Computation\\PlanIdentity": {
+            "kind": "class",
+            "stability": "stable",
+            "file": "src/PlanIdentity.php",
+            "abstract": false,
+            "final": true,
+            "readonly": true,
+            "parent": null,
+            "interfaces": [],
+            "constants": {},
+            "properties": {
+                "capabilities": {
+                    "type": "Kumwe\\Computation\\CapabilitySet",
+                    "static": false,
+                    "readonly": true
+                },
+                "contract": {
+                    "type": "Kumwe\\Computation\\ContractIdentity",
+                    "static": false,
+                    "readonly": true
+                },
+                "definitionDigest": {
+                    "type": "string",
+                    "static": false,
+                    "readonly": true
+                },
+                "generation": {
+                    "type": "string",
+                    "static": false,
+                    "readonly": true
+                },
+                "optionsDigest": {
+                    "type": "string",
+                    "static": false,
+                    "readonly": true
+                },
+                "programVersion": {
+                    "type": "string",
+                    "static": false,
+                    "readonly": true
+                },
+                "schemaDigest": {
+                    "type": "string",
+                    "static": false,
+                    "readonly": true
+                },
+                "sourceDigest": {
+                    "type": "string",
+                    "static": false,
+                    "readonly": true
+                }
+            },
+            "methods": {
+                "__construct": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [
+                        {
+                            "name": "contract",
+                            "type": "Kumwe\\Computation\\ContractIdentity",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "programVersion",
+                            "type": "string",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "sourceDigest",
+                            "type": "string",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "generation",
+                            "type": "string",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "definitionDigest",
+                            "type": "string",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "schemaDigest",
+                            "type": "string",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "optionsDigest",
+                            "type": "string",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "capabilities",
+                            "type": "Kumwe\\Computation\\CapabilitySet",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        }
+                    ],
+                    "return": null
+                },
+                "fromArray": {
+                    "visibility": "public",
+                    "static": true,
+                    "parameters": [
+                        {
+                            "name": "data",
+                            "type": "array",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        }
+                    ],
+                    "return": "Kumwe\\Computation\\PlanIdentity"
+                },
+                "toArray": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "array"
+                }
+            },
+            "deprecated": null
+        },
+        "Kumwe\\Computation\\ProgramEnvelope": {
+            "kind": "class",
+            "stability": "stable",
+            "file": "src/ProgramEnvelope.php",
+            "abstract": false,
+            "final": true,
+            "readonly": true,
+            "parent": null,
+            "interfaces": [],
+            "constants": {},
+            "properties": {
+                "bytes": {
+                    "type": "string",
+                    "static": false,
+                    "readonly": true
+                },
+                "contract": {
+                    "type": "Kumwe\\Computation\\ContractIdentity",
+                    "static": false,
+                    "readonly": true
+                },
+                "programVersion": {
+                    "type": "string",
+                    "static": false,
+                    "readonly": true
+                }
+            },
+            "methods": {
+                "__construct": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [
+                        {
+                            "name": "contract",
+                            "type": "Kumwe\\Computation\\ContractIdentity",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "programVersion",
+                            "type": "string",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "bytes",
+                            "type": "string",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        }
+                    ],
+                    "return": null
+                },
+                "assertPlan": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [
+                        {
+                            "name": "plan",
+                            "type": "Kumwe\\Computation\\PlanIdentity",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "limits",
+                            "type": "Kumwe\\Computation\\ExecutionLimits",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        }
+                    ],
+                    "return": "void"
+                },
+                "digest": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "string"
+                },
+                "fromArray": {
+                    "visibility": "public",
+                    "static": true,
+                    "parameters": [
+                        {
+                            "name": "data",
+                            "type": "array",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "limits",
+                            "type": "?Kumwe\\Computation\\ExecutionLimits",
+                            "optional": true,
+                            "variadic": false,
+                            "by_reference": false
+                        }
+                    ],
+                    "return": "Kumwe\\Computation\\ProgramEnvelope"
+                },
+                "toArray": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "array"
+                }
+            },
+            "deprecated": null
+        },
+        "Kumwe\\Computation\\RefusalCode": {
+            "kind": "enum",
+            "stability": "stable",
+            "file": "src/RefusalCode.php",
+            "abstract": false,
+            "final": true,
+            "readonly": false,
+            "parent": null,
+            "interfaces": [
+                "BackedEnum",
+                "UnitEnum"
+            ],
+            "constants": {
+                "Cancelled": {
+                    "type": "Kumwe\\Computation\\RefusalCode"
+                },
+                "ExhaustedLimit": {
+                    "type": "Kumwe\\Computation\\RefusalCode"
+                },
+                "IncompatibleCapability": {
+                    "type": "Kumwe\\Computation\\RefusalCode"
+                },
+                "IncompatibleCorpus": {
+                    "type": "Kumwe\\Computation\\RefusalCode"
+                },
+                "InternalFailure": {
+                    "type": "Kumwe\\Computation\\RefusalCode"
+                },
+                "InvalidInput": {
+                    "type": "Kumwe\\Computation\\RefusalCode"
+                },
+                "InvalidProgram": {
+                    "type": "Kumwe\\Computation\\RefusalCode"
+                },
+                "UnsupportedVersion": {
+                    "type": "Kumwe\\Computation\\RefusalCode"
+                }
+            },
+            "properties": {},
+            "methods": {},
+            "deprecated": null
+        },
+        "Kumwe\\Computation\\SourceLocation": {
+            "kind": "class",
+            "stability": "stable",
+            "file": "src/SourceLocation.php",
+            "abstract": false,
+            "final": true,
+            "readonly": true,
+            "parent": null,
+            "interfaces": [],
+            "constants": {},
+            "properties": {
+                "ordinal": {
+                    "type": "int",
+                    "static": false,
+                    "readonly": true
+                },
+                "rule": {
+                    "type": "string",
+                    "static": false,
+                    "readonly": true
+                },
+                "unit": {
+                    "type": "string",
+                    "static": false,
+                    "readonly": true
+                }
+            },
+            "methods": {
+                "__construct": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [
+                        {
+                            "name": "unit",
+                            "type": "string",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "rule",
+                            "type": "string",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        },
+                        {
+                            "name": "ordinal",
+                            "type": "int",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        }
+                    ],
+                    "return": null
+                },
+                "fromArray": {
+                    "visibility": "public",
+                    "static": true,
+                    "parameters": [
+                        {
+                            "name": "data",
+                            "type": "array",
+                            "optional": false,
+                            "variadic": false,
+                            "by_reference": false
+                        }
+                    ],
+                    "return": "Kumwe\\Computation\\SourceLocation"
+                },
+                "toArray": {
+                    "visibility": "public",
+                    "static": false,
+                    "parameters": [],
+                    "return": "array"
+                }
+            },
+            "deprecated": null
+        }
+    },
+    "extension_points": [
+        "Kumwe\\Computation\\Compiler",
+        "Kumwe\\Computation\\Executor"
+    ],
+    "digest_of": "src"
+}

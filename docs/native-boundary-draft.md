@@ -1,6 +1,6 @@
 # Computation contract baseline and native boundary draft
 
-Status: proposed for independent Engine-boundary review before implementation.
+Status: independently reviewed; required refinements incorporated before implementation.
 Scope: Computation Phase 1A, MIG-2026-008 / KUMWE-CS-2026-008 / NRM-2026-010.
 
 This document assigns transport ownership. It does not implement or release an Engine, select an
@@ -75,6 +75,19 @@ constructors reject zero, negative, overflow and excessive limits before payload
 Program compiler execution budgets are finite `maxInstructions` and `maxMilliseconds`, supplied in
 ExecutionLimits; Engine enforces them and returns typed refusal without partial output. They are not
 PHP callbacks, ambient clocks or an invitation to implement a PHP executor.
+The hard ceilings are 1000000000 instructions and 600000 milliseconds. These contracts validate only
+the requested budget; this baseline neither measures elapsed time nor executes cancellation.
+
+The metadata identity grammar is byte-exact: null is `N`; false is `F`; true is `T`; an integer is
+`I` followed by its decimal spelling byte length, `:`, and canonical signed decimal spelling; a string
+is `S` followed by byte length, `:`, and unchanged bytes. A list is `L<count>:` followed by its encoded
+values. A map is `M<count>:` followed by alternating encoded string keys and values in the owning
+record's documented field order. Length/count is canonical unsigned decimal with no leading zero.
+Integers are signed 64-bit; floats are forbidden. There are no terminators or ambient locale rules.
+Records use the order of their documented `toArray()` fields. Features are sorted by ASCII token;
+semantic profiles are sorted by owner/profile/version/corpus. All duplicate identities are rejected.
+This private identity encoding is not an Engine request wire encoding or a generic canonical JSON API.
+The Engine header/layout and complete ABI request transport remain a future native-owned freeze.
 
 ## Plan and compiled artifact identity
 
@@ -88,6 +101,9 @@ Engine build/API/ABI/profile/corpus tuple are mandatory. This does not promise p
 across Engine builds and does not expose private VM bytecode. Hydration is accepted only by the exact
 declared artifact format/tuple. Native pointer bytes are never a portable artifact. Corrupt or unknown
 artifacts are refused. Cache lifetime and invalidation remain host decisions; this baseline adds no cache.
+Compilation validates ProgramEnvelope against PlanIdentity's semantic identity, program version and
+source digest. CompiledProgram construction repeats this agreement and its hydration validation
+requires exact format and engine/build/API/ABI/profile/corpus identity. A binding cannot skip those checks.
 
 ## Findings, errors and atomicity
 
@@ -104,6 +120,10 @@ A valid result may contain error-severity business findings. Infrastructure refu
 ExecutionRefused and produces no BatchResult. Batch success contains exactly one result per input in
 the same order. Partial output is prohibited in baseline version 1. Cancellation is an explicit native
 operation resource condition; a caller cannot inject a callback. No retry or fallback is implied.
+BatchResult validation takes the expected DocumentBatch and checks count, order, correlation and exact
+result semantic identity. Boundary byte budgets include opaque payloads and finding path/parameter
+bytes. Every finding and path token is UTF-8 checked and byte bounded. Caller limits are applied at the
+compile/execute/result validation boundary, after constructor hard ceilings and before native use.
 
 ## Joint native FQCN ownership proposal
 
@@ -136,9 +156,8 @@ bytes use the versioned closed transport described above, not raw host struct la
 | buffer_view(const buffer*, view* output) -> uint32 status | Borrowed immutable view valid until buffer release. |
 | buffer_release(buffer*) -> void | Matching Engine allocator release exactly once; null is harmless. |
 
-No C++ exception crosses an export. Error paths set response to null or one bounded owned refusal
-envelope with the same release requirement; the status table defines which. The intended uniform rule
-is a non-null response for success, null response for any nonzero status; safe diagnostic identity is
+No C++ exception crosses an export. Every nonzero status returns a null response. Success returns a
+non-null response, including when the response payload has zero bytes. Safe diagnostic identity is
 the stable status alone. The implementation cannot retain input pointers or invoke PHP callbacks.
 Each operation is independent and reentrant; a result buffer is immutable and may be read concurrently
 until its owner releases it. Concurrent release/access is forbidden. Binding owns exactly-once cleanup

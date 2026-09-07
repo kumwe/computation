@@ -1,0 +1,25 @@
+{
+  "schema": "kumwe-computation-consumer-inventory/v1",
+  "phase": "contract_baseline",
+  "source_repository": "https://github.com/kumwe/app",
+  "source_commit": "960ce8ec00cf724a7cae03e5ba09c4852c9ab54e",
+  "immediate_app_consumers": [],
+  "app_files_to_remove": [],
+  "app_tests_to_remove": [],
+  "retained_app_owners": [
+    "Expression",
+    "ExpressionEvaluator",
+    "DecimalValue",
+    "RecordRuleValidator",
+    "RecordExpressionValues",
+    "ValidationViolation",
+    "DocumentWriteBudget"
+  ],
+  "next_consumer": "kumwe/engine",
+  "notes": [
+    "Phase 1A introduces neutral contracts, with no verbatim App type extraction or App adoption.",
+    "Semantic owner APIs/corpora are not selected; fixture coordinates are synthetic transport-only data.",
+    "Refresh exact App method inventories at native cutover; retain authority/composition/integration tests.",
+    "Remove superseded package-unit tests from App only when the verified implementation is adopted."
+  ]
+}

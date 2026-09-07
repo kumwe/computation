@@ -1,0 +1,68 @@
+{
+  "name": "kumwe/computation",
+  "description": "Portable bounded computation contracts and transport identities for native execution.",
+  "type": "library",
+  "license": "Apache-2.0",
+  "homepage": "https://github.com/kumwe/computation",
+  "support": {
+    "issues": "https://github.com/kumwe/computation/issues",
+    "source": "https://github.com/kumwe/computation"
+  },
+  "require": {
+    "php": "^8.5",
+    "php-64bit": "^8.5"
+  },
+  "require-dev": {
+    "phpstan/phpstan": "^2.1",
+    "phpstan/phpstan-deprecation-rules": "^2.0",
+    "phpstan/phpstan-strict-rules": "^2.0",
+    "squizlabs/php_codesniffer": "^4.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Kumwe\\Computation\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Kumwe\\Computation\\Tests\\": "tests/"
+    }
+  },
+  "scripts": {
+    "composer:validate": "composer validate --strict",
+    "security:audit": "composer audit --abandoned=fail",
+    "release:check": "bash tools/test-release-record.sh",
+    "lint": "php tools/lint.php",
+    "docs": "php tools/check-docblocks.php",
+    "architecture": "php tools/verify-architecture.php",
+    "manifests": "php tools/verify-manifests.php",
+    "manifests:record": "php tools/verify-manifests.php --write",
+    "autoload:smoke": "php resources/toolchain/autoload-smoke.php",
+    "examples": "php examples/typed-consumer.php",
+    "cs": "phpcs -q",
+    "cs:fix": "phpcbf",
+    "analyse": "phpstan analyse --no-progress --memory-limit=1G",
+    "test": "php tests/run.php",
+    "clean-consumer": "php tools/verify-clean-consumer.php",
+    "check": [
+      "@composer:validate",
+      "@security:audit",
+      "@release:check",
+      "@lint",
+      "@docs",
+      "@architecture",
+      "@manifests",
+      "@autoload:smoke",
+      "@examples",
+      "@cs",
+      "@analyse",
+      "@test",
+      "@clean-consumer"
+    ]
+  },
+  "config": {
+    "sort-packages": true
+  },
+  "minimum-stability": "stable",
+  "prefer-stable": true
+}
