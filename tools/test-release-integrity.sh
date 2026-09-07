@@ -24,6 +24,21 @@ done
 refuse protected
 refuse protected true extra
 refuse unknown
+branch='{"name":"main","protected":true}'
+accept branch <<< "$branch"
+# A stale event flag must not override the freshly fetched branch response.
+RELEASE_REF_PROTECTED=false accept branch <<< "$branch"
+refuse branch extra <<< "$branch"
+for change in '.protected = false' '.protected = "true"' '.protected = 1' \
+  'del(.protected)' '.name = "feature"' 'del(.name)'; do
+  refuse branch <<< "$(jq -c "$change" <<< "$branch")"
+done
+for malformed in '' '{}' '[]' 'null' 'true' 'not-json'; do
+  refuse branch <<< "$malformed"
+done
+refuse branch <<< "$branch $branch"
+refuse branch <<< "{} $branch"
+refuse branch <<< "$branch {}"
 payload='{"tag_name":"v0.1.1","draft":false,"prerelease":false,"immutable":true,
 "published_at":"2026-09-07T00:00:00Z"}'
 accept published 0.1.1 <<< "$payload"

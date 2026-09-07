@@ -2,11 +2,26 @@
 # Fail closed on observed release-integrity metadata; no network or mutation occurs here.
 set -euo pipefail
 
+require_protected_main() {
+  echo 'Release refused: main must be protected by an active branch rule or ruleset.' >&2
+  echo 'Enable the main ruleset in Settings > Rules > Rulesets; see docs/releasing.md.' >&2
+  echo 'Packagist linkage does not configure branch protection.' >&2
+  exit 1
+}
+
 case "${1:-}" in
   protected)
     if [[ "$#" -ne 2 || "$2" != true ]]; then
-      echo 'Release refused: main must be protected by an active branch rule or ruleset.' >&2
-      exit 1
+      require_protected_main
+    fi
+    ;;
+  branch)
+    # Read the current branch API response, not the protection flag captured
+    # when a workflow originally started. Settings can change before a retry.
+    if [[ "$#" -ne 1 ]] || ! jq -es '
+      length == 1 and (.[0] | type == "object" and .name == "main" and .protected == true)
+    ' >/dev/null; then
+      require_protected_main
     fi
     ;;
   published)
@@ -23,7 +38,7 @@ case "${1:-}" in
     fi
     ;;
   *)
-    echo 'Usage: check-release-integrity.sh protected true | published VERSION < release.json' >&2
+    echo 'Usage: check-release-integrity.sh protected true | branch < branch.json | published VERSION < release.json' >&2
     exit 2
     ;;
 esac

@@ -77,8 +77,14 @@ jobs:
 
       - name: Require protected main before release mutations
         env:
-          RELEASE_REF_PROTECTED: ${{ github.ref_protected }}
-        run: bash tools/check-release-integrity.sh protected "$RELEASE_REF_PROTECTED"
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          # A retry must observe the current setting after a maintainer fixes
+          # protection, not github.ref_protected from the original event.
+          gh api "repos/$GITHUB_REPOSITORY/branches/main" \
+            | bash tools/check-release-integrity.sh branch
 
       # The newest release record is the FIRST second-level heading, so a
       # malformed record fails this run loudly instead of silently
