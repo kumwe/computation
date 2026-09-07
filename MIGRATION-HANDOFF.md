@@ -56,6 +56,9 @@ ownership:
     -
       path: "resources/service-map/v1.json"
       sha256: "5ea8e1eb02d0008bd293ae9a68dd3f36bf37617b49a0a0d86acdf7126312860e"
+    -
+      path: "resources/contract-baseline/v1.json"
+      sha256: "3996c8d0ec3cc114167c71d8dcf77ac6f17bacd5502f3e64934db8ad9f26c479"
   intentionally_excluded:
     - "Engine owns algorithms; extension owns C ABI/Zend binding."
     - "No App extraction or runtime adoption occurs in this successor."
@@ -124,13 +127,14 @@ release_expectations:
   required_registry_or_installer: "Composer"
   required_external_attestation: true
 next_task:
-  phase_name: "Review and verify the library successor release before separate App integration"
+  phase_name: "Verify portable baseline, then ordered native releases and adapter successor"
   permitted_only_when:
+    - "The extension-free baseline is independently verified before Engine stable admission"
     - "Final package CI passes at the proposed head"
     - "Immutable package and all dependency releases are independently verified"
     - "Reconcile current App drift against the recorded source inventories"
   consumer_repository: "https://github.com/kumwe/app"
-  dependency_or_native_change: "Require verified Engine/extension releases and exact tuple; see docs/integration.md."
+  dependency_or_native_change: "Verify baseline, Engine, extension and successor; see docs/contract-baseline.md."
   namespace_or_api_replacements: []
   files_to_update:
     - "composer.json"
@@ -169,7 +173,9 @@ decisions:
   - "Release compiled plans explicitly to reclaim bounded native capacity."
   - "Engine owns algorithms; Computation owns transport and native adapters."
   - "No App changes or release publication occurs in this successor."
+  - "This native-backed 0.3.0 proposal cannot serve as its own pre-Engine contract baseline."
 blockers:
+  - "No published, independently verified extension-free Computation baseline was identified."
   - "Final package gates and independent immutable release verification remain required."
   - "Engine/extension remain development candidates; no verified stable tuple exists."
 ---
@@ -192,10 +198,10 @@ types have recorded extraction provenance; package-native composition is identif
 
 ## Capability reuse/semantic input review
 
-The implementation consumes the exact canonical dependency contracts recorded in composer.json. Provision
-independently verified Engine and PHP-extension releases, select their exact ABI/profile/corpus tuple and
-provide NativeCompatibility before installing the successor. The tested 0.0.0-dev extension is candidate
-evidence only.
+The implementation consumes the exact canonical dependency contracts recorded in composer.json. First publish
+and independently verify the extension-free Computation contract baseline; no usable published baseline was
+identified. Then verify Engine stable, extension stable and this native-backed successor in that order. See
+docs/contract-baseline.md. The tested 0.0.0-dev extension is candidate evidence only.
 
 ## Consumer inventory
 
@@ -214,12 +220,12 @@ library implementation assertions from App together with their legacy source.
 ## Next-task execution notes
 
 Independent successor release verification and the final package gate remain necessary before App adoption.
-Native extension and Engine are development candidates; no verified stable native release tuple exists.
-Provision independently verified Engine and PHP-extension releases, select their exact ABI/profile/corpus
-tuple and provide NativeCompatibility before installing the successor. The tested 0.0.0-dev extension is
-candidate evidence only. Run final source and clean archive gates before admitting the package; then update
-the App dependency lock, replace namespaces, retain host adapters and remove only the inventoried portable
-legacy implementations.
+Native extension and Engine are development candidates; no verified stable native release tuple exists. First
+publish and independently verify the extension-free Computation contract baseline; no usable published
+baseline was identified. Then verify Engine stable, extension stable and this native-backed successor in that
+order. See docs/contract-baseline.md. The tested 0.0.0-dev extension is candidate evidence only. Run final
+source and clean archive gates before admitting the package; then update the App dependency lock, replace
+namespaces, retain host adapters and remove only the inventoried portable legacy implementations.
 
 ## Drift check
 

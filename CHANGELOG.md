@@ -2,6 +2,8 @@
 
 ## 0.3.0
 
+- Record the unresolved extension-free contract-baseline prerequisite and verified publication-history observations.
+
 - Breaking: the host now selects and binds CanonicalEncoder explicitly; the package retains its native encoder factory.
 - Add ownership-checked explicit native plan release and repeated-capacity reuse regression coverage.
 - Refuse historical development extensions without plan release at admission, before an undefined-method failure.
