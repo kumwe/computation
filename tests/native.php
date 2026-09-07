@@ -402,4 +402,14 @@ $object = new class implements JsonSerializable {
 };
 $finding(static fn () => $canonical->encode($object), 'canonical.unsupported-type');
 $that($canonical->encode('reused') === '"reused"', 'Canonical service did not recover after refusals.');
+$refuses(static fn () => $other->release($plan), RefusalCode::InvalidProgram);
+$refuses(static fn () => $adapter->release($copy), RefusalCode::InvalidProgram);
+$adapter->release($plan);
+$refuses(static fn () => $adapter->execute($plan, $documents, $limits), RefusalCode::InvalidProgram);
+$refuses(static fn () => $adapter->release($plan), RefusalCode::InvalidProgram);
+for ($cycle = 0; $cycle < 130; ++$cycle) {
+    $reusable = $adapter->compile($source, $identity($source), $limits);
+    $that(count($adapter->execute($reusable, $documents, $limits)->results()) === 2, 'Released capacity was not reusable.');
+    $adapter->release($reusable);
+}
 echo 'Native adapter integration: ' . $assertions . " assertions passed.\n";

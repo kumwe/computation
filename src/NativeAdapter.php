@@ -83,6 +83,32 @@ final class NativeAdapter implements Compiler, Executor
     }
 
     /**
+     * Release an owned native plan when its operation or cache entry no longer needs execution.
+     *
+     * Long-lived consumers must release compiled plans to return bounded native capacity. Foreign,
+     * copied and already released artifacts are refused; a native failure preserves PHP ownership.
+     *
+     * @param CompiledProgram $program Artifact returned by this same adapter instance.
+     * @return void No execution or semantic transformation is performed.
+     * @throws ExecutionRefused On a foreign/released artifact or native release refusal.
+     * @since 0.2.2
+     */
+    public function release(CompiledProgram $program): void
+    {
+        $id = $this->plans[$program] ?? null;
+        Guard::require($id !== null && $id === $program->bytes, RefusalCode::InvalidProgram);
+        if (!is_string($id)) {
+            throw new ExecutionRefused(RefusalCode::InvalidProgram);
+        }
+        try {
+            $this->runtime->release($id);
+        } catch (BindingFailure $failure) {
+            throw NativeRuntime::refusal($failure);
+        }
+        unset($this->plans[$program]);
+    }
+
+    /**
      * @param CompiledProgram $program Artifact returned by this same adapter instance.
      * @param DocumentBatch $documents Complete ordered normalized opaque inputs.
      * @param ExecutionLimits $limits Finite batch budgets; checked again by Engine.

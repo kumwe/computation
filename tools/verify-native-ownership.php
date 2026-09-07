@@ -222,7 +222,7 @@ try {
     $requirements = ownershipObject($capabilities['native_requirements']);
     ownershipRequire(($requirements['extension'] ?? null) === 'kumwe_engine', 'The native extension is required.');
     ownershipRequire(
-        ($requirements['verification'] ?? null) === 'required-actual-extension-and-independent-exact-tuple',
+        (ownershipRead($root . '/resources/native-adapter.json')['verification'] ?? null) === 'required-actual-extension-and-independent-exact-tuple',
         'Actual native execution and an independent compatibility tuple are required.',
     );
     $linked = false;

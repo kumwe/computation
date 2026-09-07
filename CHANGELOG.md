@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.2
+
+- Add ownership-checked explicit native plan release and repeated-capacity reuse regression coverage.
+- Align consumer-facing Version 2 manifests with the actual governance schemas while retaining candidate-only native evidence separately.
+
 ## 0.2.1
 
 - Require released Canonical JSON 0.1.1 so installs survive the upstream rebase merge and branch deletion.
