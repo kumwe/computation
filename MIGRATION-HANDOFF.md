@@ -42,7 +42,7 @@ target:
   artifact_identity: "kumwe/computation"
   canonical_namespace_or_abi: "Kumwe\\Computation"
   branch: "codex/qualified-native-successor"
-  pull_request: "https://github.com/kumwe/computation/pull/13"
+  pull_request: "https://github.com/kumwe/computation/pull/14"
 ownership:
   responsibility: "Portable transport, native adapters, compatibility and deterministic refusals."
   non_responsibilities:
@@ -196,6 +196,7 @@ decisions:
   - "Require opaque-compiled-results/1 at composition; preserve raw native result bytes."
   - "Published portable Computation 0.1.1 is independently verified and preserved byte for byte."
 blockers:
+  - "Reporting independent semantic-owner release verification remains outstanding upstream of Engine."
   - "Engine and binding stable publication/verification are pending after the verified portable baseline."
   - "Final package gates and independent immutable release verification remain required."
   - "Engine/extension remain development candidates; no verified stable tuple exists."
