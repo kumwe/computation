@@ -35,5 +35,10 @@
     "schema": "kumwe-native-adapter-candidate/v1",
     "binding_features": [
         "opaque-compiled-results/1"
-    ]
+    ],
+    "binding_source": {
+        "repository": "kumwe/kumwe-engine",
+        "commit": "584e910b5902c7d3c2bda006586692d572ac1154"
+    },
+    "release_dependencies": null
 }

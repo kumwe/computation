@@ -8,6 +8,8 @@
 
 declare(strict_types=1);
 
+require_once __DIR__ . '/lib/native-release.php';
+
 /**
  * Require an object-shaped array without coercing malformed keys.
  * @param mixed $value Candidate JSON object.
@@ -80,14 +82,22 @@ function ownershipRead(string $path): array
  * @param array<string, mixed> $record Ownership document.
  * @param array<string, mixed> $api Public API document.
  * @param array<string, mixed> $corpus Transport corpus.
+ * @param array<string, mixed> $adapter Reviewed native dependency source record.
  * @return void
  * @since 0.1.0
  */
-function ownershipVerify(array $record, array $api, array $corpus): void
+function ownershipVerify(array $record, array $api, array $corpus, array $adapter): void
 {
     ownershipRequire(($record['schema'] ?? null) === 'kumwe-computation-native-ownership/v1', 'Wrong schema.');
-    ownershipRequire(($record['status'] ?? null) === 'reviewed-draft', 'Ownership is a reviewed draft.');
-    ownershipRequire(($record['phase'] ?? null) === 'native_adapter_candidate', 'Wrong adapter candidate phase.');
+    $stable = ($adapter['release_status'] ?? null) === 'verified-native-dependencies';
+    ownershipRequire(
+        ($record['status'] ?? null) === ($stable ? 'reviewed' : 'reviewed-draft'),
+        'Ownership review must match the verified dependency evidence state.',
+    );
+    ownershipRequire(
+        ($record['phase'] ?? null) === ($stable ? 'native_adapter' : 'native_adapter_candidate'),
+        'Ownership phase must match the native dependency evidence.',
+    );
     ownershipRequire(($record['native_implementation'] ?? null) === false, 'Native implementation stays upstream.');
     ownershipRequire(($record['native_adapter'] ?? null) === true, 'An actual PHP native adapter is required.');
     ownershipRequire(
@@ -136,24 +146,38 @@ function ownershipVerify(array $record, array $api, array $corpus): void
         ownershipRequire(($type['owner'] ?? null) === 'kumwe/kumwe-engine', 'Wrong native owner.');
         ownershipRequire(($type['runtime'] ?? null) === 'zend-extension', 'Native declarations are extension-owned.');
         ownershipRequire(($type['methods'] ?? null) === $expectedNative[$name], 'Native methods differ from review.');
-        ownershipRequire(($type['candidate_binding'] ?? null) === [
-            'owner' => 'kumwe/kumwe-engine',
-            'runtime' => 'zend',
-            'pull_request' => 'https://github.com/kumwe/kumwe-engine/pull/3',
-            'api_manifest' => 'resources/api/v1.json',
-            'state' => 'candidate-cross-build',
-            'release_verified' => false,
-            'source_commit' => '584e910b5902c7d3c2bda006586692d572ac1154',
-        ], 'Native candidate provenance must not assert release verification.');
+        if ($stable) {
+            $dependencies = ownershipObject($adapter['release_dependencies'] ?? null);
+            ownershipRequire(
+                ($type['binding_release'] ?? null) === ($dependencies['binding'] ?? null)
+                && !array_key_exists('candidate_binding', $type),
+                'Native ownership must identify the exact independently verified binding release.',
+            );
+        } else {
+            $source = ownershipObject($adapter['binding_source'] ?? null);
+            ownershipRequire(($type['candidate_binding'] ?? null) === [
+                'owner' => 'kumwe/kumwe-engine',
+                'runtime' => 'zend',
+                'pull_request' => 'https://github.com/kumwe/kumwe-engine/pull/3',
+                'api_manifest' => 'resources/api/v1.json',
+                'state' => 'candidate-cross-build',
+                'release_verified' => false,
+                'source_commit' => $source['commit'] ?? null,
+            ], 'Native candidate provenance must match the exact build source without asserting verification.');
+        }
         $key = strtolower($name);
         ownershipRequire(!isset($seen[$key]), 'Portable/native FQCN collision.');
         $seen[$key] = true;
         $nativeSeen[$name] = true;
     }
     ownershipRequire(array_diff_key($expectedNative, $nativeSeen) === [], 'Missing native reservation.');
-    $abi = ownershipObject($record['c_abi_proposal'] ?? null);
+    $abiKey = $stable ? 'c_abi' : 'c_abi_proposal';
+    $abi = ownershipObject($record[$abiKey] ?? null);
     ownershipRequire(($abi['owner'] ?? null) === 'kumwe/engine', 'Wrong C ABI owner.');
-    ownershipRequire(($abi['frozen'] ?? null) === false, 'C ABI remains a non-frozen proposal.');
+    ownershipRequire(
+        ($abi['frozen'] ?? null) === $stable,
+        'ABI freeze must match independently verified native inputs.',
+    );
     ownershipRequire(($abi['prefix'] ?? null) === 'kumwe_engine_v1_', 'Wrong C ABI prefix.');
     ownershipRequire(
         ($abi['operations'] ?? null) === [
@@ -192,13 +216,14 @@ function ownershipVerify(array $record, array $api, array $corpus): void
  * @param array<string, mixed> $record Ownership candidate.
  * @param array<string, mixed> $api API candidate.
  * @param array<string, mixed> $corpus Corpus candidate.
+ * @param array<string, mixed> $adapter Reviewed native dependency source record.
  * @return void
  * @since 0.1.0
  */
-function ownershipRejects(string $label, array $record, array $api, array $corpus): void
+function ownershipRejects(string $label, array $record, array $api, array $corpus, array $adapter): void
 {
     try {
-        ownershipVerify($record, $api, $corpus);
+        ownershipVerify($record, $api, $corpus, $adapter);
     } catch (RuntimeException) {
         return;
     }
@@ -211,7 +236,14 @@ try {
     $api = ownershipRead($root . '/resources/public-api/v1.json');
     $corpusPath = $root . '/resources/conformance/v1.json';
     $corpus = ownershipRead($corpusPath);
-    ownershipVerify($record, $api, $corpus);
+    $adapter = ownershipRead($root . '/resources/native-adapter.json');
+    nativeReleaseVerifyPortableSources(ownershipRead($root . '/resources/contract-baseline/v1.json'), $root);
+    nativeReleaseVerify(
+        $adapter,
+        ownershipRead($root . '/resources/contract-baseline/v1.json'),
+        ownershipRead($root . '/composer.json'),
+    );
+    ownershipVerify($record, $api, $corpus, $adapter);
     $digest = hash_file('sha256', $corpusPath);
     $documentation = file_get_contents($root . '/docs/conformance.md');
     ownershipRequire(is_string($digest) && is_string($documentation), 'Corpus evidence is missing.');
@@ -223,7 +255,6 @@ try {
     ownershipRequire(array_key_exists('native_requirements', $capabilities), 'Native requirement decision missing.');
     $requirements = ownershipObject($capabilities['native_requirements']);
     ownershipRequire(($requirements['extension'] ?? null) === 'kumwe_engine', 'The native extension is required.');
-    $adapter = ownershipRead($root . '/resources/native-adapter.json');
     ownershipRequire(
         ($adapter['verification'] ?? null) === 'required-actual-extension-and-independent-exact-tuple',
         'Actual native execution and an independent compatibility tuple are required.',
@@ -241,69 +272,72 @@ try {
     $options = array_slice($arguments, 1);
     ownershipRequire($options === [] || $options === ['--self-test'], 'Use --self-test or no options.');
     if ($options === ['--self-test']) {
-        ownershipRejects('missing record', [], $api, $corpus);
+        ownershipRejects('missing record', [], $api, $corpus, $adapter);
         $broken = $record;
         $broken['php'] = 'invalid';
-        ownershipRejects('malformed list', $broken, $api, $corpus);
+        ownershipRejects('malformed list', $broken, $api, $corpus, $adapter);
         $portable = ownershipList($record['php'] ?? null);
         ownershipRequire(count($portable) === 26, 'Self-test needs the reviewed input.');
         $first = ownershipObject($portable[0]);
         $broken = $record;
         $broken['php'] = array_slice($portable, 1);
-        ownershipRejects('missing public type', $broken, $api, $corpus);
+        ownershipRejects('missing public type', $broken, $api, $corpus, $adapter);
         $duplicate = $portable;
         $duplicate[1] = $first;
         $broken['php'] = $duplicate;
-        ownershipRejects('duplicate public type', $broken, $api, $corpus);
+        ownershipRejects('duplicate public type', $broken, $api, $corpus, $adapter);
         $first['fqcn'] = 'kumwe\\computation\\ContractIdentity';
         $duplicate[1] = $first;
         $broken['php'] = $duplicate;
-        ownershipRejects('case-folded collision', $broken, $api, $corpus);
+        ownershipRejects('case-folded collision', $broken, $api, $corpus, $adapter);
         $first = ownershipObject($portable[0]);
         $first['owner'] = 'kumwe/kumwe-engine';
         $portable[0] = $first;
         $broken['php'] = $portable;
-        ownershipRejects('cross-owner public type', $broken, $api, $corpus);
+        ownershipRejects('cross-owner public type', $broken, $api, $corpus, $adapter);
         $native = ownershipList($record['native'] ?? null);
         $firstNative = ownershipObject($native[0]);
         $firstNative['fqcn'] = 'Kumwe\\Computation\\Compiler';
         $native[0] = $firstNative;
         $broken = $record;
         $broken['native'] = $native;
-        ownershipRejects('native/public collision', $broken, $api, $corpus);
+        ownershipRejects('native/public collision', $broken, $api, $corpus, $adapter);
         $broken = $record;
         $broken['native'] = [];
-        ownershipRejects('missing native owner', $broken, $api, $corpus);
+        ownershipRejects('missing native owner', $broken, $api, $corpus, $adapter);
         $broken = $record;
         $broken['native_implementation'] = true;
-        ownershipRejects('claimed native implementation', $broken, $api, $corpus);
+        ownershipRejects('claimed native implementation', $broken, $api, $corpus, $adapter);
         $broken = $record;
         $broken['semantic_dependencies'] = ['kumwe/conversion'];
-        ownershipRejects('selected semantic dependency', $broken, $api, $corpus);
-        $abi = ownershipObject($record['c_abi_proposal'] ?? null);
-        $abi['frozen'] = true;
+        ownershipRejects('selected semantic dependency', $broken, $api, $corpus, $adapter);
+        $stable = ($adapter['release_status'] ?? null) === 'verified-native-dependencies';
+        $abiKey = $stable ? 'c_abi' : 'c_abi_proposal';
+        $abi = ownershipObject($record[$abiKey] ?? null);
+        $abi['frozen'] = !$stable;
         $broken = $record;
-        $broken['c_abi_proposal'] = $abi;
-        ownershipRejects('frozen ABI claim', $broken, $api, $corpus);
-        $abi = ownershipObject($record['c_abi_proposal'] ?? null);
+        $broken[$abiKey] = $abi;
+        ownershipRejects('frozen ABI claim', $broken, $api, $corpus, $adapter);
+        $abi = ownershipObject($record[$abiKey] ?? null);
         $abi['statuses'] = ['success' => 1];
-        $broken['c_abi_proposal'] = $abi;
-        ownershipRejects('invalid status table', $broken, $api, $corpus);
+        $broken[$abiKey] = $abi;
+        ownershipRejects('invalid status table', $broken, $api, $corpus, $adapter);
         $brokenCorpus = $corpus;
         $brokenCorpus['native_implementation'] = true;
-        ownershipRejects('native corpus claim', $record, $api, $brokenCorpus);
+        ownershipRejects('native corpus claim', $record, $api, $brokenCorpus, $adapter);
         $brokenCorpus = $corpus;
         $brokenCorpus['semantic_implementations'] = ['decimal'];
-        ownershipRejects('semantic corpus claim', $record, $api, $brokenCorpus);
+        ownershipRejects('semantic corpus claim', $record, $api, $brokenCorpus, $adapter);
         $native = ownershipList($record['native'] ?? null);
         $firstNative = ownershipObject($native[0]);
-        $binding = ownershipObject($firstNative['candidate_binding'] ?? null);
-        $binding['release_verified'] = true;
-        $firstNative['candidate_binding'] = $binding;
+        $bindingKey = $stable ? 'binding_release' : 'candidate_binding';
+        $binding = ownershipObject($firstNative[$bindingKey] ?? null);
+        $binding['release_verified'] = !$stable;
+        $firstNative[$bindingKey] = $binding;
         $native[0] = $firstNative;
         $broken = $record;
         $broken['native'] = $native;
-        ownershipRejects('unverified native release claim', $broken, $api, $corpus);
+        ownershipRejects('unverified native release claim', $broken, $api, $corpus, $adapter);
         echo "Ownership self-test passed: 15 malformed/missing/duplicate/ownership/claim cases.\n";
     }
     echo "Ownership verified: 26 portable types, two extension-owned types; native adapter required.\n";

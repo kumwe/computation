@@ -1,9 +1,37 @@
 {
   "schema": "kumwe-computation-contract-baseline-status/v1",
-  "status": "missing-verified-portable-baseline",
-  "observed_on": "2026-09-07",
-  "verified_release": null,
-  "verified_attestation": null,
+  "status": "release-verified",
+  "observed_on": "2026-09-08",
+  "verified_release": {
+    "package": "kumwe/computation",
+    "state": "release-verified",
+    "version": "0.1.1",
+    "tag": "v0.1.1",
+    "commit": "fc9d049f8b675c8e19fd1672d49b5e206c9ad52a",
+    "archive_sha256": "2d132618efa233ec3bf0c648234c4892b7eb3d5cc1c378ea91a757a91617c223",
+    "attestation": {
+      "uri": "https://github.com/kumwe/extension-sdk/actions/runs/34250329345/artifacts/10065724495",
+      "sha256": "0b92a8f8d87eb33764be035962cb15a5b3a2a5a276c81e4a43961a53422d230c",
+      "member": "RELEASE-ATTESTATION.yaml",
+      "member_sha256": "3e6f2ada771266adfaa6575eaf052bb3712e8a9ea3add2a4ca95819b7987bd08"
+    },
+    "require": {
+      "php": "^8.5",
+      "php-64bit": "^8.5"
+    },
+    "native_bindings_present": false,
+    "api_digest": "bb0a1630682953413acc20a540471b9308cf14c62cdb9162d5fa1bd5b55af9a4",
+    "capability_digest": "b0b5a5df7f527685a3f069c3f1ff8418dbb29f51850ee074d2ab849e834ae7e7",
+    "corpus_digests": {
+      "resources/conformance/v1.json": "30a64cf682a46c38ca99544d5abcad43cda7071bb9702621226bf297411b8bfc"
+    }
+  },
+  "verified_attestation": {
+    "uri": "https://github.com/kumwe/extension-sdk/actions/runs/34250329345/artifacts/10065724495",
+    "sha256": "0b92a8f8d87eb33764be035962cb15a5b3a2a5a276c81e4a43961a53422d230c",
+    "member": "RELEASE-ATTESTATION.yaml",
+    "member_sha256": "3e6f2ada771266adfaa6575eaf052bb3712e8a9ea3add2a4ca95819b7987bd08"
+  },
   "native_adapter_is_baseline": false,
   "observed_releases": [
     {
@@ -23,6 +51,15 @@
       "requires_extension": "0.0.0-dev",
       "github_immutable": false,
       "qualification": "native-adapter; not the portable contract baseline"
+    },
+    {
+      "version": "0.1.1",
+      "tag": "v0.1.1",
+      "source_commit": "fc9d049f8b675c8e19fd1672d49b5e206c9ad52a",
+      "published_at": "2026-09-08T16:06:09Z",
+      "requires_extension": null,
+      "github_immutable": false,
+      "qualification": "independently verified portable contract baseline"
     }
   ],
   "historical_source_candidate": {
@@ -44,5 +81,32 @@
     "Verified native-backed Computation successor",
     "Separate App provisioning and runtime integration"
   ],
-  "remediation_document": "docs/contract-baseline.md"
+  "remediation_document": "docs/contract-baseline.md",
+  "portable_source_preservation": {
+    "comparison": "Published v0.1.1 against current native source; exact byte equality",
+    "files": {
+      "resources/conformance/v1.json": "30a64cf682a46c38ca99544d5abcad43cda7071bb9702621226bf297411b8bfc",
+      "src/BatchResult.php": "82274019613a90b0730f19752ddfdcb123ed5c0398ab0ad96025541b5e73bf64",
+      "src/CapabilitySet.php": "95e6f44eb5f477f921a4065c9043333c3e7aa6717075f327ec3651abc97a2e4c",
+      "src/CompatibilityRequirement.php": "472d50d02b5abd32392a02257dd22505956b8b1feac34e9c1607ed7ae3adff90",
+      "src/CompiledProgram.php": "0eb786e973aa6181350c262d03345e467be3c47b089688f1b7b40dbb94f2cef0",
+      "src/Compiler.php": "eb77eecbb92831389ca5bc04a5030e2a79609862dd4471b84c75de6f84aceef6",
+      "src/ContractIdentity.php": "a3748af95e9dfa949a0dcf3efe74c537c5fed12c9e98d1beb91de09f7647a9f7",
+      "src/DocumentBatch.php": "cb9a7e4300def486f9a7995818872e7e40ed7583bef3498c03c0899ca7755ded",
+      "src/DocumentInput.php": "816acdf6c95707476e8b0fea4ba832cc511bd49d7acb86460897b4c0944bb13e",
+      "src/ExecutionLimits.php": "af4354708c11a9399cbbb81fe32fc485e9b4b2332fcdec3c10027868f6cc10a8",
+      "src/ExecutionRefused.php": "7d395d8e50bd2de960d48a73086df3ae978e0cfdc3f8042d0c11f3649c653579",
+      "src/ExecutionResult.php": "a85e5fea1e3339625083fae83920fcb967284fb635e4a810ba057029c187ef08",
+      "src/Executor.php": "a0f3a4565cca69f822e631bc1b7f9cf414472a1f84285a33e70b33a9afbc9e6d",
+      "src/Finding.php": "f117138eb36efc188989a1003ae15b9cfaf614cccaeef42f000fa5d9ca180290",
+      "src/FindingPath.php": "0a17a6a17315a0c9241b36d9f75ab46606e7667dde2c87416f8b75609b2bfb08",
+      "src/FindingSeverity.php": "392b146cf799e12636fe5130891d8ff1f04f8f8593177a95ece92c903cb96321",
+      "src/Internal/Guard.php": "9c918cda7a0af0010b3ef28b1e46c03f35572a84828e662cac24b26863c2d43c",
+      "src/PlanCacheKey.php": "c775acd6cc0f5fdbe9109895828acfc18e298c7d781ebd38fdd97f8e0fbd2c92",
+      "src/PlanIdentity.php": "7f208ba380aa47035e67fb1eff5b7bcabc04e5c6e9554e413c0e0698d2323571",
+      "src/ProgramEnvelope.php": "816d973302b4457a735a1aea606cd0acf16c3977b0cb4b76226fa93cb38cf1d6",
+      "src/RefusalCode.php": "2e479f6cbe793b15f1396f79c7dfdb245467ecd74ff7af50d59d6c69f5dd11fb",
+      "src/SourceLocation.php": "82fe6ba68bdba1ec472b9241b8c57bfefa5055c7c1f8601038aa524364f47e9c"
+    }
+  }
 }

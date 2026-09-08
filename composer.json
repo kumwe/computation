@@ -56,6 +56,7 @@
       "@architecture",
       "@boundary:tokens",
       "@manifests",
+      "@native-release",
       "@native-ownership",
       "@autoload:smoke",
       "@examples",
@@ -73,7 +74,8 @@
     "boundary:tokens": "php tools/verify-boundary-tokens.php --self-test",
     "release:integrity": "bash tools/test-release-integrity.sh",
     "test:native": "php tests/native.php \"$KUMWE_NATIVE_EXPECTED_TUPLE\"",
-    "test:native-absence": "php -n tests/native-absence.php"
+    "test:native-absence": "php -n tests/native-absence.php",
+    "native-release": "php tools/verify-native-release.php --self-test"
   },
   "config": {
     "sort-packages": true
