@@ -87,19 +87,18 @@ function ownershipVerify(array $record, array $api, array $corpus): void
 {
     ownershipRequire(($record['schema'] ?? null) === 'kumwe-computation-native-ownership/v1', 'Wrong schema.');
     ownershipRequire(($record['status'] ?? null) === 'reviewed-draft', 'Ownership is a reviewed draft.');
-    ownershipRequire(($record['phase'] ?? null) === 'native_adapter_candidate', 'Wrong adapter candidate phase.');
+    ownershipRequire(($record['phase'] ?? null) === 'contract_baseline', 'Wrong portable contract phase.');
     ownershipRequire(($record['native_implementation'] ?? null) === false, 'Native implementation stays upstream.');
-    ownershipRequire(($record['native_adapter'] ?? null) === true, 'An actual PHP native adapter is required.');
     ownershipRequire(
-        ($record['semantic_dependencies'] ?? null) === ['kumwe/canonical-json'],
-        'Only the canonical contract dependency is selected.',
+        ($record['semantic_dependencies'] ?? null) === [],
+        'Portable transport selects no semantic dependencies.',
     );
     ownershipRequire(($record['corpus'] ?? null) === 'resources/conformance/v1.json', 'Wrong transport corpus path.');
     ownershipRequire(($api['package'] ?? null) === 'kumwe/computation', 'Wrong public API owner.');
     $symbols = ownershipObject($api['symbols'] ?? null);
-    ownershipRequire(count($symbols) === 26, 'The reviewed baseline has exactly 26 public types.');
+    ownershipRequire(count($symbols) === 20, 'The reviewed baseline has exactly 20 public types.');
     $portable = ownershipList($record['php'] ?? null);
-    ownershipRequire(count($portable) === 26, 'Missing or excess portable declarations.');
+    ownershipRequire(count($portable) === 20, 'Missing or excess portable declarations.');
     $seen = [];
     $declared = [];
     foreach ($portable as $entry) {
@@ -221,13 +220,7 @@ try {
     ownershipRequire(str_contains($documentation, 'SHA-256: `' . $digest . '`'), 'Corpus digest drifted.');
     $capabilities = ownershipRead($root . '/resources/capabilities/v1.json');
     ownershipRequire(array_key_exists('native_requirements', $capabilities), 'Native requirement decision missing.');
-    $requirements = ownershipObject($capabilities['native_requirements']);
-    ownershipRequire(($requirements['extension'] ?? null) === 'kumwe_engine', 'The native extension is required.');
-    $adapter = ownershipRead($root . '/resources/native-adapter.json');
-    ownershipRequire(
-        ($adapter['verification'] ?? null) === 'required-actual-extension-and-independent-exact-tuple',
-        'Actual native execution and an independent compatibility tuple are required.',
-    );
+    ownershipRequire($capabilities['native_requirements'] === null, 'Portable contracts require no native extension.');
     $linked = false;
     foreach (ownershipList($capabilities['capabilities'] ?? null) as $entry) {
         $capability = ownershipObject($entry);
@@ -246,7 +239,7 @@ try {
         $broken['php'] = 'invalid';
         ownershipRejects('malformed list', $broken, $api, $corpus);
         $portable = ownershipList($record['php'] ?? null);
-        ownershipRequire(count($portable) === 26, 'Self-test needs the reviewed input.');
+        ownershipRequire(count($portable) === 20, 'Self-test needs the reviewed input.');
         $first = ownershipObject($portable[0]);
         $broken = $record;
         $broken['php'] = array_slice($portable, 1);
@@ -306,7 +299,7 @@ try {
         ownershipRejects('unverified native release claim', $broken, $api, $corpus);
         echo "Ownership self-test passed: 15 malformed/missing/duplicate/ownership/claim cases.\n";
     }
-    echo "Ownership verified: 26 portable types, two extension-owned types; native adapter required.\n";
+    echo "Ownership verified: 20 portable types, two extension-owned types; no native runtime dependency.\n";
 } catch (Throwable $error) {
     fwrite(STDERR, 'Ownership verification failed: ' . $error->getMessage() . "\n");
     exit(1);

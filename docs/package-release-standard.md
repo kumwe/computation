@@ -91,3 +91,11 @@ then verify **Package gate** on GitHub and again on the actual default-branch re
 Confirm publication from the successful default-branch run and the actual release/tag
 metadata. Report platform immutability only when observed. Complete independent evidence
 before declaring `release-verified` or marking the package ready for downstream adoption.
+
+## Computation portable maintenance exception
+
+The separately reviewed Phase 1A line uses maintenance/portable-contracts and the committed
+.github/portable-release.json policy. Its full reusable package gate and exact event-commit release path
+are identical to PR checks; publication is restricted to this repository and 0.1.1-and-later 0.1 patches.
+This explicit line preserves the native default-branch history and existing releases. It does not change
+normal default-branch publication, optional hardening, or independent verification/adoption requirements.

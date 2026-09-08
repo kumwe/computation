@@ -4,9 +4,9 @@
  * Enforce the package boundary without external tooling.
  *
  * Every source file declares strict types, sits in the canonical PSR-4 namespace, declares exactly the type
- * its file names, and names only reviewed native, canonical port and container interfaces. No host or
- * framework edge is admitted. Native availability is checked only by the explicit internal guard, which
- * disables autoload and cannot choose a PHP fallback. Composer metadata preserves the
+ * its file names, and names no type outside the package or PHP itself: no driver, no host, no container and
+ * no framework. The contract layer never reaches the test-support layer, and no source file selects an
+ * implementation at runtime. Composer metadata keeps the runtime requirement at PHP alone and preserves the
  * repository license.
  *
  * @since 0.1.0
@@ -22,27 +22,14 @@ $layers = [
         'ContractIdentity', 'CapabilitySet', 'CompatibilityRequirement', 'ExecutionLimits', 'ProgramEnvelope',
         'PlanIdentity', 'PlanCacheKey', 'CompiledProgram', 'DocumentInput', 'DocumentBatch', 'FindingPath',
         'FindingSeverity', 'SourceLocation', 'Finding', 'ExecutionResult', 'BatchResult', 'RefusalCode',
-        'ExecutionRefused', 'Compiler', 'Executor', 'Internal', 'NativeAdapter', 'NativeAdapterFactory',
-        'NativeCanonicalEncoder', 'NativeCanonicalEncoderFactory', 'NativeCompatibility', 'ConfigProvider',
+        'ExecutionRefused', 'Compiler', 'Executor', 'Internal',
     ],
     'Internal' => [
         'ContractIdentity', 'CapabilitySet', 'CompatibilityRequirement', 'ExecutionLimits', 'ProgramEnvelope',
         'PlanIdentity', 'PlanCacheKey', 'CompiledProgram', 'DocumentInput', 'DocumentBatch', 'FindingPath',
         'FindingSeverity', 'SourceLocation', 'Finding', 'ExecutionResult', 'BatchResult', 'RefusalCode',
-        'ExecutionRefused', 'Compiler', 'Executor', 'Internal', 'NativeAdapter', 'NativeAdapterFactory',
-        'NativeCanonicalEncoder', 'NativeCanonicalEncoderFactory', 'NativeCompatibility', 'ConfigProvider',
+        'ExecutionRefused', 'Compiler', 'Executor', 'Internal',
     ],
-];
-$nativeImports = [
-    'src/ConfigProvider.php' => ['Kumwe\\CanonicalJson\\CanonicalEncoder'],
-    'src/NativeAdapter.php' => ['Kumwe\\Engine\\Runtime', 'Kumwe\\Engine\\Exception\\BindingFailure'],
-    'src/NativeAdapterFactory.php' => ['Psr\\Container\\ContainerInterface'],
-    'src/NativeCanonicalEncoder.php' => [
-        'Kumwe\\CanonicalJson\\CanonicalEncoder', 'Kumwe\\CanonicalJson\\Limits', 'Kumwe\\CanonicalJson\\FindingCode',
-        'Kumwe\\Engine\\Runtime', 'Kumwe\\Engine\\Exception\\BindingFailure',
-    ],
-    'src/NativeCanonicalEncoderFactory.php' => ['Psr\\Container\\ContainerInterface', 'Kumwe\\CanonicalJson\\Limits'],
-    'src/Internal/NativeRuntime.php' => ['Kumwe\\Engine\\Runtime', 'Kumwe\\Engine\\Exception\\BindingFailure'],
 ];
 $runtimeSelection = ['class_alias', 'class_exists', 'interface_exists', 'extension_loaded', 'function_exists'];
 $errors = [];
@@ -98,7 +85,7 @@ foreach ($files as $path) {
     if ($layer === '' && !in_array($fileName, $layers[''], true)) {
         $errors[] = $relative . ' declares an unreviewed public type.';
     }
-    if ($layer === 'Internal' && !in_array($fileName, ['Guard', 'NativeRuntime'], true)) {
+    if ($layer === 'Internal' && $fileName !== 'Guard') {
         $errors[] = $relative . ' declares an unreviewed internal type.';
     }
     if ($layer === 'Internal' && preg_match('/(?:^|\s)@internal\b/', $code) !== 1) {
@@ -109,39 +96,16 @@ foreach ($files as $path) {
         continue;
     }
 
-    if ($relative === 'src/Internal/NativeRuntime.php') {
-        $normalized = preg_replace('/\s+/', '', $code);
-        if (!is_string($normalized) || !str_contains($normalized, "class_exists(Runtime::class,false)")) {
-            $errors[] = 'Native presence checks must suppress autoload explicitly.';
-        }
-        if (is_string($normalized) && substr_count($normalized, 'class_exists(') !== 1) {
-            $errors[] = 'Only one reviewed native presence check is permitted.';
-        }
-    }
-    $nativeAdapter = isset($nativeImports[$relative]);
     foreach (token_get_all($code) as $token) {
         if (!is_array($token)) {
             continue;
         }
         [$id, $text, $line] = $token;
         if (
-            $nativeAdapter && in_array($id, [T_STRING, T_NAME_FULLY_QUALIFIED], true)
-            && in_array(strtolower(ltrim($text, '\\')), [
-                'json_encode', 'json_decode', 'serialize', 'unserialize', 'sort', 'ksort', 'usort', 'uksort',
-                'asort', 'uasort', 'eval', 'bcadd', 'bcsub', 'bcmul', 'bcdiv',
-            ], true)
-        ) {
-            $errors[] = sprintf('%s:%d adds PHP semantic processing through %s.', $relative, $line, $text);
-        }
-        if (
             in_array($id, [T_STRING, T_NAME_FULLY_QUALIFIED], true)
             && in_array(strtolower(ltrim($text, '\\')), $runtimeSelection, true)
         ) {
-            $guard = $relative === 'src/Internal/NativeRuntime.php'
-                && in_array(strtolower(ltrim($text, '\\')), ['extension_loaded', 'class_exists'], true);
-            if (!$guard) {
-                $errors[] = sprintf('%s:%d selects behaviour at runtime through %s().', $relative, $line, $text);
-            }
+            $errors[] = sprintf('%s:%d selects behaviour at runtime through %s().', $relative, $line, $text);
             continue;
         }
         if (!in_array($id, [T_NAME_QUALIFIED, T_NAME_FULLY_QUALIFIED], true)) {
@@ -152,9 +116,6 @@ foreach ($files as $path) {
             continue;
         }
         if ($name === $namespaceRoot) {
-            continue;
-        }
-        if (in_array($name, $nativeImports[$relative] ?? [], true)) {
             continue;
         }
         if (!str_starts_with($name, $namespaceRoot . '\\')) {
@@ -183,8 +144,8 @@ if (($composer['license'] ?? null) !== 'Apache-2.0') {
     $errors[] = 'composer.json must advertise the repository Apache-2.0 license exactly.';
 }
 $runtime = is_array($composer['require'] ?? null) ? array_keys($composer['require']) : [];
-if ($runtime !== ['php', 'php-64bit', 'ext-kumwe_engine', 'kumwe/canonical-json', 'psr/container']) {
-    $errors[] = 'composer.json must declare exactly the reviewed native adapter dependencies.';
+if ($runtime !== ['php', 'php-64bit']) {
+    $errors[] = 'composer.json adds a runtime dependency; the package requires 64-bit PHP alone.';
 }
 if (($composer['autoload'] ?? null) !== ['psr-4' => [$namespaceRoot . '\\' => 'src/']]) {
     $errors[] = 'composer.json must autoload exactly the one canonical namespace Kumwe\\Computation\\ from src/.';
@@ -199,4 +160,4 @@ if ($errors !== []) {
 }
 
 echo 'Architecture verified: ' . count($files)
-    . " source files under Kumwe\\Computation, only reviewed native and PSR container edges.\n";
+    . " source files under Kumwe\\Computation, no host, driver or container coupling.\n";

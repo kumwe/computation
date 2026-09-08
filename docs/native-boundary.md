@@ -1,6 +1,6 @@
 # Computation transport and native boundary
 
-Status: portable contracts and native adapters implemented; native releases remain development candidates.
+Status: Phase 1A portable contract baseline; separately owned native implementations remain development candidates.
 Migration: KUMWE-MIG-2026-008 / KUMWE-CS-2026-008.
 
 This document assigns transport ownership. It does not implement or release an Engine, select an
@@ -13,19 +13,18 @@ refusals and coarse compiler/executor interfaces. Program, document and result p
 bytes tagged with an exact semantic owner/profile/version/corpus identity. Opaque means no decimal
 parsing, AST validation, document normalization or canonical JSON algorithm occurs here.
 
-The adapter consumes released Canonical JSON 0.1.1 and an explicit native capability/profile/corpus tuple.
-Independent native release verification remains mandatory. A
+This baseline selects no semantic runtime dependency or native adapter. Independent native release
+verification remains mandatory before native successor qualification. A
 ContractIdentity is a supplied coordinate, not an assertion that a release or corpus was verified.
 Package tests use a clearly synthetic transport-only profile, not a counterfeit semantic release.
 
 Current App Expression, ExpressionEvaluator, DecimalValue, RecordRuleValidator, RecordExpressionValues,
 ValidationViolation and DocumentWriteBudget retain their existing ownership and tests. The neutral
-contracts below were introduced independently. This successor removes no App types.
+contracts below were introduced independently. This baseline removes no App types.
 
 ## Portable public types
 
-All listed types have the prefix `Kumwe\Computation\`. The six native adapter/composition types follow the
-transport table below.
+All listed types have the prefix `Kumwe\Computation\`. The baseline has exactly 20 public types.
 
 | Type | Contract |
 |---|---|
@@ -136,27 +135,18 @@ result semantic identity. Boundary byte budgets include opaque payloads and find
 bytes. Every finding and path token is UTF-8 checked and byte bounded. Caller limits are applied at the
 compile/execute/result validation boundary, after constructor hard ceilings and before native use.
 
-## Native adapter and ownership
+## Native ownership and subsequent adapter
 
-NativeAdapter implements Compiler and Executor using the actual extension-owned Runtime. NativeCompatibility
-holds the independently configured exact expected tuple. NativeCanonicalEncoder implements the canonical
-owner interface by one native call. NativeAdapterFactory, NativeCanonicalEncoderFactory and ConfigProvider
-provide explicit PSR-11 composition. There are 26 public package types in total.
+The joint manifest reserves Runtime and BindingFailure exclusively for the extension. They are not provided,
+loaded, constructed or shadowed by this portable package. The current extension candidate registers
+capabilities(), compile(), execute() and release(string); its canonical entrypoint is native-owned as well.
+The exact reviewed candidate source and its development status remain recorded in the ownership manifest.
+The baseline has no runtime relationship with that candidate and can be installed with the extension absent.
 
-Runtime and BindingFailure are extension-owned; no Composer class or autoloadable stub implements them.
-The binding also owns the canonical operation and precise marshalling boundary. The Computation adapter uses
-capabilities(), compile(), execute() and release(string); native canonical encoding remains one coarse call.
-Compiled execution selects result_format=opaque, preserving Engine-authored JSON bytes while avoiding an
-unused semantic PHP result tree. The explicit opaque-compiled-results/1 binding feature is required at
-composition for both native services; correlation, findings, result counts and byte budgets remain enforced.
-Every native candidate identity is recorded in resources/native-ownership/v1.json and CI pins that exact source.
-A source pin and passing candidate tests never constitute a stable release attestation.
-
-Compiled native plans belong to the exact NativeAdapter instance that created them. A reconstructed or copied
-CompiledProgram is refused even if its transport bytes match. Call NativeAdapter::release() when finished;
-released, foreign and repeated-release handles are refused. Release reclaims native plan-count and source-byte
-capacity. Runtime destruction releases all retained handles. Long-lived hosts must release each completed plan
-and keep release from racing execution; the package does not invent host cache or request lifetimes.
+Native main retains NativeAdapter, NativeCanonicalEncoder, explicit compatibility admission and their
+factories/ConfigProvider. Those implementations are separately preserved in the native development line.
+A qualified Phase 1B successor must reconcile this portable baseline's exact API/corpus and the verified
+Engine/extension tuple before its own independently reviewed release. No PHP execution fallback is provided.
 
 ## C ABI implementation ownership
 
@@ -173,10 +163,10 @@ Zend cleanup and native allocations; Computation never exposes pointer bytes as 
 
 ## Package acceptance and release admission
 
-Package tests own transport invariants, identity vectors, bounded hostile input, compatibility, native adapter
-refusals, explicit plan release and canonical delegation. The no-dev archive consumer requires the actual
-extension and executes the same native suite through its authoritative Composer autoloader. Absence tests
-separately run with php -n and prove that no userland native shadow or fallback is accepted.
+Package tests own transport invariants, identity vectors, bounded hostile input and exact compatibility.
+The no-dev archive consumer proves authoritative loading and examples with no native extension or runtime
+package dependency. The complete portable test suite also runs with php -n. Native adapters and native
+lifecycle tests remain on the native development line; they are not erased from that line by this baseline.
 
 Engine owns algorithm conformance, hostile corpus, fuzz/sanitizer and performance gates. The binding owns
 Zend lifecycle, PHPT, installer and supported PHP/platform evidence. App retains host authority, persistence,

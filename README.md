@@ -1,18 +1,18 @@
 # Kumwe Computation
 
-Bounded computation transport and explicit adapters to the native Engine. The native adapter provides exact
-compatibility checks, compiler/executor services and the GenericV1 CanonicalEncoder implementation. It requires
-64-bit PHP 8.5, the actual `kumwe_engine` extension, the reviewed canonical contract and PSR container 2.x.
+Portable computation contracts for a separately implemented native Engine. This Phase 1A `contract_baseline`
+provides bounded immutable transport values, exact compatibility identities and coarse compiler/executor
+interfaces. It requires 64-bit PHP 8.5 and no native extension or other runtime package.
 
 This package does not evaluate expressions, parse decimals, normalize documents or implement canonical JSON.
 It treats program, normalized document and result bytes as opaque values with explicitly supplied semantic
-identities. NativeCanonicalEncoder delegates GenericV1 semantics and its exact corpus to the native Engine.
+identities. No Conversion or Canonical JSON API/corpus has been selected by this baseline.
 
 ## Development
 
 ```bash
 composer install --no-interaction --prefer-dist
-KUMWE_NATIVE_EXPECTED_TUPLE=/absolute/path/compatibility.json composer check
+composer check
 ```
 
 `composer check` runs strict metadata/security/release checks, documentation and architecture checks,
@@ -23,29 +23,28 @@ contract suite or `composer examples` for the shipped transport example.
 ## Contract ownership
 
 The [charter](CHARTER.md) defines this package's scope. The [public API](docs/public-api.md) documents every
-public member. The [native boundary](docs/native-boundary.md) names the implemented native owner
+public member. The [native boundary draft](docs/native-boundary.md) names the proposed native owner
 and separates portable metadata from Engine algorithms. The [integration notes](docs/integration.md) and
 [migration handoff](MIGRATION-HANDOFF.md) describe the ordered release and adoption barriers.
 
-Construct transport values directly. Register host-selected NativeCompatibility and apply ConfigProvider in a
-request-scoped container. Compiler and Executor share one NativeAdapter. The host explicitly binds the canonical
-interface to its selected encoder and releases finished native plans. See integration notes for the required
-independent compatibility JSON and native test gate.
+Construct values directly. There is no container provider, binding adapter, fallback interpreter or hidden
+service lookup. An Engine implementation will supply the compiler and executor interfaces after the exact
+contract and semantic releases are independently verified.
 
 ## Test ownership
 
 Computation tests own transport shape, round trips, bounds, identity/cache-key vectors, compatibility and
 ordered findings/batches. Engine owns semantic algorithms, parity corpora, fuzzing, sanitizers and performance.
 The native binding owns Zend lifecycle and marshalling tests. App owns authority, composition, database,
-transaction, deployment and recovery tests. This successor removes no App code or test; the later native cutover
+transaction, deployment and recovery tests. Phase 1A removes no App code or test; the later native cutover
 must remove superseded package-unit cases from App while retaining integration coverage.
 
 ## Release status
 
-The independently verified extension-free Computation baseline required before Engine stable is missing.
-Published 0.2.x packages and this native-backed 0.3.0 proposal cannot satisfy that prerequisite. See the
-[observed history and ordered remediation](docs/contract-baseline.md).
-
 The changelog records a proposed release, not evidence of publication. Human merge and successful release
-checks precede immutable publication. Independent release verification precedes consumer adoption. See
-[releasing](docs/releasing.md) and [security](SECURITY.md).
+checks precede immutable publication. Independent release verification precedes stable native release qualification or
+consumer adoption. See [releasing](docs/releasing.md) and [security](SECURITY.md).
+
+This source is the proposed **0.1.1 portable maintenance release**. The native 0.3 development line remains on
+`main`; it is not replaced. Read [baseline reconstruction and release order](docs/contract-baseline.md) before
+selecting a downstream version. This contracts-only artifact cannot run business computations by itself.

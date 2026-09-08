@@ -5,7 +5,8 @@
   "suite": {
     "inventory_command": [
       "php",
-      "tools/test-inventory.php"
+      "tests/run.php",
+      "--list-json"
     ]
   },
   "exports": {
@@ -170,59 +171,6 @@
       ],
       "boundary": [
         "source locations and semantic identities reject malformed coordinates"
-      ]
-    },
-    "Kumwe\\Computation\\NativeAdapter": {
-      "behavior": [
-        "native adapter and canonical integration through actual extension"
-      ],
-      "boundary": [
-        "native adapter and canonical integration through actual extension",
-        "native absence and no-autoload readiness"
-      ]
-    },
-    "Kumwe\\Computation\\NativeAdapterFactory": {
-      "behavior": [
-        "native adapter and canonical integration through actual extension"
-      ],
-      "boundary": [
-        "native adapter and canonical integration through actual extension",
-        "native absence and no-autoload readiness"
-      ]
-    },
-    "Kumwe\\Computation\\NativeCanonicalEncoder": {
-      "behavior": [
-        "native adapter and canonical integration through actual extension"
-      ],
-      "boundary": [
-        "native adapter and canonical integration through actual extension",
-        "native absence and no-autoload readiness"
-      ]
-    },
-    "Kumwe\\Computation\\NativeCanonicalEncoderFactory": {
-      "behavior": [
-        "native adapter and canonical integration through actual extension"
-      ],
-      "boundary": [
-        "native adapter and canonical integration through actual extension",
-        "native absence and no-autoload readiness"
-      ]
-    },
-    "Kumwe\\Computation\\NativeCompatibility": {
-      "behavior": [
-        "native adapter and canonical integration through actual extension"
-      ],
-      "boundary": [
-        "native adapter and canonical integration through actual extension",
-        "native absence and no-autoload readiness"
-      ]
-    },
-    "Kumwe\\Computation\\ConfigProvider": {
-      "behavior": [
-        "native absence and no-autoload readiness"
-      ],
-      "boundary": [
-        "native absence and no-autoload readiness"
       ]
     }
   },

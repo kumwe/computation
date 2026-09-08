@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.1.1
+
+- Reconstruct the extension-free Phase 1A portable contract baseline on the dedicated 0.1 maintenance line.
+  Preserve the 20 public transport types, internal boundary validator and transport corpus from the reviewed
+  native candidate without any runtime native classes, extension requirement, service provider or algorithm.
+- Re-prove behavior, hostile boundaries, exact API/corpus ownership and a fresh no-dev archive consumer on PHP
+  without kumwe_engine. Keep current release integrity and publication regression gates.
+- Admit only this repository's reviewed portable maintenance branch to 0.1.1-and-later patch publication after
+  its complete package gate; existing tags and native main remain unchanged.
+- Record the Phase 1A handoff and pending independent release verification explicitly. This maintenance record
+  is a proposed version, not an observation of publication or acceptance of native release prerequisites.
+
 ## 0.3.0
 
 - Request opaque compiled results to avoid unused PHP result allocation; require explicit binding feature admission.

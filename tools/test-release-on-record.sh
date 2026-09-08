@@ -93,7 +93,7 @@ elif [[ "$1" == api && "$2" == --method && "$3" == POST && "$4" == */git/refs ]]
   git update-ref "$ref" "$sha" 0000000000000000000000000000000000000000
   jq -n --arg ref "$ref" --arg sha "$sha" '{ref:$ref,object:{type:"commit",sha:$sha}}'
 elif [[ "$1" == release && "$2" == create ]]; then
-  [[ "$4" == --repo && "$5" == kumwe/fixture && "$6" == --verify-tag ]] || exit 2
+  [[ "$4" == --repo && "$5" == "$GH_FIXTURE_REPOSITORY" && "$6" == --verify-tag ]] || exit 2
   [[ "$(read_state '.fail_publish // false')" != true ]] || exit 1
   printf 'MUTATE publish %s\n' "$3" >> "$log"
   git show-ref --verify -q "refs/tags/$3" || exit 1
@@ -120,6 +120,7 @@ new_case() {
   : > "$case_dir/calls"
   : > "$case_dir/output"
   tested_sha="$(git -C "$case_dir/repo" rev-parse HEAD)"
+  fixture_repository=kumwe/fixture
   default_branch=main
   event_ref=refs/heads/main
 }
@@ -134,8 +135,8 @@ check() {
   local expected="$1" expected_mutations="$2" label="$3" actual=0 mutations
   (
     cd "$case_dir/repo"
-    PATH="$fixture_root/bin:$PATH" GH_FIXTURE_STATE="$case_dir/state.json" GH_FIXTURE_LOG="$case_dir/calls" \
-      GITHUB_REPOSITORY=kumwe/fixture DEFAULT_BRANCH="$default_branch" GITHUB_REF="$event_ref" \
+    PATH="$fixture_root/bin:$PATH" GH_FIXTURE_STATE="$case_dir/state.json" GH_FIXTURE_LOG="$case_dir/calls" GH_FIXTURE_REPOSITORY="$fixture_repository" \
+      GITHUB_REPOSITORY="$fixture_repository" DEFAULT_BRANCH="$default_branch" GITHUB_REF="$event_ref" \
       GITHUB_SHA="$tested_sha" GITHUB_OUTPUT="$case_dir/output" bash "$tools_dir/release-on-record.sh"
   ) > "$case_dir/result" 2>&1 || actual=$?
   mutations="$(awk '/^MUTATE / {n++} END {print n+0}' "$case_dir/calls")"
@@ -368,5 +369,52 @@ check fail 0 'malformed tag SHA is refused'
 new_case
 state '.fail_tag_create = true'
 check fail 1 'failed tag creation never attempts release publication'
+
+portable_case() {
+  new_case
+  fixture_repository=kumwe/computation
+  event_ref=refs/heads/maintenance/portable-contracts
+  git -C "$case_dir/repo" checkout -qb maintenance/portable-contracts
+  mkdir -p "$case_dir/repo/.github"
+  commit_file .github/portable-release.json '{"schema":"kumwe-portable-release-line/v1","repository":"kumwe/computation","branch":"maintenance/portable-contracts","phase":"contract_baseline","version_series":"0.1"}'
+  commit_file CHANGELOG.md $'# Changelog\n\n## 0.1.1\n'
+  state '.release_tag = "v0.1.1"'
+}
+
+portable_case
+check pass 2 'reviewed portable maintenance line publishes exact tested 0.1.1 source'
+[[ "$(git -C "$case_dir/repo" rev-parse refs/tags/v0.1.1)" == "$tested_sha" ]]
+: > "$case_dir/calls"
+check pass 0 'portable maintenance retry verifies without mutation'
+
+portable_case
+fixture_repository=kumwe/fixture
+check fail 0 'portable maintenance exception cannot authorize a different repository'
+
+portable_case
+event_ref=refs/heads/feature/portable-contracts
+check fail 0 'portable maintenance policy cannot authorize a feature branch'
+
+portable_case
+commit_file .github/portable-release.json '{"schema":"kumwe-portable-release-line/v1","repository":"kumwe/computation","branch":"main","phase":"contract_baseline","version_series":"0.1"}'
+check fail 0 'portable maintenance requires exact committed policy'
+
+portable_case
+commit_file CHANGELOG.md $'# Changelog\n\n## 0.3.1\n'
+check fail 0 'portable maintenance cannot publish a native-series release'
+
+portable_case
+commit_file CHANGELOG.md $'# Changelog\n\n## 0.1.0\n'
+check fail 0 'portable reconstruction cannot manufacture historical missing 0.1.0'
+
+portable_case
+commit_file .github/portable-release.json '{broken-json'
+check fail 0 'malformed portable policy cannot authorize publication'
+
+portable_case
+git -C "$case_dir/repo" rm -q .github/portable-release.json
+git -C "$case_dir/repo" commit -qm 'Remove portable policy'
+tested_sha="$(git -C "$case_dir/repo" rev-parse HEAD)"
+check fail 0 'portable maintenance requires its policy to be present'
 
 printf 'Release workflow: %s Git/HTTP fixture cases passed.\n' "$assertions"

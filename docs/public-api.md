@@ -1,9 +1,8 @@
 # Public API
 
-This reference describes the Computation 0.2.0 native adapter candidate, wire version 1. All short type names below
+This reference describes Computation Phase 1A `contract_baseline`, wire version 1. All short type names below
 resolve under `Kumwe\Computation\` unless they are PHP built-ins. Public properties are readonly except inherited
-PHP exception state. `Internal\Guard` is not public API. Native algorithms remain in the Engine; this package
-owns no Engine implementation or
+PHP exception state. `Internal\Guard` is not public API. There is no native adapter, Engine implementation or
 semantic corpus selection. See [architecture](architecture.md), [integration](integration.md) and the
 [native boundary](native-boundary.md) for ownership and release barriers.
 
@@ -253,7 +252,7 @@ toArray(
 
 ## `Kumwe\Computation\Compiler`
 
-Coarse compiler boundary implemented by NativeAdapter for the actual extension.
+Coarse compiler boundary; no production implementation is shipped in Phase 1A.
 
 ### `compile()`
 
@@ -981,58 +980,3 @@ toArray(
 - `$unit` — `string`, readonly.
 - `$rule` — `string`, readonly.
 - `$ordinal` — `int`, readonly.
-
-
-## `Kumwe\Computation\ConfigProvider`
-
-`__invoke()` returns the two native service factories and two package-owned interface aliases. Both concrete
-services are
-shared within the host's request container. Registration does not probe the extension or create services.
-The host supplies `NativeCompatibility`; Compiler and Executor must share the same NativeAdapter instance.
-
-## `Kumwe\Computation\NativeCompatibility`
-
-`__construct()` accepts the exact host-selected `$capabilities`, `$extensionVersion`, `$embeddedEngineCommit`,
-`$embeddedSourceSha256` and `$bindingBuildDigest`. The last coordinate binds the independently recorded PHP,
-ABI and binding build tuple. These readonly properties identify the configured candidate without asserting
-release admission. `assertObserved()` rejects a missing or mismatched coordinate before execution; extra
-informational fields do not change the comparison. The binding_features string list must advertise
-opaque-compiled-results/1. This common package minimum also applies to NativeCanonicalEncoder even though
-its own canonical request shape is unchanged. Invalid coordinates or features produce bounded portable refusals.
-
-## `Kumwe\Computation\NativeAdapter`
-
-`__construct()` requires the actual extension Runtime and exact NativeCompatibility. `compile()` accepts a
-portable ProgramEnvelope and bounded ExecutionLimits, calls native compilation, and retains the resulting
-opaque plan handle on this adapter. `execute()` sends one ordered DocumentBatch to that same native Runtime,
-requesting result_format=opaque. Engine-authored result_json bytes remain unchanged; the extension skips
-constructing an unused PHP semantic result tree. Correlation, count, finding and byte-budget checks still apply.
-Foreign, cloned or deserialized portable plan objects cannot acquire authority over a native plan handle.
-`__clone()` refuses copying the adapter. Native failures become payload-free ExecutionRefused categories.
-PHP validates transport identities and bounds; the Engine owns all program and document semantics.
-
-`release(CompiledProgram $program): void` returns the plan's native count and source-byte capacity.
-Only the same live object compiled by this adapter is accepted; foreign, copied and already released
-plans raise ExecutionRefused with InvalidProgram. Native failures preserve ownership so the caller may
-retry cleanup. After successful release, execute refuses the artifact. Long-lived workers and caches
-must release each plan when its final use completes; this method performs no execution or algorithm.
-
-## `Kumwe\Computation\NativeAdapterFactory`
-
-`__invoke()` reads NativeCompatibility from the PSR container and creates a verified native adapter. Missing
-or wrong configuration fails closed. The internal readiness guard requires the actual extension-owned
-Runtime declaration and suppresses class autoload during presence checks.
-
-## `Kumwe\Computation\NativeCanonicalEncoder`
-
-`__construct()` requires Runtime, NativeCompatibility and optional upstream canonical Limits. `encode()` and
-`digest()` implement the upstream CanonicalEncoder port using coarse native calls for GenericV1. The configured
-capability set must include the exact canonical corpus. Native semantic findings become stable canonical
-InvalidArgumentException messages. Objects are not serialized through application callbacks. Limits and all
-canonicalization, UTF8, ordering, float rendering and SHA-256 semantics remain native-owned.
-
-## `Kumwe\Computation\NativeCanonicalEncoderFactory`
-
-`__invoke()` reads NativeCompatibility and, when registered, upstream canonical Limits from the PSR container.
-It refuses wrong configuration types and creates the actual native encoder. The default limits are the
-upstream GenericV1 limits; the host may supply stricter limits within that contract.
