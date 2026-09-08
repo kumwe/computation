@@ -66,6 +66,7 @@ function nativeReleaseSelfTest(): void
     ];
     $dependencies = ['portable_contracts' => $portable, 'engine' => $engine, 'binding' => $binding];
     $adapter = [
+        'schema' => 'kumwe-native-adapter/v1',
         'binding_source' => ['repository' => 'kumwe/kumwe-engine', 'commit' => $binding['commit']],
         'composer_constraint' => '1.0.0', 'release_status' => 'verified-native-dependencies',
         'verification' => 'required-actual-extension-and-independent-exact-tuple',
