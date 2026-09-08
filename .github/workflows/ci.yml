@@ -28,14 +28,6 @@ jobs:
           persist-credentials: false
           path: package
 
-      - name: Check out the exact native candidate
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          repository: kumwe/kumwe-engine
-          ref: 584e910b5902c7d3c2bda006586692d572ac1154
-          persist-credentials: false
-          path: native
-
       - name: Set up PHP
         uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # v2.37.2
         with:
@@ -43,10 +35,58 @@ jobs:
           coverage: none
           tools: composer:v2
 
+      - name: Validate native dependency evidence and select its exact source
+        id: native-source
+        run: php tools/verify-native-release.php --github-outputs
+
+      - name: Check out the independently selected native source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: kumwe/kumwe-engine
+          ref: ${{ steps.native-source.outputs.commit }}
+          fetch-depth: 0
+          persist-credentials: false
+          path: native
+
+      - name: Verify the published native source bundle and GitHub OIDC provenance
+        if: steps.native-source.outputs.stable == 'true'
+        working-directory: native
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NATIVE_COMMIT: ${{ steps.native-source.outputs.commit }}
+          NATIVE_TAG: ${{ steps.native-source.outputs.tag }}
+          NATIVE_ARCHIVE_SHA256: ${{ steps.native-source.outputs.archive_sha256 }}
+        run: |
+          test "$(git rev-parse HEAD)" = "$NATIVE_COMMIT"
+          test "$(git rev-parse "refs/tags/$NATIVE_TAG^{commit}")" = "$NATIVE_COMMIT"
+          gh api "repos/kumwe/kumwe-engine/releases/tags/$NATIVE_TAG" \
+            --jq 'select(.draft == false and .prerelease == false and .published_at != null) | .id' \
+            > "$RUNNER_TEMP/native-published-release-id"
+          test -s "$RUNNER_TEMP/native-published-release-id"
+          bundle="$RUNNER_TEMP/verified-native-source"
+          mkdir "$bundle"
+          for name in kumwe-engine-php-source.tar.gz source.spdx.json source.json source.provenance.json SHA256SUMS; do
+            gh release download "$NATIVE_TAG" --repo kumwe/kumwe-engine --dir "$bundle" --pattern "$name"
+          done
+          gh release download "$NATIVE_TAG" --repo kumwe/kumwe-engine --dir "$RUNNER_TEMP" \
+            --pattern build-provenance.sigstore.json
+          python3 tools/release-source.py verify "$bundle" --expected-commit "$NATIVE_COMMIT" \
+            --expected-sha256 "$NATIVE_ARCHIVE_SHA256" --require-stable
+          branch="$(gh api repos/kumwe/kumwe-engine --jq '.default_branch')"
+          for name in kumwe-engine-php-source.tar.gz source.spdx.json source.json source.provenance.json SHA256SUMS; do
+            gh attestation verify "$bundle/$name" --repo kumwe/kumwe-engine \
+              --bundle "$RUNNER_TEMP/build-provenance.sigstore.json" --source-digest "$NATIVE_COMMIT" \
+              --source-ref "refs/heads/$branch" \
+              --cert-identity "https://github.com/kumwe/kumwe-engine/.github/workflows/release.yml@refs/heads/$branch" \
+              --deny-self-hosted-runners
+          done
+
       - name: Build and load the pinned native extension
         working-directory: native
+        env:
+          NATIVE_COMMIT: ${{ steps.native-source.outputs.commit }}
         run: |
-          test "$(git rev-parse HEAD)" = 584e910b5902c7d3c2bda006586692d572ac1154
+          test "$(git rev-parse HEAD)" = "$NATIVE_COMMIT"
           php tools/generate-arginfo.php --check
           php tools/verify-binding.php
           php tools/verify-engine.php
@@ -64,7 +104,7 @@ jobs:
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: ~/.cache/composer/files
-          key: composer-files-${{ hashFiles('composer.json') }}
+          key: composer-files-${{ hashFiles('package/composer.json') }}
           restore-keys: composer-files-
 
       - name: Install the validated package toolchain

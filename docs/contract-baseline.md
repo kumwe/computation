@@ -1,56 +1,52 @@
 # Contract-baseline release prerequisite
 
-The Version 2 objective requires an independently verified, extension-free Computation contract release
-before the first App-eligible Engine stable release. That baseline has no native adapter, native service
-binding or ext-kumwe_engine requirement. Engine stable precedes extension stable; only then can the
-native-backed Computation successor qualify for App adoption. This prevents a dependency cycle.
+The extension-free Computation Phase 1A prerequisite is now independently verified. The published
+`kumwe/computation` **0.1.1** maintenance release has exact source
+`fc9d049f8b675c8e19fd1672d49b5e206c9ad52a` and original GitHub ZIP SHA-256
+`2d132618efa233ec3bf0c648234c4892b7eb3d5cc1c378ea91a757a91617c223`.
+Its [release](https://github.com/kumwe/computation/releases/tag/v0.1.1) was published on 2026-09-08.
+The [independent verifier run](https://github.com/kumwe/extension-sdk/actions/runs/34250329345)
+checked the exact release/tag/registry identities, complete package gates, audit, original archive,
+production authoritative autoloader and a fresh offline reinstall without the native extension.
+It loaded all 20 public portable types and Internal/Guard. The original 50-file archive has no native
+adapter, ConfigProvider, native service binding or extension dependency.
 
-## Observed publication history
+The external [RELEASE-ATTESTATION.yaml artifact][baseline-attestation]
+is independent of the Computation source. `resources/contract-baseline/v1.json` records the artifact ZIP
+SHA-256, member digest, original source archive digest and API/capability/corpus identities. GitHub reported
+`immutable: false`; the observed exact tag and archive identities are recorded without claiming the
+optional platform immutability setting. Preserve these external artifacts before Actions retention expires.
 
-On 2026-09-07 the GitHub release and tag-ref APIs, corroborated by git ls-remote, exposed only these tags:
+All 20 portable source files, Internal/Guard and the transport corpus in this native successor remain
+byte-identical to published 0.1.1. The source preservation map is checked in native admission, ownership and
+manifest gates. No algorithms have moved into the portable package, and no App implementation is removed.
+The transport corpus remains SHA-256 `30a64cf682a46c38ca99544d5abcad43cda7071bb9702621226bf297411b8bfc`.
 
-- v0.2.0: source 669d1c46b6f243826b1b952b16224c8a87991fb1, published 2026-09-07T19:13:01Z.
-- v0.2.1: source 6ac52321c2a5089f52d44e20cfa6374064960e8a, published 2026-09-07T20:08:49Z.
+## Historical reconstruction and publication history
 
-Both tagged composer.json files require ext-kumwe_engine 0.0.0-dev. Version 0.2.0 additionally references
-the historical Canonical JSON development branch; 0.2.1 pins its published 0.1.1 contract. Both release
-records reported github_immutable=false. Neither native-backed artifact is the extension-free baseline.
-The v0.1.0 release lookup returned HTTP 404 and no v0.1.0 tag was present. No usable published baseline
-coordinate or independent baseline attestation was identified. Publication observations are not attestations.
+Historical untagged source `3520a11a4acb075562db9dea0d23fbd4922d2bbd` supplied the reviewed portable boundary.
+Its proposed 0.1.0 record was never treated as an observed release. The maintenance implementation was
+reviewed in [PR #12](https://github.com/kumwe/computation/pull/12), revalidated and published as unused 0.1.1.
+Native main and every prior tag were preserved.
 
-Authoritative observations can be repeated from the [release collection][releases], [tag references][tags]
-and tagged [0.2.0 Composer metadata][c020] and [0.2.1 Composer metadata][c021].
+The earlier published 0.2.0 and 0.2.1 artifacts require `ext-kumwe_engine: 0.0.0-dev`; native-backed 0.3.0 also
+cannot supply the pre-Engine portable prerequisite. Their historical coordinates remain in the machine
+record for audit. No historical development publication was relabelled as a verified portable release.
 
-[releases]: https://api.github.com/repos/kumwe/computation/releases
-[tags]: https://api.github.com/repos/kumwe/computation/git/matching-refs/tags/
-[c020]: https://raw.githubusercontent.com/kumwe/computation/v0.2.0/composer.json
-[c021]: https://raw.githubusercontent.com/kumwe/computation/v0.2.1/composer.json
+## Remaining ordered native admission
 
-## Historical reconstruction input
+1. Engine consumes the verified portable baseline and independently verified semantic-owner inputs.
+   Frozen ABI compatibility, final native quality and exact candidate cross-build evidence gate Engine release.
+2. Independently verify the published Engine source and signed provenance. The PHP extension then embeds
+   that exact source, passes its installer/lifecycle/platform/performance gates and publishes its stable release.
+3. Independently verify the extension release. Computation selects its exact stable extension version,
+   binding source, embedded Engine identity and external release evidence; its CI verifies the actual
+   published source bundle and GitHub OIDC provenance before compiling that source.
+4. Verify the native-backed Computation successor and downstream SDK release before separately provisioning
+   the App and performing its runtime integration. The host still supplies the independent complete build tuple.
 
-Untagged ancestor 3520a11a4acb075562db9dea0d23fbd4922d2bbd contains the 20 portable types, requires only
-64-bit PHP 8.5, and declares a null ConfigProvider with no factories or aliases. Its manifest's proposed
-0.1.0 version is a source record, not a published coordinate. Its 20 portable source files, Internal/Guard,
-transport corpus and tests/run.php are byte-identical to the reviewed native successor's corresponding files.
-The historical API/corpus digests are recorded in resources/contract-baseline/v1.json as reconstruction
-evidence only. A commit SHA, a proposed changelog version or source equality cannot satisfy release admission.
+`resources/native-adapter.json` distinguishes candidate source from `verified-native-dependencies`.
+The latter means the three upstream release prerequisites are verified; it does not self-attest this
+Computation successor. Its own release and independent consumer verification follow the complete package gate.
 
-## Required remediation and order
-
-1. Review a separate extension-free maintenance release of kumwe/computation using the historical portable
-   boundary and current portable corrections as source inputs. Preserve all existing tags and native work.
-   Choose an unused release coordinate through the release process; do not fabricate a missing v0.1.0 tag
-   or publish an old tree without renewed review, current manifests, handoff and security/consumer gates.
-2. Its archive must contain the portable contracts and corpus with no native adapter or native binding.
-   Run its complete package tests and install its no-dev archive on PHP without ext-kumwe_engine. Generate
-   a Phase 1A handoff that points to the native-binding successor and records the actual selected APIs.
-3. Publish that reviewed artifact and independently verify its immutable source/artifact, Composer identity,
-   public API and corpus hashes, shipped handoff and external RELEASE-ATTESTATION.yaml. Only the resulting
-   observed coordinates may fill the currently unresolved baseline dependency in the native release gates.
-4. Engine then consumes that exact verified baseline alongside all implemented semantic-owner corpora.
-   After Engine and extension stable artifacts are independently verified, qualify the native adapter
-   successor and then perform the separate App provisioning and execution cutover.
-
-The current 0.3.0 proposal already requires the native extension. It cannot serve as its own pre-Engine
-contract baseline. Green candidate builds, native runtime tests or performance receipts do not resolve this
-publication-order gap. Candidate development may continue; App-eligible stable admission remains blocked.
+[baseline-attestation]: https://github.com/kumwe/extension-sdk/actions/runs/34250329345/artifacts/10065724495

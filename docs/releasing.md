@@ -19,10 +19,10 @@ Computation uses SemVer; pre-1.0 adopters pin an exact verified version.
 
 ## Package scope and artifact qualification
 
-The native-backed successor is not the contract baseline required before Engine stable. Published history
-currently contains no identified extension-free baseline release. Normal tag publication does not qualify
-an artifact for that dependency role. Follow [baseline remediation](contract-baseline.md) before claiming
-the objective's ordered baseline, Engine, extension and native-adapter release prerequisites are satisfied.
+The independently verified extension-free Computation 0.1.1 release satisfies the portable prerequisite.
+This successor preserves its source boundary and waits for verified Engine and extension stable releases.
+[Baseline evidence and release order](contract-baseline.md) records exact observed identities. A native source
+candidate or a successful publication alone cannot substitute for those independent adoption prerequisites.
 
 Run `composer check` on supported 64-bit PHP 8.5. It includes the security audit,
 max-level analysis, package tests and the actual Composer ZIP installed as a
@@ -31,7 +31,7 @@ handoff, docs, public manifests, internal implementation, smoke tool and example
 It excludes tests, development tools, workflows, vendor, caches and the development
 lock file.
 
-The 0.2.0 candidate adds native compiler/executor and GenericV1 canonical adapters.
+The preserved native implementation supplies compiler/executor and GenericV1 canonical adapters.
 The actual extension and independently configured compatibility tuple are mandatory
 for the full gate and isolated consumer. No native provisioning or App integration is claimed. Downstream work
 requires independent verification of the
@@ -77,3 +77,21 @@ The release workflow does not change repository settings automatically. This hel
 requires repository Administration access, and dispatch also needs Actions write
 permission. Keep administrator credentials out of Actions. A setup audit or dispatch
 is neither a normal publication prerequisite nor proof that publication succeeded.
+
+## Native dependency admission
+
+`tools/verify-native-release.php` and the shared ownership/manifest gate validate every ordered dependency
+record. Candidate mode permits only the explicitly recorded development source and makes no release claim.
+Stable dependency mode requires external verification records for portable contracts, frozen Engine ABI 1.0
+and the exact PHP binding. Composer's exact extension version, CI source and embedded Engine must agree.
+All 22 portable source/corpus files are hashed against the published baseline preservation map.
+
+Before compiling stable native source, the reusable CI downloads its actual published source bundle,
+checks the tag/commit, regenerates the full source archive/SPDX metadata with the recorded archive digest,
+and verifies GitHub OIDC provenance for all five evidence files against the publishing workflow and commit.
+The build independently derives the complete expected PHP/build tuple before runtime tests execute it.
+The no-dev archive consumer repeats the native suite through its authoritative dependency autoloader.
+
+`verified-native-dependencies` describes upstream dependency evidence only. This package's own independent
+release attestation still follows its actual publication. No tool copies an attestation into its own tested
+source or converts a proposed version, CI pass or native handshake into external release verification.

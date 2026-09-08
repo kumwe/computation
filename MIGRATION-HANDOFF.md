@@ -30,7 +30,7 @@ target:
   repository: "https://github.com/kumwe/computation"
   artifact_identity: "kumwe/computation"
   canonical_namespace_or_abi: "Kumwe\\Computation"
-  branch: "codex/extraction-readiness-20260907"
+  branch: "codex/qualified-native-successor"
   pull_request: "https://github.com/kumwe/computation/pull/11"
 ownership:
   responsibility: "Portable transport, native adapters, compatibility and deterministic refusals."
@@ -58,7 +58,7 @@ ownership:
       sha256: "5ea8e1eb02d0008bd293ae9a68dd3f36bf37617b49a0a0d86acdf7126312860e"
     -
       path: "resources/contract-baseline/v1.json"
-      sha256: "3996c8d0ec3cc114167c71d8dcf77ac6f17bacd5502f3e64934db8ad9f26c479"
+      sha256: "10b2199f5c28a80ab4a00508db173381af73f8aadcc42b79353f180d39c61f17"
   intentionally_excluded:
     - "Engine owns algorithms; extension owns C ABI/Zend binding."
     - "No App extraction or runtime adoption occurs in this successor."
@@ -76,7 +76,8 @@ framework_php:
       - "Re-scan current App dynamic, reflected and same-namespace references before adoption."
     fixtures_and_examples:
       - "examples/typed-consumer.php"
-    external: []
+    external:
+      - "kumwe/extension-sdk: development/template dependency and explicitly provisioned native CLI."
   dependency_injection:
     mode: "config-provider"
     provider: "Kumwe\\Computation\\ConfigProvider"
@@ -114,7 +115,7 @@ documentation:
   integration_or_consumer: "docs/integration.md"
   examples:
     - "examples/typed-consumer.php"
-  changelog_record: "CHANGELOG.md / 0.3.0"
+  changelog_record: "CHANGELOG.md / Unreleased"
 release_expectations:
   version_policy: "Exact stable sibling pins; promote compatible published successors together."
   expected_artifact_types:
@@ -174,9 +175,9 @@ decisions:
   - "Engine owns algorithms; Computation owns transport and native adapters."
   - "No App changes or release publication occurs in this successor."
   - "Require opaque-compiled-results/1 at composition; preserve raw native result bytes."
-  - "This native-backed 0.3.0 proposal cannot serve as its own pre-Engine contract baseline."
+  - "Published portable Computation 0.1.1 is independently verified and preserved byte for byte."
 blockers:
-  - "No published, independently verified extension-free Computation baseline was identified."
+  - "Engine and binding stable publication/verification are pending after the verified portable baseline."
   - "Final package gates and independent immutable release verification remain required."
   - "Engine/extension remain development candidates; no verified stable tuple exists."
 ---
@@ -185,9 +186,9 @@ blockers:
 
 ## Migration/implementation summary
 
-Expose compiled-plan release and opaque results with explicit binding-feature admission; normalize consumer
-manifests. [PR #11](https://github.com/kumwe/computation/pull/11) contains this successor. The changelog
-version describes the proposed artifact; it is not a publication observation.
+Qualify the preserved native adapters using ordered independently verified dependency records and signed
+published source bundles. The portable Computation 0.1.1 baseline is now verified; all 22 corresponding
+source/corpus files remain unchanged. Native Engine/binding stable qualification is still in progress.
 
 ## Public API and responsibility
 
@@ -199,10 +200,10 @@ types have recorded extraction provenance; package-native composition is identif
 
 ## Capability reuse/semantic input review
 
-The implementation consumes the exact canonical dependency contracts recorded in composer.json. First publish
-and independently verify the extension-free Computation contract baseline; no usable published baseline was
-identified. Then verify Engine stable, extension stable and this native-backed successor in that order. See
-docs/contract-baseline.md. The tested 0.0.0-dev extension is candidate evidence only.
+The implementation consumes the exact canonical dependency contracts in composer.json. The independently
+verified portable Computation 0.1.1 baseline supplies the pre-Engine prerequisite. Verify Engine stable,
+extension stable and this native-backed successor in that order; candidate build receipts alone do not
+qualify a release. External evidence and preserved source hashes are in resources/contract-baseline/v1.json.
 
 ## Consumer inventory
 
@@ -220,13 +221,10 @@ library implementation assertions from App together with their legacy source.
 
 ## Next-task execution notes
 
-Independent successor release verification and the final package gate remain necessary before App adoption.
-Native extension and Engine are development candidates; no verified stable native release tuple exists. First
-publish and independently verify the extension-free Computation contract baseline; no usable published
-baseline was identified. Then verify Engine stable, extension stable and this native-backed successor in that
-order. See docs/contract-baseline.md. The tested 0.0.0-dev extension is candidate evidence only. Run final
-source and clean archive gates before admitting the package; then update the App dependency lock, replace
-namespaces, retain host adapters and remove only the inventoried portable legacy implementations.
+Complete the Engine and extension stable release verification, then record their exact source and artifact
+identities in this successor. Run the complete native package gate and publish an unused successor version;
+independent released-artifact verification follows. Only then update SDK's native development/template pins.
+App provisioning and runtime integration remain a separate later task with its own current source inventory.
 
 ## Drift check
 

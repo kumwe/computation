@@ -17,6 +17,8 @@
 
 declare(strict_types=1);
 
+require_once __DIR__ . '/lib/native-release.php';
+
 const COMPUTATION_ROOT = __DIR__ . '/..';
 const COMPUTATION_SOURCE = COMPUTATION_ROOT . '/src';
 const COMPUTATION_PACKAGE = 'kumwe/computation';
@@ -515,14 +517,20 @@ function computationVerifyCapabilities(array $exported, string $release): int
     if (!is_array($document['non_responsibilities'] ?? null)) {
         throw new RuntimeException($file . ' must list non_responsibilities.');
     }
+    nativeReleaseVerifyPortableSources(
+        computationJsonObject('resources/contract-baseline/v1.json'),
+        COMPUTATION_ROOT,
+    );
     $candidate = computationJsonObject('resources/native-adapter.json');
     $expectedNative = $candidate['requirements'] ?? null;
     if (($candidate['binding_features'] ?? null) !== ['opaque-compiled-results/1']) {
         throw new RuntimeException('The native adapter must require its explicit binding feature.');
     }
-    if (($candidate['release_status'] ?? null) !== 'candidate-not-release-verified') {
-        throw new RuntimeException('The native adapter remains an unverified development candidate.');
-    }
+    nativeReleaseVerify(
+        $candidate,
+        computationJsonObject('resources/contract-baseline/v1.json'),
+        computationJsonObject('composer.json'),
+    );
     if (($document['native_requirements'] ?? null) !== $expectedNative) {
         throw new RuntimeException($file . ' must require the exact native candidate verification contract.');
     }

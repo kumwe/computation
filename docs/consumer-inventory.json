@@ -1,6 +1,6 @@
 {
   "schema": "kumwe-computation-consumer-inventory/v1",
-  "phase": "contract_baseline",
+  "phase": "native_adapter_successor",
   "source_repository": "https://github.com/kumwe/app",
   "source_commit": "960ce8ec00cf724a7cae03e5ba09c4852c9ab54e",
   "immediate_app_consumers": [],
@@ -15,11 +15,28 @@
     "ValidationViolation",
     "DocumentWriteBudget"
   ],
-  "next_consumer": "kumwe/engine",
+  "next_consumer": "kumwe/extension-sdk",
   "notes": [
-    "Phase 1A introduces neutral contracts, with no verbatim App type extraction or App adoption.",
-    "Semantic owner APIs/corpora are not selected; fixture coordinates are synthetic transport-only data.",
-    "Refresh exact App method inventories at native cutover; retain authority/composition/integration tests.",
-    "Remove superseded package-unit tests from App only when the verified implementation is adopted."
+    "This successor qualifies existing native adapters without extracting or removing App code.",
+    "The App source_commit is historical; re-scan App methods and dynamic references before integration.",
+    "All 22 portable source/corpus files match independently verified portable Computation 0.1.1.",
+    "SDK development/template pins advance after successor publication and independent verification.",
+    "Retain App authority, composition, persistence, delivery and recovery tests; no App tests are removed."
+  ],
+  "external_consumers": [
+    {
+      "repository": "https://github.com/kumwe/extension-sdk",
+      "observed_commit": "dfd0f6abba6474e341c8e7dd4f8576d10e52440f",
+      "selected_version": "0.2.1",
+      "source_commit": "6ac52321c2a5089f52d44e20cfa6374064960e8a",
+      "paths": [
+        "composer.json",
+        "resources/extension-scaffold/complete-component/composer.json.tpl",
+        "bin/kumwe-extension",
+        "tests/TestCase.php",
+        "tools/verify-scaffold-consumer.php"
+      ],
+      "scope": "Development/test dependency and optional native CLI; SDK production depends on the canonical contract."
+    }
   ]
 }
