@@ -72,7 +72,7 @@ function nativeReleaseCoordinate(array $record, string $package): void
     nativeReleaseRequire(($record['state'] ?? null) === 'release-verified', 'Upstream release is not verified.');
     $version = $record['version'] ?? null;
     if (
-        !is_string($version)
+        !is_string($version) || $version === '0.0.0'
         || preg_match('/^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$/D', $version) !== 1
     ) {
         throw new RuntimeException('An exact stable upstream version is required.');
@@ -99,6 +99,7 @@ function nativeReleaseCoordinate(array $record, string $package): void
  */
 function nativeReleaseVerify(array $adapter, array $baseline, array $composer): void
 {
+    nativeReleaseRequire(($adapter['schema'] ?? null) === 'kumwe-native-adapter/v1', 'Wrong native adapter schema.');
     $require = nativeReleaseObject($composer['require'] ?? null);
     $source = nativeReleaseObject($adapter['binding_source'] ?? null);
     nativeReleaseRequire(($source['repository'] ?? null) === 'kumwe/kumwe-engine', 'Wrong binding source repository.');

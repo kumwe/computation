@@ -18,20 +18,31 @@ source:
       - "docs/architecture/capability-index.md"
     old_namespace_roots: []
     capability_index_sha256: "87ded886f35f74878ca9eb8db4c36e23d681c4a49891f76dfc3210f385a7ce39"
-  semantic_inputs: []
+  semantic_inputs:
+    - owner: "kumwe/canonical-json"
+      version_or_commit: "0.1.1 / e7006a2580a49a1c8ab507b0d7b9c3403b4f9f58"
+      manifest_or_corpus: "resources/corpus/v1.json"
+      sha256: "84d21b12e7a2bfd752356d9a6e664bcb332e209d19017e7634e7485a4fa4e250"
+    - owner: "kumwe/computation"
+      version_or_commit: "0.1.1 / fc9d049f8b675c8e19fd1672d49b5e206c9ad52a"
+      manifest_or_corpus: "resources/conformance/v1.json (portable transport only)"
+      sha256: "30a64cf682a46c38ca99544d5abcad43cda7071bb9702621226bf297411b8bfc"
   examined_dependencies:
     - "php ^8.5"
     - "php-64bit ^8.5"
     - "ext-kumwe_engine 0.0.0-dev"
     - "kumwe/canonical-json 0.1.1"
     - "psr/container ^2.0"
-  active_related_pull_requests: []
+  active_related_pull_requests:
+    - "https://github.com/kumwe/engine/pull/7"
+    - "https://github.com/kumwe/kumwe-engine/pull/3"
+    - "https://github.com/kumwe/extension-sdk/pull/15"
 target:
   repository: "https://github.com/kumwe/computation"
   artifact_identity: "kumwe/computation"
   canonical_namespace_or_abi: "Kumwe\\Computation"
   branch: "codex/qualified-native-successor"
-  pull_request: "https://github.com/kumwe/computation/pull/11"
+  pull_request: "https://github.com/kumwe/computation/pull/13"
 ownership:
   responsibility: "Portable transport, native adapters, compatibility and deterministic refusals."
   non_responsibilities:
@@ -45,7 +56,7 @@ ownership:
     - "kumwe/canonical-json"
     - "psr/container"
   implementation_owner: "kumwe/computation"
-  next_consumer: "kumwe/app"
+  next_consumer: "kumwe/extension-sdk"
   public_manifests:
     -
       path: "resources/public-api/v1.json"
@@ -59,6 +70,12 @@ ownership:
     -
       path: "resources/contract-baseline/v1.json"
       sha256: "10b2199f5c28a80ab4a00508db173381af73f8aadcc42b79353f180d39c61f17"
+    -
+      path: "resources/native-adapter.json"
+      sha256: "d8f1560210e93a5df0b19d4db4decb2bc5d38925a8b2d16e0a9f31a77fcd5b16"
+    -
+      path: "resources/native-ownership/v1.json"
+      sha256: "f68d833a3dff93f961953771e3aef6d4e4c955ad7791635de77efd96e2593fd2"
   intentionally_excluded:
     - "Engine owns algorithms; extension owns C ABI/Zend binding."
     - "No App extraction or runtime adoption occurs in this successor."
@@ -128,33 +145,35 @@ release_expectations:
   required_registry_or_installer: "Composer"
   required_external_attestation: true
 next_task:
-  phase_name: "Verify portable baseline, then ordered native releases and adapter successor"
+  phase_name: "Qualify SDK native development/CLI inputs, then separately integrate into App"
   permitted_only_when:
     - "The extension-free baseline is independently verified before Engine stable admission"
     - "Final package CI passes at the proposed head"
     - "Immutable package and all dependency releases are independently verified"
     - "Reconcile current App drift against the recorded source inventories"
-  consumer_repository: "https://github.com/kumwe/app"
-  dependency_or_native_change: "Verify baseline, Engine, extension and successor; see docs/contract-baseline.md."
+  consumer_repository: "https://github.com/kumwe/extension-sdk"
+  dependency_or_native_change: "Select the verified native successor in SDK development, templates and CLI evidence."
   namespace_or_api_replacements: []
   files_to_update:
     - "composer.json"
     - "composer.lock"
+    - "resources/extension-scaffold/complete-component/composer.json.tpl"
+    - "resources/source-ci-dependencies.json"
+    - "resources/source-candidate-dependencies.json"
   files_to_remove: []
-  tests_to_remove:
-    - "Portable implementation assertions only, after App integration gates pass."
+  tests_to_remove: []
   tests_to_retain_or_add:
-    - "Host composition and operational integration suites."
+    - "SDK archive and generated no-dev consumers; development native CLI and complete tuple gates."
   di_or_provisioning_changes:
-    - "Bind NativeCompatibility and package factories; host selects CanonicalEncoder binding."
+    - "Retain explicit native CLI composition and independent tuple; production uses only CanonicalEncoder."
   capability_index_changes:
-    - "Record verified package capability and API ownership."
+    - "Record verified package/native ownership in SDK evidence; App index changes belong to later integration."
   changelog_and_evidence_changes:
     - "Record exact artifact and dependency identities in the external release attestation."
   verification_commands:
     - "composer check"
-    - "Affected App integration suites"
-    - "Complete App package governance gate"
+    - "SDK complete package, archive and generated production consumer gates"
+    - "Independent SDK release and all31 consumer verification"
 concurrency:
   likely_conflict_files:
     - "App composer.json"

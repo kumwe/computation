@@ -32,7 +32,7 @@
             "84d21b12e7a2bfd752356d9a6e664bcb332e209d19017e7634e7485a4fa4e250"
         ]
     },
-    "schema": "kumwe-native-adapter-candidate/v1",
+    "schema": "kumwe-native-adapter/v1",
     "binding_features": [
         "opaque-compiled-results/1"
     ],
