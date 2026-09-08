@@ -30,7 +30,8 @@ if [[ "$GITHUB_REF" != "refs/heads/$DEFAULT_BRANCH" ]]; then
 fi
 version="$(bash "$tools_dir/read-release-record.sh" < CHANGELOG.md)"
 if [[ "$release_branch" != "$DEFAULT_BRANCH" ]]; then
-  [[ "$version" =~ ^0\.1\.[1-9][0-9]*$ ]] || fail 'Portable maintenance releases are restricted to 0.1.1 or later 0.1 patches.'
+  [[ "$version" =~ ^0\.1\.[1-9][0-9]*$ ]] \
+    || fail 'Portable maintenance releases are restricted to 0.1.1 or later 0.1 patches.'
 fi
 output version "$version"
 if [[ -z "$version" ]]; then

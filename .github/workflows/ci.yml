@@ -39,7 +39,7 @@ jobs:
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: ~/.cache/composer/files
-          key: composer-files-${{ hashFiles('composer.json') }}
+          key: composer-files-${{ hashFiles('package/composer.json') }}
           restore-keys: composer-files-
 
       - name: Install the validated package toolchain
@@ -52,7 +52,6 @@ jobs:
         run: |
           php -r 'exit(extension_loaded("kumwe_engine") ? 1 : 0);'
           composer check
-          php -n tests/run.php
 
       - name: Verify the no-dev installed-package autoloader and the shipped example
         run: |

@@ -135,7 +135,8 @@ check() {
   local expected="$1" expected_mutations="$2" label="$3" actual=0 mutations
   (
     cd "$case_dir/repo"
-    PATH="$fixture_root/bin:$PATH" GH_FIXTURE_STATE="$case_dir/state.json" GH_FIXTURE_LOG="$case_dir/calls" GH_FIXTURE_REPOSITORY="$fixture_repository" \
+    PATH="$fixture_root/bin:$PATH" GH_FIXTURE_STATE="$case_dir/state.json" GH_FIXTURE_LOG="$case_dir/calls" \
+      GH_FIXTURE_REPOSITORY="$fixture_repository" \
       GITHUB_REPOSITORY="$fixture_repository" DEFAULT_BRANCH="$default_branch" GITHUB_REF="$event_ref" \
       GITHUB_SHA="$tested_sha" GITHUB_OUTPUT="$case_dir/output" bash "$tools_dir/release-on-record.sh"
   ) > "$case_dir/result" 2>&1 || actual=$?
@@ -376,7 +377,9 @@ portable_case() {
   event_ref=refs/heads/maintenance/portable-contracts
   git -C "$case_dir/repo" checkout -qb maintenance/portable-contracts
   mkdir -p "$case_dir/repo/.github"
-  commit_file .github/portable-release.json '{"schema":"kumwe-portable-release-line/v1","repository":"kumwe/computation","branch":"maintenance/portable-contracts","phase":"contract_baseline","version_series":"0.1"}'
+  commit_file .github/portable-release.json '{
+    "schema":"kumwe-portable-release-line/v1","repository":"kumwe/computation",
+    "branch":"maintenance/portable-contracts","phase":"contract_baseline","version_series":"0.1"}'
   commit_file CHANGELOG.md $'# Changelog\n\n## 0.1.1\n'
   state '.release_tag = "v0.1.1"'
 }
@@ -396,7 +399,9 @@ event_ref=refs/heads/feature/portable-contracts
 check fail 0 'portable maintenance policy cannot authorize a feature branch'
 
 portable_case
-commit_file .github/portable-release.json '{"schema":"kumwe-portable-release-line/v1","repository":"kumwe/computation","branch":"main","phase":"contract_baseline","version_series":"0.1"}'
+commit_file .github/portable-release.json '{
+    "schema":"kumwe-portable-release-line/v1","repository":"kumwe/computation",
+    "branch":"main","phase":"contract_baseline","version_series":"0.1"}'
 check fail 0 'portable maintenance requires exact committed policy'
 
 portable_case

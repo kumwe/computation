@@ -48,3 +48,6 @@ consumer adoption. See [releasing](docs/releasing.md) and [security](SECURITY.md
 This source is the proposed **0.1.1 portable maintenance release**. The native 0.3 development line remains on
 `main`; it is not replaced. Read [baseline reconstruction and release order](docs/contract-baseline.md) before
 selecting a downstream version. This contracts-only artifact cannot run business computations by itself.
+
+The clean-consumer gate replays all portable behavior/boundary/conformance assertions against the installed
+archive with php -n and verifies that the classes and transport corpus came from that dependency.

@@ -28,7 +28,22 @@ use Kumwe\Computation\SourceLocation;
 use RuntimeException;
 use Throwable;
 
-require dirname(__DIR__) . '/vendor/autoload.php';
+$testRoot = dirname(__DIR__);
+$testAutoload = $testRoot . '/vendor/autoload.php';
+$consumerOption = $argv[1] ?? '';
+if (str_starts_with($consumerOption, '--consumer=')) {
+    $consumerRoot = realpath(substr($consumerOption, strlen('--consumer=')));
+    if ($consumerRoot === false || !is_dir($consumerRoot)) {
+        throw new RuntimeException('Installed consumer root is unavailable.');
+    }
+    $testRoot = $consumerRoot . '/vendor/kumwe/computation';
+    $testAutoload = $consumerRoot . '/vendor/autoload.php';
+}
+require $testAutoload;
+$loadedSource = (new \ReflectionClass(ContractIdentity::class))->getFileName();
+if (!is_string($loadedSource) || !str_starts_with($loadedSource, $testRoot . '/src/')) {
+    throw new RuntimeException('Portable tests must load the selected package source only.');
+}
 
 /**
  * Meaningful portable boundary assertions, excluded from the runtime archive.
@@ -369,8 +384,8 @@ Check::test('finite budgets and signed64 integer contract', static function (): 
     Check::that(Guard::encode(PHP_INT_MAX) === 'I19:9223372036854775807');
 });
 
-Check::test('independent metadata grammar and complete plan golden vectors', static function (): void {
-    $bytes = file_get_contents(dirname(__DIR__) . '/resources/conformance/v1.json');
+Check::test('independent metadata grammar and complete plan golden vectors', static function () use ($testRoot): void {
+    $bytes = file_get_contents($testRoot . '/resources/conformance/v1.json');
     if ($bytes === false) {
         throw new RuntimeException('Corpus unavailable.');
     }
