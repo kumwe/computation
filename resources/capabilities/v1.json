@@ -1,14 +1,14 @@
 {
   "schema": "kumwe-package-capabilities/v1",
   "package": "kumwe/computation",
-  "release": "0.3.0",
+  "release": "0.1.1",
   "namespace": "Kumwe\\Computation\\",
-  "responsibility": "Bounded transport, exact native compatibility, execution and canonical encoding adapters.",
+  "responsibility": "Bounded execution transport, exact compatibility identities and compiler/executor contracts.",
   "non_responsibilities": [
     "Engine algorithms, expression/decimal semantics and document normalization.",
-    "PHP canonicalization algorithms, native binding and C ABI implementation.",
-    "Native provisioning, release admission and App adoption.",
-    "Authorization, persistence, transactions and host request/container lifetime."
+    "Canonical JSON and arbitrary user-data serialization.",
+    "Native binding, C ABI implementation, provisioning and container services.",
+    "Authorization, persistence, transactions, cache lifetime and App adoption."
   ],
   "capabilities": [
     {
@@ -66,7 +66,7 @@
     {
       "id": "computation.execution-contracts",
       "title": "Coarse compilation and execution contracts",
-      "description": "Portable Engine ports implemented by the explicitly configured native adapter.",
+      "description": "Portable Engine ports without an implementation, fallback, native dependency or adapter.",
       "symbols": [
         "Kumwe\\Computation\\Compiler",
         "Kumwe\\Computation\\Executor"
@@ -75,43 +75,8 @@
         "docs/public-api.md",
         "docs/native-boundary.md"
       ]
-    },
-    {
-      "id": "computation.native-adapters",
-      "title": "Explicit native execution and canonical encoding",
-      "description": "Exact tuple validation, coarse native calls and explicit request-scoped DI services.",
-      "symbols": [
-        "Kumwe\\Computation\\NativeAdapter",
-        "Kumwe\\Computation\\NativeAdapterFactory",
-        "Kumwe\\Computation\\NativeCanonicalEncoder",
-        "Kumwe\\Computation\\NativeCanonicalEncoderFactory",
-        "Kumwe\\Computation\\NativeCompatibility",
-        "Kumwe\\Computation\\ConfigProvider"
-      ],
-      "documentation": [
-        "docs/public-api.md",
-        "docs/integration.md",
-        "docs/conformance.md"
-      ]
     }
   ],
-  "native_requirements": {
-    "extension": "kumwe_engine",
-    "abi_major": 1,
-    "capabilities": [
-      "formula-draft/1",
-      "normalized-document-draft/1",
-      "normalized-preparation-draft/1",
-      "report-materialization-draft/1",
-      "kumwe-canonical-json/generic-v1"
-    ],
-    "corpus_digests": [
-      "11033679b018fdc9a192e954ef11089444a00a1d89c6279d3c192be9252cf42f",
-      "84b6c2e55ae591c921536aa755cbb5a9a40a7a19847fe47415e55dce2614c177",
-      "4eb1543929fcf5470eb8cae882127556cd57c02518109545483d8780266b561a",
-      "975116dc897a0bfdee4a08f9065eb10ccfec06a32f4eb93a48015b08af408c01",
-      "84d21b12e7a2bfd752356d9a6e664bcb332e209d19017e7634e7485a4fa4e250"
-    ]
-  },
+  "native_requirements": null,
   "deprecations": []
 }

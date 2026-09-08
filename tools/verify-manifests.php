@@ -88,9 +88,6 @@ function computationManifestsMain(array $arguments): int
     }
 
     $exported = array_keys($symbols);
-    if ($options !== ['--write']) {
-        computationVerifyHandoff();
-    }
     $capabilities = computationVerifyCapabilities($exported, $release);
     $provider = computationVerifyServiceMap($exported, $release);
     computationVerifyDocumentation($symbols);
@@ -107,33 +104,6 @@ function computationManifestsMain(array $arguments): int
 }
 
 /**
- * Keep the shipped handoff and its consumer-facing manifest identities synchronized.
- *
- * @return void
- * @since 0.3.0
- */
-function computationVerifyHandoff(): void
-{
-    $handoff = computationReadFile('MIGRATION-HANDOFF.md');
-    foreach ([COMPUTATION_PUBLIC_API, COMPUTATION_CAPABILITIES, COMPUTATION_SERVICE_MAP] as $path) {
-        $digest = hash('sha256', computationReadFile($path));
-        $pattern = '~path: "?' . preg_quote($path, '~') . '"?\s+sha256: "?' . $digest . '"?(?:\s|$)~';
-        if (preg_match($pattern, $handoff) !== 1) {
-            throw new RuntimeException('Handoff manifest digest is absent or stale: ' . $path);
-        }
-    }
-    $sections = [
-        'Migration/implementation summary', 'Public API and responsibility',
-        'Capability reuse/semantic input review', 'Consumer inventory', 'Test ownership',
-        'Next-task execution notes', 'Drift check', 'Validation recipe and observed local results',
-    ];
-    preg_match_all('/^## (.+)$/m', $handoff, $matches);
-    if ($matches[1] !== $sections || !str_starts_with($handoff, "---\n")) {
-        throw new RuntimeException('Handoff requires v2 front matter and eight ordered narrative sections.');
-    }
-}
-
-/**
  * Register the package's dependency-free PSR-4 loader.
  *
  * @return  void
@@ -142,11 +112,16 @@ function computationVerifyHandoff(): void
  */
 function computationRegisterAutoloader(): void
 {
-    $autoload = computationPath('vendor/autoload.php');
-    if (!is_file($autoload)) {
-        throw new RuntimeException('Install declared Composer dependencies before reflecting the API.');
-    }
-    require_once $autoload;
+    spl_autoload_register(static function (string $class): void {
+        if (!str_starts_with($class, COMPUTATION_NAMESPACE)) {
+            return;
+        }
+        $relative = substr($class, strlen(COMPUTATION_NAMESPACE));
+        $path = COMPUTATION_SOURCE . '/' . str_replace('\\', '/', $relative) . '.php';
+        if (is_file($path)) {
+            require $path;
+        }
+    });
 }
 
 /**
@@ -515,16 +490,8 @@ function computationVerifyCapabilities(array $exported, string $release): int
     if (!is_array($document['non_responsibilities'] ?? null)) {
         throw new RuntimeException($file . ' must list non_responsibilities.');
     }
-    $candidate = computationJsonObject('resources/native-adapter.json');
-    $expectedNative = $candidate['requirements'] ?? null;
-    if (($candidate['binding_features'] ?? null) !== ['opaque-compiled-results/1']) {
-        throw new RuntimeException('The native adapter must require its explicit binding feature.');
-    }
-    if (($candidate['release_status'] ?? null) !== 'candidate-not-release-verified') {
-        throw new RuntimeException('The native adapter remains an unverified development candidate.');
-    }
-    if (($document['native_requirements'] ?? null) !== $expectedNative) {
-        throw new RuntimeException($file . ' must require the exact native candidate verification contract.');
+    if (!array_key_exists('native_requirements', $document) || $document['native_requirements'] !== null) {
+        throw new RuntimeException($file . ' must record native_requirements as null: no extension is needed.');
     }
 
     $capabilities = $document['capabilities'] ?? null;
@@ -672,9 +639,7 @@ function computationVerifyServiceMap(array $exported, string $release): string
             throw new RuntimeException($file . ' carries a malformed alias.');
         }
         foreach ([$alias, $target] as $symbol) {
-            $externalAlias = $symbol === $alias && $alias === 'Kumwe\\CanonicalJson\\CanonicalEncoder'
-                && interface_exists($alias);
-            if (!in_array($symbol, $exported, true) && !$externalAlias) {
+            if (!in_array($symbol, $exported, true)) {
                 throw new RuntimeException($file . ' alias ' . $alias . ' names an unexported symbol.');
             }
         }
@@ -697,31 +662,6 @@ function computationVerifyServiceMap(array $exported, string $release): string
         if (!is_array($entry) || !array_key_exists('default', $entry) || !is_string($entry['description'] ?? null)) {
             throw new RuntimeException($file . ' configuration key ' . $key . ' lacks a default or a description.');
         }
-    }
-
-    $configured = (new \Kumwe\Computation\ConfigProvider())();
-    $expectedFactories = [];
-    $expectedShared = [];
-    foreach ($factories as $factory) {
-        if (!is_string($factory['service']) || !is_string($factory['factory'])) {
-            throw new RuntimeException('Factory configuration cannot be compared.');
-        }
-        $expectedFactories[$factory['service']] = $factory['factory'];
-        $expectedShared[$factory['service']] = $factory['lifetime'] === 'shared';
-    }
-    if (
-        $configured !== ['dependencies' => [
-        'factories' => $expectedFactories, 'aliases' => $aliases, 'shared' => $expectedShared,
-        ]]
-    ) {
-        throw new RuntimeException('Actual provider configuration disagrees with the reviewed service map.');
-    }
-    $nativeAdapter = computationJsonObject('resources/native-adapter.json');
-    if (
-        ($nativeAdapter['required_services'] ?? null) !== ['Kumwe\\Computation\\NativeCompatibility']
-        || ($nativeAdapter['optional_services'] ?? null) !== ['Kumwe\\CanonicalJson\\Limits']
-    ) {
-        throw new RuntimeException('Native factories require exact host-owned compatibility and optional limits.');
     }
 
     return $summary;

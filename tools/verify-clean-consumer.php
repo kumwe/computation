@@ -151,53 +151,14 @@ $consumer = $workspace . '/consumer';
 if (!mkdir($consumer)) {
     consumerFail('the fresh consumer directory cannot be created.', $workspace);
 }
-// Archive the exact installed runtime dependencies. The isolated consumer has no source or path fallback.
-// These local artifacts prove candidate integration, not immutable release provenance.
-$installedBytes = file_get_contents($root . '/vendor/composer/installed.json');
-$installedData = is_string($installedBytes) ? json_decode($installedBytes, true, 512, JSON_THROW_ON_ERROR) : null;
-$packages = is_array($installedData) && is_array($installedData['packages'] ?? null)
-    ? $installedData['packages'] : [];
-$dependencyRepositories = [];
-$dependencyRequirements = [];
-foreach (['kumwe/canonical-json', 'psr/container'] as $dependencyName) {
-    $version = null;
-    foreach ($packages as $dependency) {
-        if (is_array($dependency) && ($dependency['name'] ?? null) === $dependencyName) {
-            $version = $dependency['version'] ?? null;
-        }
-    }
-    $dependencyRoot = realpath($root . '/vendor/' . $dependencyName);
-    if (!is_string($version) || !is_string($dependencyRoot)) {
-        consumerFail('A declared runtime dependency is not installed: ' . $dependencyName, $workspace);
-    }
-    $filename = str_replace('/', '-', $dependencyName);
-    consumerRun([
-        'composer', '--working-dir=' . $dependencyRoot, 'archive', '--format=zip',
-        '--dir=' . $distDirectory, '--file=' . $filename,
-    ], $workspace);
-    $dependencyBytes = file_get_contents($dependencyRoot . '/composer.json');
-    $dependencyMetadata = is_string($dependencyBytes)
-        ? json_decode($dependencyBytes, true, 512, JSON_THROW_ON_ERROR) : null;
-    if (!is_array($dependencyMetadata) || ($dependencyMetadata['name'] ?? null) !== $dependencyName) {
-        consumerFail('Installed dependency metadata does not match its declared owner.', $workspace);
-    }
-    $dependencyArchive = $distDirectory . '/' . $filename . '.zip';
-    $dependencyMetadata['version'] = $version;
-    $dependencyMetadata['dist'] = [
-        'type' => 'zip', 'url' => 'file://' . $dependencyArchive, 'shasum' => sha1_file($dependencyArchive),
-    ];
-    $dependencyRepositories[] = ['type' => 'package', 'package' => $dependencyMetadata];
-    $dependencyRequirements[$dependencyName] = $version;
-}
 $consumerMetadata = [
     'name' => 'kumwe/clean-consumer',
     'description' => 'Isolated verification of the built package archive.',
     'license' => 'proprietary',
-    'require' => ['kumwe/computation' => $release, ...$dependencyRequirements],
+    'require' => ['kumwe/computation' => $release],
     'repositories' => [
-        ['packagist.org' => false],
         ['type' => 'package', 'package' => $metadata],
-        ...$dependencyRepositories,
+        ['packagist.org' => false],
     ],
     'config' => ['allow-plugins' => false],
 ];
@@ -233,13 +194,6 @@ if (is_dir($installed . '/vendor')) {
 $autoload = $consumer . '/vendor/autoload.php';
 consumerRun([PHP_BINARY, $installed . '/resources/toolchain/autoload-smoke.php', $autoload], $workspace);
 consumerRun([PHP_BINARY, $installed . '/examples/typed-consumer.php', $autoload], $workspace);
-
-$expectedTuple = getenv('KUMWE_NATIVE_EXPECTED_TUPLE');
-if (!is_string($expectedTuple) || $expectedTuple === '' || !is_file($expectedTuple)) {
-    consumerFail('The actual native consumer needs independent KUMWE_NATIVE_EXPECTED_TUPLE configuration.', $workspace);
-}
-consumerRun([PHP_BINARY, $root . '/tests/native.php', $expectedTuple, $autoload], $workspace);
-consumerRun([PHP_BINARY, '-n', $root . '/tests/native-absence.php', $autoload], $workspace);
 
 $classmap = require $consumer . '/vendor/composer/autoload_classmap.php';
 $symbols = is_array($manifest['symbols'] ?? null) ? $manifest['symbols'] : [];

@@ -19,6 +19,5 @@ cover their executable invariants. This is an independent architectural review, 
 native ABI freeze, native implementation check, release attestation or App readiness claim.
 
 No semantic dependency or corpus was silently omitted: the baseline owns metadata and opaque transport
-only. It does not select a Conversion/Canonical JSON execution profile. The current native adapter now selects the
-released canonical contract and exact candidate profiles.
-Independent immutable native release verification remains required.
+only. It does not select a Conversion/Canonical JSON execution profile. Future semantic implementations
+still require independently verified immutable semantic releases.

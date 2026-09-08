@@ -7,8 +7,6 @@ parameters:
     - tools
     - examples
     - resources/toolchain
-  scanFiles:
-    - tests/StaticAnalysis/NativeTypes.stub
   tmpDir: .phpstan.cache
   treatPhpDocTypesAsCertain: false
   reportUnmatchedIgnoredErrors: true

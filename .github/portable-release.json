@@ -1,0 +1,7 @@
+{
+  "schema": "kumwe-portable-release-line/v1",
+  "repository": "kumwe/computation",
+  "branch": "maintenance/portable-contracts",
+  "phase": "contract_baseline",
+  "version_series": "0.1"
+}

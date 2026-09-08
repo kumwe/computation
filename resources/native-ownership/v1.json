@@ -1,11 +1,9 @@
 {
   "schema": "kumwe-computation-native-ownership/v1",
   "status": "reviewed-draft",
-  "phase": "native_adapter_candidate",
+  "phase": "contract_baseline",
   "native_implementation": false,
-  "semantic_dependencies": [
-    "kumwe/canonical-json"
-  ],
+  "semantic_dependencies": [],
   "corpus": "resources/conformance/v1.json",
   "php": [
     {
@@ -127,42 +125,6 @@
       "owner": "kumwe/computation",
       "runtime": "composer",
       "api_manifest": "resources/public-api/v1.json"
-    },
-    {
-      "fqcn": "Kumwe\\Computation\\NativeAdapter",
-      "owner": "kumwe/computation",
-      "runtime": "composer",
-      "api_manifest": "resources/public-api/v1.json"
-    },
-    {
-      "fqcn": "Kumwe\\Computation\\NativeAdapterFactory",
-      "owner": "kumwe/computation",
-      "runtime": "composer",
-      "api_manifest": "resources/public-api/v1.json"
-    },
-    {
-      "fqcn": "Kumwe\\Computation\\NativeCanonicalEncoder",
-      "owner": "kumwe/computation",
-      "runtime": "composer",
-      "api_manifest": "resources/public-api/v1.json"
-    },
-    {
-      "fqcn": "Kumwe\\Computation\\NativeCanonicalEncoderFactory",
-      "owner": "kumwe/computation",
-      "runtime": "composer",
-      "api_manifest": "resources/public-api/v1.json"
-    },
-    {
-      "fqcn": "Kumwe\\Computation\\NativeCompatibility",
-      "owner": "kumwe/computation",
-      "runtime": "composer",
-      "api_manifest": "resources/public-api/v1.json"
-    },
-    {
-      "fqcn": "Kumwe\\Computation\\ConfigProvider",
-      "owner": "kumwe/computation",
-      "runtime": "composer",
-      "api_manifest": "resources/public-api/v1.json"
     }
   ],
   "native": [
@@ -231,6 +193,5 @@
       "cancelled": 7,
       "internal_failure": 8
     }
-  },
-  "native_adapter": true
+  }
 }

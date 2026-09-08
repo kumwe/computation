@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Publish only the exact default-branch checkout that passed this workflow's package gate.
+# Publish the exact admitted release-line checkout that passed this workflow's package gate.
 set -euo pipefail
 
 fail() { echo "::error::$*" >&2; exit 1; }
@@ -12,13 +12,26 @@ tools_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 : "${DEFAULT_BRANCH:?DEFAULT_BRANCH is required}"
 [[ "$GITHUB_REPOSITORY" =~ ^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$ ]] || fail 'Invalid repository coordinate.'
 git check-ref-format "refs/heads/$DEFAULT_BRANCH" || fail 'Invalid default branch.'
-[[ "$GITHUB_REF" == "refs/heads/$DEFAULT_BRANCH" ]] || fail 'Only the repository default branch may release.'
+
 [[ "$GITHUB_SHA" =~ ^[0-9a-f]{40}$ ]] || fail 'The tested source must be an exact commit SHA.'
 cd -- "$(git rev-parse --show-toplevel)"
 [[ "$(git rev-parse HEAD)" == "$GITHUB_SHA" ]] || fail 'The checkout differs from the tested workflow commit.'
 git diff --quiet HEAD -- || fail 'Release checkout contains tracked modifications.'
 
+release_branch="$DEFAULT_BRANCH"
+if [[ "$GITHUB_REF" != "refs/heads/$DEFAULT_BRANCH" ]]; then
+  [[ "$GITHUB_REPOSITORY" == kumwe/computation && "$GITHUB_REF" == refs/heads/maintenance/portable-contracts ]] \
+    || fail 'Only the default branch or the reviewed portable maintenance line may release.'
+  [[ -f .github/portable-release.json ]] || fail 'Portable maintenance release policy is missing.'
+  jq -e '. == {schema:"kumwe-portable-release-line/v1",repository:"kumwe/computation",
+    branch:"maintenance/portable-contracts",phase:"contract_baseline",version_series:"0.1"}' \
+    .github/portable-release.json >/dev/null || fail 'Portable maintenance release policy is invalid.'
+  release_branch=maintenance/portable-contracts
+fi
 version="$(bash "$tools_dir/read-release-record.sh" < CHANGELOG.md)"
+if [[ "$release_branch" != "$DEFAULT_BRANCH" ]]; then
+  [[ "$version" =~ ^0\.1\.[1-9][0-9]*$ ]] || fail 'Portable maintenance releases are restricted to 0.1.1 or later 0.1 patches.'
+fi
 output version "$version"
 if [[ -z "$version" ]]; then
   echo '::notice::No version is recorded; nothing to release.'
@@ -80,7 +93,7 @@ if [[ "$probe_status" -eq 0 ]]; then
   resolve_tag_commit
   git cat-file -e "$tag_sha^{commit}" || fail 'The tag commit is missing from the complete checkout.'
   git merge-base --is-ancestor "$tag_sha" "$GITHUB_SHA" \
-    || fail "Tag v$version is outside the tested default-branch history."
+    || fail "Tag v$version is outside the tested release-line history."
   tagged_version="$(git show "$tag_sha:CHANGELOG.md" | bash "$tools_dir/read-release-record.sh")"
   [[ "$tagged_version" == "$version" ]] || fail "Tag v$version has a different release record."
   if [[ "$release_exists" != true && "$tag_sha" != "$GITHUB_SHA" ]]; then

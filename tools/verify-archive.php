@@ -7,8 +7,8 @@
  * resources/ and src/ from the release archive, and the clean-consumer gate runs examples/ from it, so all
  * of them must be present. Development state — tests, tools, workflows, lint configuration, the lock file,
  * the vendor tree — must be absent. Every source file must be reviewed or exported by the public API manifest
- * and every exported symbol must be shipped. Archived Composer metadata must retain the reviewed 64-bit PHP,
- * native extension and exact canonical-contract dependencies.
+ * and every exported symbol must be shipped, and the archived Composer metadata must still name 64-bit PHP as the
+ * only runtime requirement.
  *
  * @since 0.1.0
  */
@@ -117,21 +117,15 @@ $requiredShipped = [
     'docs/boundary-review.md',
     'docs/consumer-inventory.json',
     'docs/integration.md',
-    'docs/contract-baseline.md',
     'docs/public-api.md',
     'docs/releasing.md',
-    'docs/package-release-standard.md',
-    'docs/repository-release-setup.md',
     'docs/security.md',
     'examples/README.md',
     'examples/typed-consumer.php',
     'resources/capabilities/v1.json',
     'resources/conformance/v1.json',
     'resources/native-ownership/v1.json',
-    'resources/native-adapter.json',
-    'resources/contract-baseline/v1.json',
     'src/Internal/Guard.php',
-    'src/Internal/NativeRuntime.php',
     'resources/public-api/v1.json',
     'resources/service-map/v1.json',
     'resources/toolchain/autoload-smoke.php',
@@ -205,8 +199,8 @@ if (($composer['license'] ?? null) !== 'Apache-2.0') {
     $errors[] = 'The archived composer.json does not advertise the Apache-2.0 license.';
 }
 $runtime = is_array($composer['require'] ?? null) ? array_keys($composer['require']) : [];
-if ($runtime !== ['php', 'php-64bit', 'ext-kumwe_engine', 'kumwe/canonical-json', 'psr/container']) {
-    $errors[] = 'The archived composer.json must require the reviewed native adapter dependencies.';
+if ($runtime !== ['php', 'php-64bit']) {
+    $errors[] = 'The archived composer.json must require only PHP and the 64-bit PHP platform.';
 }
 if (($composer['autoload'] ?? null) !== ['psr-4' => ['Kumwe\\Computation\\' => 'src/']]) {
     $errors[] = 'The archived composer.json does not autoload the one canonical namespace from src/.';

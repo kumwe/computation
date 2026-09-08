@@ -22,18 +22,15 @@ source:
   examined_dependencies:
     - "php ^8.5"
     - "php-64bit ^8.5"
-    - "ext-kumwe_engine 0.0.0-dev"
-    - "kumwe/canonical-json 0.1.1"
-    - "psr/container ^2.0"
   active_related_pull_requests: []
 target:
   repository: "https://github.com/kumwe/computation"
   artifact_identity: "kumwe/computation"
   canonical_namespace_or_abi: "Kumwe\\Computation"
-  branch: "codex/extraction-readiness-20260907"
-  pull_request: "https://github.com/kumwe/computation/pull/11"
+  branch: "codex/portable-contract-baseline"
+  pull_request: null
 ownership:
-  responsibility: "Portable transport, native adapters, compatibility and deterministic refusals."
+  responsibility: "Phase 1A portable execution transport, compatibility and deterministic refusals."
   non_responsibilities:
     - "Host trust and final authorization"
     - "Persistence, durable transactions, worker and transport lifecycle"
@@ -41,27 +38,24 @@ ownership:
   allowed_dependency_ceiling:
     - "php"
     - "php-64bit"
-    - "ext-kumwe_engine"
-    - "kumwe/canonical-json"
-    - "psr/container"
   implementation_owner: "kumwe/computation"
-  next_consumer: "kumwe/app"
+  next_consumer: "kumwe/engine"
   public_manifests:
     -
       path: "resources/public-api/v1.json"
-      sha256: "5c92ecc03d5fe299ef2472143809c8403570e629eb1921a056ef63519257e8dd"
+      sha256: "bb0a1630682953413acc20a540471b9308cf14c62cdb9162d5fa1bd5b55af9a4"
     -
       path: "resources/capabilities/v1.json"
-      sha256: "fed26f33c8c8b5f8a51a4a7d2d478197843e95eae8910180b38c4d3bedbc708c"
+      sha256: "b0b5a5df7f527685a3f069c3f1ff8418dbb29f51850ee074d2ab849e834ae7e7"
     -
       path: "resources/service-map/v1.json"
-      sha256: "5ea8e1eb02d0008bd293ae9a68dd3f36bf37617b49a0a0d86acdf7126312860e"
+      sha256: "63d04ed230e1f70b88910aa27b11f09e50458d8d8a9722c5f30feb6954fb9fce"
     -
       path: "resources/contract-baseline/v1.json"
-      sha256: "3996c8d0ec3cc114167c71d8dcf77ac6f17bacd5502f3e64934db8ad9f26c479"
+      sha256: "7067acda3b4bcb412e887d7c9711efe0257573530b874a3e48302717e07b9499"
   intentionally_excluded:
     - "Engine owns algorithms; extension owns C ABI/Zend binding."
-    - "No App extraction or runtime adoption occurs in this successor."
+    - "No App extraction, native runtime binding or runtime adoption occurs in this baseline."
 framework_php:
   composer_package: "kumwe/computation"
   canonical_namespace: "Kumwe\\Computation"
@@ -78,25 +72,17 @@ framework_php:
       - "examples/typed-consumer.php"
     external: []
   dependency_injection:
-    mode: "config-provider"
-    provider: "Kumwe\\Computation\\ConfigProvider"
-    factories:
-      - "Kumwe\\Computation\\NativeAdapterFactory"
-      - "Kumwe\\Computation\\NativeCanonicalEncoderFactory"
-    aliases:
-      - "Kumwe\\Computation\\Compiler -> Kumwe\\Computation\\NativeAdapter"
-      - "Kumwe\\Computation\\Executor -> Kumwe\\Computation\\NativeAdapter"
-    service_lifetimes:
-      - "Kumwe\\Computation\\NativeAdapter: shared"
-      - "Kumwe\\Computation\\NativeCanonicalEncoder: shared"
+    mode: "none"
+    provider: null
+    factories: []
+    aliases: []
+    service_lifetimes: []
     configuration_keys: []
-    provider_absence_reason: null
+    provider_absence_reason: "Direct immutable portable contracts; no runtime implementation or native binding."
 native_cpp: null
 php_extension: null
 tests:
   moved_or_added:
-    - "tests/native-absence.php"
-    - "tests/native.php"
     - "tests/run.php"
   remain_in_app_or_consumer:
     - "Retain host composition, authority, persistence and integration assertions in App."
@@ -114,9 +100,9 @@ documentation:
   integration_or_consumer: "docs/integration.md"
   examples:
     - "examples/typed-consumer.php"
-  changelog_record: "CHANGELOG.md / 0.3.0"
+  changelog_record: "CHANGELOG.md / 0.1.1"
 release_expectations:
-  version_policy: "Exact stable sibling pins; promote compatible published successors together."
+  version_policy: "The reviewed 0.1.1 portable maintenance record is not a publication observation; no semantic dependency is selected."
   expected_artifact_types:
     - "Composer package archive"
     - "GitHub source archive"
@@ -127,25 +113,25 @@ release_expectations:
   required_registry_or_installer: "Composer"
   required_external_attestation: true
 next_task:
-  phase_name: "Verify portable baseline, then ordered native releases and adapter successor"
+  phase_name: "Independently verify Phase 1A baseline, then admit Engine candidate release"
   permitted_only_when:
     - "The extension-free baseline is independently verified before Engine stable admission"
     - "Final package CI passes at the proposed head"
     - "Immutable package and all dependency releases are independently verified"
     - "Reconcile current App drift against the recorded source inventories"
-  consumer_repository: "https://github.com/kumwe/app"
-  dependency_or_native_change: "Verify baseline, Engine, extension and successor; see docs/contract-baseline.md."
+  consumer_repository: "https://github.com/kumwe/engine"
+  dependency_or_native_change: "Record exact verified baseline API/corpus in Engine; no App integration in Phase 1A."
   namespace_or_api_replacements: []
   files_to_update:
-    - "composer.json"
-    - "composer.lock"
+    - "resources/contracts.json"
+    - "docs/releasing.md"
   files_to_remove: []
   tests_to_remove:
     - "Portable implementation assertions only, after App integration gates pass."
   tests_to_retain_or_add:
     - "Host composition and operational integration suites."
   di_or_provisioning_changes:
-    - "Bind NativeCompatibility and package factories; host selects CanonicalEncoder binding."
+    - "None in Phase 1A; portable contracts have no service provider."
   capability_index_changes:
     - "Record verified package capability and API ownership."
   changelog_and_evidence_changes:
@@ -170,73 +156,43 @@ governance:
     - "NRM-2026-008"
   completion_claim: false
 decisions:
-  - "Release compiled plans explicitly to reclaim bounded native capacity."
-  - "Engine owns algorithms; Computation owns transport and native adapters."
-  - "No App changes or release publication occurs in this successor."
-  - "Require opaque-compiled-results/1 at composition; preserve raw native result bytes."
-  - "This native-backed 0.3.0 proposal cannot serve as its own pre-Engine contract baseline."
+  - "Reconstruct Phase 1A on maintenance/portable-contracts and preserve native main and every existing tag."
+  - "Keep the 20 public portable source files, Internal/Guard and transport corpus identical to reviewed native main."
+  - "Select no runtime semantic dependency; no native adapter, provider, native requirement or algorithm is shipped."
+  - "The 0.1.1 record selects a future release; verified_release and external attestation remain null."
 blockers:
-  - "No published, independently verified extension-free Computation baseline was identified."
-  - "Final package gates and independent immutable release verification remain required."
-  - "Engine/extension remain development candidates; no verified stable tuple exists."
+  - "Maintainer review/merge and actual portable publication are pending."
+  - "Independent released-artifact verification must precede native release admission."
+  - "Engine/extension remain development candidates; Phase 1B qualification waits for their verified stable releases."
 ---
 
-# computation implementation handoff
+# computation portable contract baseline handoff
 
-## Migration/implementation summary
+This is the reconstructed **Phase 1A contract_baseline**, proposed as maintenance 0.1.1. It preserves native
+main and historical releases. It requires only 64-bit PHP 8.5: no extension, native service, semantic algorithm,
+Composer sibling dependency or PHP fallback. Its 20 portable public source files and Internal/Guard.php are
+identical to the reviewed native source 7bff8d3c916612d374c63e56ef3f2ef76e898322, as is the transport corpus.
 
-Expose compiled-plan release and opaque results with explicit binding-feature admission; normalize consumer
-manifests. [PR #11](https://github.com/kumwe/computation/pull/11) contains this successor. The changelog
-version describes the proposed artifact; it is not a publication observation.
+The package owns identity, bounds, opaque program/document/result transport, ordered findings, refusals and
+coarse Compiler/Executor contracts. It extracts no existing App class. docs/consumer-inventory.json records
+zero immediate App removals; the original App source baseline remains historical extraction evidence only.
+Native ABI classes remain extension-owned, as documented in resources/native-ownership/v1.json. The historical
+native candidate coordinate records examined ownership, not a runtime dependency or released artifact.
 
-## Public API and responsibility
+All exported types retain concrete behavior/boundary mappings. The transport-only corpus and its fixed digest
+remain package-owned conformance evidence. Composer check includes API/architecture/ownership/static/security
+checks, complete portable tests and a fresh archive installed with no-dev authoritative loading. CI also runs
+the portable suite with php -n. Native suites remain on native main and belong to the later qualified successor.
 
-Portable transport and native adapters are implemented. Engine owns all algorithms; the PHP extension owns
-ABI/Zend binding. The available 0.0.0-dev native tuple remains a development candidate, so independent stable
-native release verification still gates App adoption. Every exported member is recorded in
-resources/public-api/v1.json and documented in docs/public-api.md. The current surface contains 26 types. 0
-types have recorded extraction provenance; package-native composition is identified separately.
+Human merge into maintenance/portable-contracts starts its complete release-on-record gate. The committed
+portable-release policy confines this exception to this repository, that branch and the 0.1 patch line beginning
+at 0.1.1. It cannot manufacture the absent historical 0.1.0 release or publish native series versions. Existing
+release identities remain immutable in workflow behavior, regardless of optional platform hardening settings.
 
-## Capability reuse/semantic input review
+Publication alone establishes package-released. A separate verification must record the observed tag/commit,
+Composer/archive identity, shipped handoff and exact API/capability/service/corpus hashes in external evidence.
+Only that verified baseline can clear Engine's ordered prerequisite. Engine and extension stable releases must
+then be independently verified before the native Computation successor qualifies. App integration is excluded.
 
-The implementation consumes the exact canonical dependency contracts recorded in composer.json. First publish
-and independently verify the extension-free Computation contract baseline; no usable published baseline was
-identified. Then verify Engine stable, extension stable and this native-backed successor in that order. See
-docs/contract-baseline.md. The tested 0.0.0-dev extension is candidate evidence only.
-
-## Consumer inventory
-
-The machine record lists actual source mappings, known consumer paths and concrete namespace replacements. No
-App code is moved by this successor; resources/native-ownership/v1.json and resources/conformance/v1.json
-record the native/transport boundary. Dynamic references and same-namespace names must be searched again
-during adoption; the inventory does not imply that App has already switched ownership.
-
-## Test ownership
-
-Package tests own portable values, validation, service behavior, explicit construction and malformed-input
-regressions. The machine record identifies the source suites to split. Host persistence, transactions,
-authority, transport and operational integration stay in App. After verified adoption, remove duplicate
-library implementation assertions from App together with their legacy source.
-
-## Next-task execution notes
-
-Independent successor release verification and the final package gate remain necessary before App adoption.
-Native extension and Engine are development candidates; no verified stable native release tuple exists. First
-publish and independently verify the extension-free Computation contract baseline; no usable published
-baseline was identified. Then verify Engine stable, extension stable and this native-backed successor in that
-order. See docs/contract-baseline.md. The tested 0.0.0-dev extension is candidate evidence only. Run final
-source and clean archive gates before admitting the package; then update the App dependency lock, replace
-namespaces, retain host adapters and remove only the inventoried portable legacy implementations.
-
-## Drift check
-
-Reconcile the recorded source commit and per-file source digests with the current App before adoption.
-Recompute all public manifest hashes together. Keep actual release observations and final tested commit
-identities outside the tested source tree to avoid self-referential evidence.
-
-## Validation recipe and observed local results
-
-Run composer check with the documented PHP runtime and extensions. The review added and exercised the boundary
-regressions described in CHANGELOG.md. A final gate pass, remote CI status and immutable release verification
-are distinct observations; neither a proposed version nor this handoff attests publication. See
-docs/integration.md and the package check scripts for the exact archive and runtime recipe.
+See docs/contract-baseline.md, docs/releasing.md and docs/integration.md for the exact follow-on obligations.
+This handoff records expected checks, never its own final source or archive digest and never a release attestation.
