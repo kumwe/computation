@@ -34,8 +34,8 @@ source:
     - "kumwe/canonical-json 0.1.1"
     - "psr/container ^2.0"
   active_related_pull_requests:
-    - "https://github.com/kumwe/engine/pull/7"
-    - "https://github.com/kumwe/kumwe-engine/pull/3"
+    - "https://github.com/kumwe/engine/pull/8"
+    - "https://github.com/kumwe/kumwe-engine/pull/4"
     - "https://github.com/kumwe/extension-sdk/pull/15"
 target:
   repository: "https://github.com/kumwe/computation"
@@ -69,7 +69,7 @@ ownership:
       sha256: "5ea8e1eb02d0008bd293ae9a68dd3f36bf37617b49a0a0d86acdf7126312860e"
     -
       path: "resources/contract-baseline/v1.json"
-      sha256: "10b2199f5c28a80ab4a00508db173381af73f8aadcc42b79353f180d39c61f17"
+      sha256: "e17f8ab0c321cb39f3c83d01d33087155fc5af24b20245cb3356ee01fb324eb8"
     -
       path: "resources/native-adapter.json"
       sha256: "d8f1560210e93a5df0b19d4db4decb2bc5d38925a8b2d16e0a9f31a77fcd5b16"
@@ -207,7 +207,8 @@ blockers:
 
 Qualify the preserved native adapters using ordered independently verified dependency records and signed
 published source bundles. The portable Computation 0.1.1 baseline is now verified; all 22 corresponding
-source/corpus files remain unchanged. Native Engine/binding stable qualification is still in progress.
+source/corpus files remain unchanged. This correction selects the full-schema-validated durable portable
+receipt. Native Engine/binding stable qualification is still in progress; no 0.3.1 release is claimed.
 
 ## Public API and responsibility
 
