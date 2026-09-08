@@ -5,17 +5,18 @@ The extension-free Computation Phase 1A prerequisite is now independently verifi
 `fc9d049f8b675c8e19fd1672d49b5e206c9ad52a` and original GitHub ZIP SHA-256
 `2d132618efa233ec3bf0c648234c4892b7eb3d5cc1c378ea91a757a91617c223`.
 Its [release](https://github.com/kumwe/computation/releases/tag/v0.1.1) was published on 2026-09-08.
-The [independent verifier run](https://github.com/kumwe/extension-sdk/actions/runs/34250329345)
+The [independent verifier run](https://github.com/kumwe/extension-sdk/actions/runs/34255198879)
 checked the exact release/tag/registry identities, complete package gates, audit, original archive,
 production authoritative autoloader and a fresh offline reinstall without the native extension.
 It loaded all 20 public portable types and Internal/Guard. The original 50-file archive has no native
 adapter, ConfigProvider, native service binding or extension dependency.
 
-The external [RELEASE-ATTESTATION.yaml artifact][baseline-attestation]
-is independent of the Computation source. `resources/contract-baseline/v1.json` records the artifact ZIP
-SHA-256, member digest, original source archive digest and API/capability/corpus identities. GitHub reported
-`immutable: false`; the observed exact tag and archive identities are recorded without claiming the
-optional platform immutability setting. Preserve these external artifacts before Actions retention expires.
+The corrected external [RELEASE-ATTESTATION.yaml][baseline-attestation] is independent of Computation source.
+It passed the complete authoritative attestation schema and is preserved at an exact SDK Git commit.
+`resources/contract-baseline/v1.json` records the YAML's own digest, original source archive digest,
+API/capability/service-map/corpus identities, and the preserved original evidence ZIP's commit/path/digest.
+The former receipt remains explicitly superseded historical evidence. GitHub reported `immutable: false`;
+the observed exact tag and archive identities do not claim the optional platform immutability setting.
 
 All 20 portable source files, Internal/Guard and the transport corpus in this native successor remain
 byte-identical to published 0.1.1. The source preservation map is checked in native admission, ownership and
@@ -49,4 +50,16 @@ record for audit. No historical development publication was relabelled as a veri
 The latter means the three upstream release prerequisites are verified; it does not self-attest this
 Computation successor. Its own release and independent consumer verification follow the complete package gate.
 
-[baseline-attestation]: https://github.com/kumwe/extension-sdk/actions/runs/34250329345/artifacts/10065724495
+[baseline-attestation]:
+https://raw.githubusercontent.com/kumwe/extension-sdk/4dc365e35460eb598d8616aa71e6ae396c75627e/evidence/cp.yml
+
+## Native successor preparation
+
+The ordered-admission implementation from PR #13 is now on the actual default branch. It still requires the
+candidate extension version in Composer. This correction replaces the superseded portable receipt; it does
+not establish Engine/binding stable publication or this package's future 0.3.1 release.
+
+After Engine and binding have actual independently verified stable artifacts, record those coordinates in
+`resources/native-adapter.json`, select the actual exact extension version in `composer.json`, advance the
+ownership phase, and refresh the public manifests and handoff. The complete native package gate and external
+released-archive verification must pass before SDK selects the native successor. App remains a later task.

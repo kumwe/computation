@@ -44,7 +44,9 @@ must remove superseded package-unit cases from App while retaining integration c
 
 The extension-free Computation 0.1.1 baseline is published and independently verified. This native successor
 retains its portable source/corpus bytes exactly. Engine and extension stable release verification remain
-ordered prerequisites; see the [recorded evidence and release order](docs/contract-baseline.md).
+ordered prerequisites; see the [recorded evidence and release order](docs/contract-baseline.md). The native
+admission implementation is on main; its future stable dependency selection remains pending. No 0.3.1 native
+successor release is established by this preparation.
 
 The changelog records a proposed release, not evidence of publication. Human merge and successful release
 checks precede immutable publication. Independent release verification precedes consumer adoption. See

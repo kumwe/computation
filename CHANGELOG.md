@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Replace the superseded portable receipt with complete-schema-validated durable external evidence.
+
 - Qualify native dependencies through ordered external release records and exact signed published source checks.
 - Record independently verified portable Computation 0.1.1 and enforce its unchanged 22-file source/corpus boundary.
 - Add native admission regressions for incomplete evidence, source drift and incompatible dependency identities.

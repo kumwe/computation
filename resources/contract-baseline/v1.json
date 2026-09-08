@@ -10,10 +10,9 @@
     "commit": "fc9d049f8b675c8e19fd1672d49b5e206c9ad52a",
     "archive_sha256": "2d132618efa233ec3bf0c648234c4892b7eb3d5cc1c378ea91a757a91617c223",
     "attestation": {
-      "uri": "https://github.com/kumwe/extension-sdk/actions/runs/34250329345/artifacts/10065724495",
-      "sha256": "0b92a8f8d87eb33764be035962cb15a5b3a2a5a276c81e4a43961a53422d230c",
-      "member": "RELEASE-ATTESTATION.yaml",
-      "member_sha256": "3e6f2ada771266adfaa6575eaf052bb3712e8a9ea3add2a4ca95819b7987bd08"
+      "uri":
+      "https://raw.githubusercontent.com/kumwe/extension-sdk/4dc365e35460eb598d8616aa71e6ae396c75627e/evidence/cp.yml",
+      "sha256": "cec2e39c5b402870c56d9a4de3c06f310f25c63b1030864e975a1b2417347020"
     },
     "require": {
       "php": "^8.5",
@@ -24,13 +23,13 @@
     "capability_digest": "b0b5a5df7f527685a3f069c3f1ff8418dbb29f51850ee074d2ab849e834ae7e7",
     "corpus_digests": {
       "resources/conformance/v1.json": "30a64cf682a46c38ca99544d5abcad43cda7071bb9702621226bf297411b8bfc"
-    }
+    },
+    "service_map_digest": "63d04ed230e1f70b88910aa27b11f09e50458d8d8a9722c5f30feb6954fb9fce"
   },
   "verified_attestation": {
-    "uri": "https://github.com/kumwe/extension-sdk/actions/runs/34250329345/artifacts/10065724495",
-    "sha256": "0b92a8f8d87eb33764be035962cb15a5b3a2a5a276c81e4a43961a53422d230c",
-    "member": "RELEASE-ATTESTATION.yaml",
-    "member_sha256": "3e6f2ada771266adfaa6575eaf052bb3712e8a9ea3add2a4ca95819b7987bd08"
+    "uri":
+    "https://raw.githubusercontent.com/kumwe/extension-sdk/4dc365e35460eb598d8616aa71e6ae396c75627e/evidence/cp.yml",
+    "sha256": "cec2e39c5b402870c56d9a4de3c06f310f25c63b1030864e975a1b2417347020"
   },
   "native_adapter_is_baseline": false,
   "observed_releases": [
@@ -108,5 +107,18 @@
       "src/RefusalCode.php": "2e479f6cbe793b15f1396f79c7dfdb245467ecd74ff7af50d59d6c69f5dd11fb",
       "src/SourceLocation.php": "82fe6ba68bdba1ec472b9241b8c57bfefa5055c7c1f8601038aa524364f47e9c"
     }
-  }
+  },
+  "verification_evidence": {
+    "repository": "https://github.com/kumwe/extension-sdk",
+    "commit": "42d3c9e353aa6fb3e4b6931bb78b260b2682dc15",
+    "path": "evidence/releases/framework-php/computation/0.1.1/34255198879/evidence.zip",
+    "sha256": "eb023ad7bcdb467cc165d1863c64a8bd6057ff516e348528b65eb88cccc9c9c4"
+  },
+  "superseded_attestations": [
+    {
+      "uri": "https://github.com/kumwe/extension-sdk/actions/runs/34250329345/artifacts/10065724495",
+      "sha256": "0b92a8f8d87eb33764be035962cb15a5b3a2a5a276c81e4a43961a53422d230c",
+      "qualification": "Historical artifact only; replaced after full attestation schema validation."
+    }
+  ]
 }
