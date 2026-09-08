@@ -60,13 +60,15 @@
       "@analyse",
       "@test:ownership",
       "@test",
+      "@test:extension-free",
       "@clean-consumer",
       "@release:integrity"
     ],
     "native-ownership": "php tools/verify-native-ownership.php --self-test",
     "test:ownership": "php tools/verify-test-ownership.php --self-test",
     "boundary:tokens": "php tools/verify-boundary-tokens.php --self-test",
-    "release:integrity": "bash tools/test-release-integrity.sh"
+    "release:integrity": "bash tools/test-release-integrity.sh",
+    "test:extension-free": "php -n tests/run.php"
   },
   "config": {
     "sort-packages": true

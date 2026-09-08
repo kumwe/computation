@@ -194,6 +194,7 @@ if (is_dir($installed . '/vendor')) {
 $autoload = $consumer . '/vendor/autoload.php';
 consumerRun([PHP_BINARY, $installed . '/resources/toolchain/autoload-smoke.php', $autoload], $workspace);
 consumerRun([PHP_BINARY, $installed . '/examples/typed-consumer.php', $autoload], $workspace);
+consumerRun([PHP_BINARY, '-n', $root . '/tests/run.php', '--consumer=' . $consumer], $workspace);
 
 $classmap = require $consumer . '/vendor/composer/autoload_classmap.php';
 $symbols = is_array($manifest['symbols'] ?? null) ? $manifest['symbols'] : [];
