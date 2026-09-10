@@ -1,6 +1,6 @@
 {
     "extension": "kumwe_engine",
-    "composer_constraint": "1.0.2",
+    "composer_constraint": "1.0.3",
     "owner": "kumwe/kumwe-engine",
     "engine_owner": "kumwe/engine",
     "wire_version": 1,
@@ -38,7 +38,7 @@
     ],
     "binding_source": {
         "repository": "kumwe/kumwe-engine",
-        "commit": "3f0c22e8c58928fe55db580b893f8ff815b9542c"
+        "commit": "f7094b2ff313f3861962c726844a1107f27b5873"
     },
     "release_dependencies": {
         "portable_contracts": {
@@ -68,36 +68,36 @@
         "engine": {
             "package": "kumwe/engine",
             "state": "package-released",
-            "version": "1.0.2",
-            "tag": "v1.0.2",
-            "commit": "7fc87745e19908047973d2ca86332467f293019e",
-            "archive_sha256": "05711668310ae9a258d0a26efd81a092cc04db1da7d81f150ad1a9852afa7cb4",
-            "release_uri": "https://github.com/kumwe/engine/releases/tag/v1.0.2",
+            "version": "1.0.3",
+            "tag": "v1.0.3",
+            "commit": "814edeb8376c24a4226668e936b0c64141ee88fe",
+            "archive_sha256": "bb447ae8bae41e26d927627cef244c4837e7bc4a4d28ac30e8b06d2150c31a4d",
+            "release_uri": "https://github.com/kumwe/engine/releases/tag/v1.0.3",
             "provenance": {
-                "uri": "https://github.com/kumwe/engine/releases/download/v1.0.2/build-provenance.sigstore.json",
-                "sha256": "4c6d28100551690f79d7f985945a150b317ba46b07c408ff16db1ec4771a0606"
+                "uri": "https://github.com/kumwe/engine/releases/download/v1.0.3/build-provenance.sigstore.json",
+                "sha256": "b2bece22c373c989aa31b34f26af44fafe65b14c0501c3cfa812dc701224823e"
             },
             "abi_frozen": true,
             "abi_major": 1,
             "abi_minor": 0,
-            "embedded_source_sha256": "05711668310ae9a258d0a26efd81a092cc04db1da7d81f150ad1a9852afa7cb4"
+            "embedded_source_sha256": "bb447ae8bae41e26d927627cef244c4837e7bc4a4d28ac30e8b06d2150c31a4d"
         },
         "binding": {
             "package": "kumwe/kumwe-engine",
             "state": "package-released",
-            "version": "1.0.2",
-            "tag": "v1.0.2",
-            "commit": "3f0c22e8c58928fe55db580b893f8ff815b9542c",
-            "archive_sha256": "79aa3c2a44ee4b202762f4517b94cd6f8a9e638ab14d9902674840fb7f9c8aae",
-            "release_uri": "https://github.com/kumwe/kumwe-engine/releases/tag/v1.0.2",
+            "version": "1.0.3",
+            "tag": "v1.0.3",
+            "commit": "f7094b2ff313f3861962c726844a1107f27b5873",
+            "archive_sha256": "406a2b9aeadcc5773863fda4c8ba20803ac1f0c389460a99ef0884e303ca9332",
+            "release_uri": "https://github.com/kumwe/kumwe-engine/releases/tag/v1.0.3",
             "provenance": {
-                "uri": "https://github.com/kumwe/kumwe-engine/releases/download/v1.0.2/build-provenance.sigstore.json",
-                "sha256": "c45c563d052e1159f6a05621acd53f7c2a6d651dc49810563ac83d476cdbb560"
+                "uri": "https://github.com/kumwe/kumwe-engine/releases/download/v1.0.3/build-provenance.sigstore.json",
+                "sha256": "8a870f26350ce4210e81e4fff367b4386d74ffbff298e4d0f612cd17a4e0771d"
             },
             "api_digest": "48c01fcc0344565375ab3ee227594a870a65e404352787688d12337e84cb5a93",
-            "extension_version": "1.0.2",
-            "embedded_engine_commit": "7fc87745e19908047973d2ca86332467f293019e",
-            "embedded_source_sha256": "05711668310ae9a258d0a26efd81a092cc04db1da7d81f150ad1a9852afa7cb4"
+            "extension_version": "1.0.3",
+            "embedded_engine_commit": "814edeb8376c24a4226668e936b0c64141ee88fe",
+            "embedded_source_sha256": "bb447ae8bae41e26d927627cef244c4837e7bc4a4d28ac30e8b06d2150c31a4d"
         }
     }
 }

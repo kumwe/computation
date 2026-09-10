@@ -36,7 +36,7 @@ record for audit. No historical development publication was relabelled as a veri
 
 ## Stable native successor
 
-Computation 0.3.2 selects published Engine and PHP extension **1.0.2**. The source commits, archive digests,
+Computation 0.3.3 selects published Engine and PHP extension **1.0.3**. The source commits, archive digests,
 frozen ABI and exact publisher provenance coordinates are recorded in resources/native-adapter.json.
 Its status is `published-native-dependencies`: publisher OIDC provenance is not labelled an independent
 release attestation. The existing `verified-native-dependencies` state remains reserved for independent

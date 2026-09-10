@@ -5,12 +5,12 @@
 The package exports 20 portable transport types and six native adapter/composition types. It owns no App
 runtime wiring. Native algorithms, ABI/Zend code and semantic conformance corpora remain in their owner
 repositories. The released canonical contract is pinned exactly; the native runtime requires the exact published
-Engine/PHP binding 1.0.2.
+Engine/PHP binding 1.0.3.
 
 ## Release and adoption order
 
 The extension-free Computation 0.1.1 baseline is independently verified and its portable source/corpus
-bytes remain unchanged here. Engine and extension 1.0.2 are published. CI verifies both exact signed source archives
+bytes remain unchanged here. Engine and extension 1.0.3 are published. CI verifies both exact signed source archives
 before building
 the extension; baseline evidence and release states are in [contract-baseline.md](contract-baseline.md).
 
@@ -42,7 +42,7 @@ mutable branch dependency or parallel PHP executor to bypass release ordering.
 
 ## Native adapter
 
-Version 0.3.2 requires `ext-kumwe_engine` exactly `1.0.2`, `psr/container` 2.x and released
+Version 0.3.3 requires `ext-kumwe_engine` exactly `1.0.3`, `psr/container` 2.x and released
 `kumwe/canonical-json` 0.1.1. The native dependency records identify observed stable releases and their
 publisher OIDC provenance, without claiming an independent attestation for this Computation release. The host must
 independently obtain the expected extension version, embedded Engine

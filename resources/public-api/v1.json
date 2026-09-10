@@ -1,7 +1,7 @@
 {
     "schema": "kumwe-package-public-api/v1",
     "package": "kumwe/computation",
-    "release": "0.3.2",
+    "release": "0.3.3",
     "namespace": "Kumwe\\Computation\\",
     "symbols": {
         "Kumwe\\Computation\\BatchResult": {
