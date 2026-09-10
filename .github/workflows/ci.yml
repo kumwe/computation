@@ -128,7 +128,8 @@ jobs:
 
       - name: Install the validated package toolchain
         run: |
-          composer validate --strict
+          # Exact native release pins are intentional and enforced by the native evidence gate.
+          composer validate --strict --no-check-all
           composer install --no-interaction --prefer-dist
           composer audit --abandoned=fail
 

@@ -42,7 +42,7 @@ target:
   artifact_identity: "kumwe/computation"
   canonical_namespace_or_abi: "Kumwe\\Computation"
   branch: "agent/admit-stable-native-engine-1-0-1"
-  pull_request: null
+  pull_request: "https://github.com/kumwe/computation/pull/15"
 ownership:
   responsibility: "Portable transport, native adapters, compatibility and deterministic refusals."
   non_responsibilities:
@@ -72,7 +72,7 @@ ownership:
       sha256: "e17f8ab0c321cb39f3c83d01d33087155fc5af24b20245cb3356ee01fb324eb8"
     -
       path: "resources/native-adapter.json"
-      sha256: "7f4342c48aeebf66890098b5cb29429835619d0db3aae454a600a2a70595802c"
+      sha256: "54efb02697dc66d56d447f1ef05a29d62103d82a637eceacb110f791cbbb3a64"
     -
       path: "resources/native-ownership/v1.json"
       sha256: "f6d794999f35f7e41d195fc25034c41f6392d88b2b2847c1af3782bf5899f50a"
@@ -216,7 +216,8 @@ No publication or independent Computation release attestation is claimed by this
 
 Portable transport and native adapters are implemented. Engine owns all algorithms; the PHP extension owns
 ABI/Zend binding. The required extension is published 1.0.1; source CI checks both owners
-through exact GitHub OIDC provenance, with the complete host build tuple checked separately. Every exported member is recorded in
+through exact GitHub OIDC provenance, with the complete host build tuple checked separately. Every exported member is
+recorded in
 resources/public-api/v1.json and documented in docs/public-api.md. The current surface contains 26 types. 0
 types have recorded extraction provenance; package-native composition is identified separately.
 
