@@ -1,7 +1,7 @@
 {
     "schema": "kumwe-package-service-map/v1",
     "package": "kumwe/computation",
-    "release": "0.3.0",
+    "release": "0.3.1",
     "config_provider": "Kumwe\\Computation\\ConfigProvider",
     "factories": [
         {

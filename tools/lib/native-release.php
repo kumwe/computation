@@ -63,13 +63,17 @@ function nativeReleaseCommit(mixed $value): bool
 /**
  * @param array<string, mixed> $record Verified upstream release evidence reference.
  * @param string $package Exact owner.
+ * @param bool $published Whether to validate publisher provenance without claiming independent verification.
  * @return void
  * @since 0.3.1
  */
-function nativeReleaseCoordinate(array $record, string $package): void
+function nativeReleaseCoordinate(array $record, string $package, bool $published = false): void
 {
     nativeReleaseRequire(($record['package'] ?? null) === $package, 'Wrong native dependency owner.');
-    nativeReleaseRequire(($record['state'] ?? null) === 'release-verified', 'Upstream release is not verified.');
+    nativeReleaseRequire(
+        ($record['state'] ?? null) === ($published ? 'package-released' : 'release-verified'),
+        'Upstream release evidence state differs.',
+    );
     $version = $record['version'] ?? null;
     if (
         !is_string($version) || $version === '0.0.0'
@@ -80,14 +84,22 @@ function nativeReleaseCoordinate(array $record, string $package): void
     nativeReleaseRequire(($record['tag'] ?? null) === 'v' . $version, 'Upstream version tag differs.');
     nativeReleaseRequire(nativeReleaseCommit($record['commit'] ?? null), 'Upstream source commit is missing.');
     nativeReleaseRequire(nativeReleaseDigest($record['archive_sha256'] ?? null), 'Upstream archive digest is missing.');
-    $attestation = nativeReleaseObject($record['attestation'] ?? null);
+    $attestation = nativeReleaseObject($record[$published ? 'provenance' : 'attestation'] ?? null);
     $uri = $attestation['uri'] ?? null;
     nativeReleaseRequire(
         is_string($uri) && filter_var($uri, FILTER_VALIDATE_URL) !== false
         && str_starts_with($uri, 'https://') && !str_contains($uri, '#'),
-        'Independent upstream attestation needs an external HTTPS URI.',
+        'Upstream release evidence needs an external HTTPS URI.',
     );
-    nativeReleaseRequire(nativeReleaseDigest($attestation['sha256'] ?? null), 'Attestation digest is missing.');
+    nativeReleaseRequire(nativeReleaseDigest($attestation['sha256'] ?? null), 'Release evidence digest is missing.');
+    if ($published) {
+        $release = 'https://github.com/' . $package . '/releases/';
+        nativeReleaseRequire(
+            ($record['release_uri'] ?? null) === $release . 'tag/v' . $version
+            && $uri === $release . 'download/v' . $version . '/build-provenance.sigstore.json',
+            'Published native evidence must identify its exact owner release and OIDC provenance.',
+        );
+    }
 }
 
 /**
@@ -125,7 +137,11 @@ function nativeReleaseVerify(array $adapter, array $baseline, array $composer): 
         );
         return;
     }
-    nativeReleaseRequire($status === 'verified-native-dependencies', 'Unknown native dependency evidence state.');
+    $published = $status === 'published-native-dependencies';
+    nativeReleaseRequire(
+        $published || $status === 'verified-native-dependencies',
+        'Unknown native dependency evidence state.',
+    );
     $dependencies = nativeReleaseObject($adapter['release_dependencies'] ?? null);
     nativeReleaseRequire(
         array_keys($dependencies) === ['portable_contracts', 'engine', 'binding'],
@@ -135,8 +151,8 @@ function nativeReleaseVerify(array $adapter, array $baseline, array $composer): 
     $engine = nativeReleaseObject($dependencies['engine']);
     $binding = nativeReleaseObject($dependencies['binding']);
     nativeReleaseCoordinate($portable, 'kumwe/computation');
-    nativeReleaseCoordinate($engine, 'kumwe/engine');
-    nativeReleaseCoordinate($binding, 'kumwe/kumwe-engine');
+    nativeReleaseCoordinate($engine, 'kumwe/engine', $published);
+    nativeReleaseCoordinate($binding, 'kumwe/kumwe-engine', $published);
     nativeReleaseRequire(
         ($baseline['status'] ?? null) === 'release-verified'
         && ($baseline['verified_release'] ?? null) === $portable
@@ -161,7 +177,7 @@ function nativeReleaseVerify(array $adapter, array $baseline, array $composer): 
     nativeReleaseRequire(
         ($engine['abi_frozen'] ?? null) === true && ($engine['abi_major'] ?? null) === 1
         && ($engine['abi_minor'] ?? null) === 0,
-        'The selected Engine requires independently verified frozen ABI 1.0.',
+        'The selected Engine requires frozen ABI 1.0.',
     );
     nativeReleaseRequire(
         nativeReleaseDigest($engine['embedded_source_sha256'] ?? null),
@@ -170,6 +186,7 @@ function nativeReleaseVerify(array $adapter, array $baseline, array $composer): 
     nativeReleaseRequire(nativeReleaseDigest($binding['api_digest'] ?? null), 'Binding API digest is missing.');
     nativeReleaseRequire(
         ($binding['embedded_engine_commit'] ?? null) === $engine['commit']
+        && $binding['version'] === $engine['version']
         && ($binding['embedded_source_sha256'] ?? null) === $engine['embedded_source_sha256'],
         'Binding does not embed the selected independently verified Engine source.',
     );

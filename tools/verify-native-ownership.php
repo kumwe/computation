@@ -89,7 +89,11 @@ function ownershipRead(string $path): array
 function ownershipVerify(array $record, array $api, array $corpus, array $adapter): void
 {
     ownershipRequire(($record['schema'] ?? null) === 'kumwe-computation-native-ownership/v1', 'Wrong schema.');
-    $stable = ($adapter['release_status'] ?? null) === 'verified-native-dependencies';
+    $stable = in_array(
+        $adapter['release_status'] ?? null,
+        ['published-native-dependencies', 'verified-native-dependencies'],
+        true,
+    );
     ownershipRequire(
         ($record['status'] ?? null) === ($stable ? 'reviewed' : 'reviewed-draft'),
         'Ownership review must match the verified dependency evidence state.',
@@ -311,7 +315,11 @@ try {
         $broken = $record;
         $broken['semantic_dependencies'] = ['kumwe/conversion'];
         ownershipRejects('selected semantic dependency', $broken, $api, $corpus, $adapter);
-        $stable = ($adapter['release_status'] ?? null) === 'verified-native-dependencies';
+        $stable = in_array(
+            $adapter['release_status'] ?? null,
+            ['published-native-dependencies', 'verified-native-dependencies'],
+            true,
+        );
         $abiKey = $stable ? 'c_abi' : 'c_abi_proposal';
         $abi = ownershipObject($record[$abiKey] ?? null);
         $abi['frozen'] = !$stable;

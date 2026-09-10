@@ -125,6 +125,39 @@ function nativeReleaseSelfTest(): void
     $broken['release_status'] = 'candidate-not-release-verified';
     nativeReleaseRejects($broken, $baseline, $composer);
     $count += 3;
+    $published = $adapter;
+    $published['release_status'] = 'published-native-dependencies';
+    $publishedDependencies = $dependencies;
+    foreach (['engine', 'binding'] as $name) {
+        $entry = $publishedDependencies[$name];
+        $entry['state'] = 'package-released';
+        $entry['release_uri'] = 'https://github.com/' . $entry['package'] . '/releases/tag/v1.0.0';
+        $entry['provenance'] = [
+            'uri' => 'https://github.com/' . $entry['package']
+                . '/releases/download/v1.0.0/build-provenance.sigstore.json',
+            'sha256' => str_repeat('c', 64),
+        ];
+        unset($entry['attestation']);
+        $publishedDependencies[$name] = $entry;
+    }
+    $published['release_dependencies'] = $publishedDependencies;
+    nativeReleaseVerify($published, $baseline, $composer);
+    foreach (['engine', 'binding'] as $name) {
+        foreach (['provenance', 'release_uri', 'state'] as $field) {
+            $changed = $publishedDependencies;
+            $entry = $changed[$name];
+            $entry[$field] = null;
+            $changed[$name] = $entry;
+            $broken = $published;
+            $broken['release_dependencies'] = $changed;
+            nativeReleaseRejects($broken, $baseline, $composer);
+            ++$count;
+        }
+    }
+    $broken = $published;
+    $broken['release_status'] = 'verified-native-dependencies';
+    nativeReleaseRejects($broken, $baseline, $composer);
+    ++$count;
     echo 'Native release self-test passed: ' . $count . " incomplete/different evidence cases refused.\n";
 }
 
@@ -142,12 +175,23 @@ try {
     $options = array_slice($arguments, 1);
     if ($options === ['--github-outputs']) {
         $source = nativeReleaseObject($adapter['binding_source'] ?? null);
-        $stable = ($adapter['release_status'] ?? null) === 'verified-native-dependencies';
+        $stable = in_array(
+            $adapter['release_status'] ?? null,
+            ['published-native-dependencies', 'verified-native-dependencies'],
+            true,
+        );
         $dependencies = $stable ? nativeReleaseObject($adapter['release_dependencies'] ?? null) : [];
         $binding = $stable ? nativeReleaseObject($dependencies['binding'] ?? null) : [];
+        $engine = $stable ? nativeReleaseObject($dependencies['engine'] ?? null) : [];
+        $bindingProvenance = $stable ? nativeReleaseObject($binding['provenance'] ?? null) : [];
+        $engineProvenance = $stable ? nativeReleaseObject($engine['provenance'] ?? null) : [];
         $outputs = [
             'commit' => $source['commit'] ?? '', 'stable' => $stable ? 'true' : 'false',
             'tag' => $binding['tag'] ?? '', 'archive_sha256' => $binding['archive_sha256'] ?? '',
+            'engine_commit' => $engine['commit'] ?? '', 'engine_tag' => $engine['tag'] ?? '',
+            'engine_archive_sha256' => $engine['archive_sha256'] ?? '',
+            'provenance_sha256' => $bindingProvenance['sha256'] ?? '',
+            'engine_provenance_sha256' => $engineProvenance['sha256'] ?? '',
         ];
         $path = getenv('GITHUB_OUTPUT');
         if (!is_string($path) || $path === '') {

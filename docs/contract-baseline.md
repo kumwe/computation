@@ -34,32 +34,23 @@ The earlier published 0.2.0 and 0.2.1 artifacts require `ext-kumwe_engine: 0.0.0
 cannot supply the pre-Engine portable prerequisite. Their historical coordinates remain in the machine
 record for audit. No historical development publication was relabelled as a verified portable release.
 
-## Remaining ordered native admission
+## Stable native successor
 
-1. Engine consumes the verified portable baseline and independently verified semantic-owner inputs.
-   Frozen ABI compatibility, final native quality and exact candidate cross-build evidence gate Engine release.
-2. Independently verify the published Engine source and signed provenance. The PHP extension then embeds
-   that exact source, passes its installer/lifecycle/platform/performance gates and publishes its stable release.
-3. Independently verify the extension release. Computation selects its exact stable extension version,
-   binding source, embedded Engine identity and external release evidence; its CI verifies the actual
-   published source bundle and GitHub OIDC provenance before compiling that source.
-4. Verify the native-backed Computation successor and downstream SDK release before separately provisioning
-   the App and performing its runtime integration. The host still supplies the independent complete build tuple.
+Computation 0.3.1 selects published Engine and PHP extension **1.0.1**. The source commits, archive digests,
+frozen ABI and exact publisher provenance coordinates are recorded in resources/native-adapter.json.
+Its status is `published-native-dependencies`: publisher OIDC provenance is not labelled an independent
+release attestation. The existing `verified-native-dependencies` state remains reserved for independent
+external evidence. Neither state self-attests a future Computation release.
 
-`resources/native-adapter.json` distinguishes candidate source from `verified-native-dependencies`.
-The latter means the three upstream release prerequisites are verified; it does not self-attest this
-Computation successor. Its own release and independent consumer verification follow the complete package gate.
+The shared PR/default-branch gate downloads both native release bundles, verifies their exact tag commits,
+archive and provenance digests, every checksum and GitHub OIDC signatures against the owners' actual
+ci.yml publisher workflows. The PHP upstream verifier reproduces the binding bundle and checks its exact
+embedded Engine lock. The package then builds the pinned extension and verifies its independently generated
+complete build tuple before native execution and the clean no-dev archive consumer checks.
+
+All 22 portable source/corpus files remain byte-identical to the separately verified 0.1.1 baseline.
+SDK/App adoption must verify the published Computation successor and provision the same admitted native
+artifact and host build tuple. Its publication and downstream application integration are separate observations.
 
 [baseline-attestation]:
 https://raw.githubusercontent.com/kumwe/extension-sdk/4dc365e35460eb598d8616aa71e6ae396c75627e/evidence/cp.yml
-
-## Native successor preparation
-
-The ordered-admission implementation from PR #13 is now on the actual default branch. It still requires the
-candidate extension version in Composer. This correction replaces the superseded portable receipt; it does
-not establish Engine/binding stable publication or this package's future 0.3.1 release.
-
-After Engine and binding have actual independently verified stable artifacts, record those coordinates in
-`resources/native-adapter.json`, select the actual exact extension version in `composer.json`, advance the
-ownership phase, and refresh the public manifests and handoff. The complete native package gate and external
-released-archive verification must pass before SDK selects the native successor. App remains a later task.

@@ -1,12 +1,12 @@
 {
     "extension": "kumwe_engine",
-    "composer_constraint": "0.0.0-dev",
+    "composer_constraint": "1.0.1",
     "owner": "kumwe/kumwe-engine",
     "engine_owner": "kumwe/engine",
     "wire_version": 1,
     "compatibility_service": "Kumwe\\Computation\\NativeCompatibility",
     "verification": "required-actual-extension-and-independent-exact-tuple",
-    "release_status": "candidate-not-release-verified",
+    "release_status": "published-native-dependencies",
     "required_services": [
         "Kumwe\\Computation\\NativeCompatibility"
     ],
@@ -38,7 +38,65 @@
     ],
     "binding_source": {
         "repository": "kumwe/kumwe-engine",
-        "commit": "584e910b5902c7d3c2bda006586692d572ac1154"
+        "commit": "836939af765fcc50f8d4cc0f7e1f23bb7e909425"
     },
-    "release_dependencies": null
+    "release_dependencies": {
+        "portable_contracts": {
+            "package": "kumwe/computation",
+            "state": "release-verified",
+            "version": "0.1.1",
+            "tag": "v0.1.1",
+            "commit": "fc9d049f8b675c8e19fd1672d49b5e206c9ad52a",
+            "archive_sha256": "2d132618efa233ec3bf0c648234c4892b7eb3d5cc1c378ea91a757a91617c223",
+            "attestation": {
+                "uri": "https://raw.githubusercontent.com/kumwe/extension-sdk/4dc365e35460eb598d8616aa71e6ae396c75627e/evidence/cp.yml",
+                "sha256": "cec2e39c5b402870c56d9a4de3c06f310f25c63b1030864e975a1b2417347020"
+            },
+            "require": {
+                "php": "^8.5",
+                "php-64bit": "^8.5"
+            },
+            "native_bindings_present": false,
+            "api_digest": "bb0a1630682953413acc20a540471b9308cf14c62cdb9162d5fa1bd5b55af9a4",
+            "capability_digest": "b0b5a5df7f527685a3f069c3f1ff8418dbb29f51850ee074d2ab849e834ae7e7",
+            "corpus_digests": {
+                "resources/conformance/v1.json": "30a64cf682a46c38ca99544d5abcad43cda7071bb9702621226bf297411b8bfc"
+            },
+            "service_map_digest": "63d04ed230e1f70b88910aa27b11f09e50458d8d8a9722c5f30feb6954fb9fce"
+        },
+        "engine": {
+            "package": "kumwe/engine",
+            "state": "package-released",
+            "version": "1.0.1",
+            "tag": "v1.0.1",
+            "commit": "6e2baa49e1a4e3dd4c13da53e59f62abdf641f8a",
+            "archive_sha256": "906dbb49c2fee9c28bee66c9f5cbd710494bc93a4fcb00067e0e60257b4013f7",
+            "release_uri": "https://github.com/kumwe/engine/releases/tag/v1.0.1",
+            "provenance": {
+                "uri": "https://github.com/kumwe/engine/releases/download/v1.0.1/build-provenance.sigstore.json",
+                "sha256": "3c50d6d1c72a31e7735449b4e8bc0e2fd2d2092ece89029367f73f361b5089d2"
+            },
+            "abi_frozen": true,
+            "abi_major": 1,
+            "abi_minor": 0,
+            "embedded_source_sha256": "906dbb49c2fee9c28bee66c9f5cbd710494bc93a4fcb00067e0e60257b4013f7"
+        },
+        "binding": {
+            "package": "kumwe/kumwe-engine",
+            "state": "package-released",
+            "version": "1.0.1",
+            "tag": "v1.0.1",
+            "commit": "836939af765fcc50f8d4cc0f7e1f23bb7e909425",
+            "archive_sha256": "95d13a5134ce352f2209c7907dd888496add42f88ebf7087740cdc242e1c7a82",
+            "release_uri": "https://github.com/kumwe/kumwe-engine/releases/tag/v1.0.1",
+            "provenance": {
+                "uri": "https://github.com/kumwe/kumwe-engine/releases/download/v1.0.1/build-provenance.sigstore.json",
+                "sha256": "a226419d0321c054fb6019c16a18bc109e15246c37aa64ac92e00b69e5b84c83"
+            },
+            "api_digest": "48c01fcc0344565375ab3ee227594a870a65e404352787688d12337e84cb5a93",
+            "extension_version": "1.0.1",
+            "embedded_engine_commit": "6e2baa49e1a4e3dd4c13da53e59f62abdf641f8a",
+            "embedded_source_sha256": "906dbb49c2fee9c28bee66c9f5cbd710494bc93a4fcb00067e0e60257b4013f7"
+        }
+    }
 }
