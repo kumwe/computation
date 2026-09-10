@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.3
+
+- Select the matching published Engine and PHP binding 1.0.3 source releases with their
+  corrected complete handoff manifest hashes. Preserve the public API, native adapters,
+  semantic profiles and portable source/corpus bytes. Independent released-artifact
+  verification and App adoption remain separate gates.
+
 ## Unreleased
 
 ## 0.3.2

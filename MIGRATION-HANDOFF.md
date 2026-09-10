@@ -30,18 +30,18 @@ source:
   examined_dependencies:
     - "php ^8.5"
     - "php-64bit ^8.5"
-    - "ext-kumwe_engine 1.0.2"
+    - "ext-kumwe_engine 1.0.3"
     - "kumwe/canonical-json 0.1.1"
     - "psr/container ^2.0"
   active_related_pull_requests:
-    - "https://github.com/kumwe/engine/pull/13"
-    - "https://github.com/kumwe/kumwe-engine/pull/8"
+    - "https://github.com/kumwe/engine/pull/14"
+    - "https://github.com/kumwe/kumwe-engine/pull/9"
 target:
   repository: "https://github.com/kumwe/computation"
   artifact_identity: "kumwe/computation"
   canonical_namespace_or_abi: "Kumwe\\Computation"
-  branch: "agent/admit-native-1-0-2"
-  pull_request: "https://github.com/kumwe/computation/pull/16"
+  branch: "agent/computation-0.3.3"
+  pull_request: null
 ownership:
   responsibility: "Portable transport, native adapters, compatibility and deterministic refusals."
   non_responsibilities:
@@ -59,22 +59,22 @@ ownership:
   public_manifests:
     -
       path: "resources/public-api/v1.json"
-      sha256: "08cfe4448fe4978614eb75b63e47a10f3b1346bd17d76982f34136efe868cca2"
+      sha256: "c56fc71c10bf8873bdf611fbc0f08c672666df9b5fb315e269f5c706e24a6a9f"
     -
       path: "resources/capabilities/v1.json"
-      sha256: "4ccc8e53ec21fde1afe86bf0e6e0b9226f36d5ca388275787580df9ff030ac80"
+      sha256: "4f674158de34356fabcbf52c55cbc8fb436e320e66574f74d59ab6d9e86f03bb"
     -
       path: "resources/service-map/v1.json"
-      sha256: "8e44eecbeeb5555902a7795dfcf005998faf3d2b85cd79e5b564e5097a3c8706"
+      sha256: "0c78df81249bde363bcacf7aa14c8d1a8223692bc879f91a65f08c2112dd278d"
     -
       path: "resources/contract-baseline/v1.json"
       sha256: "e17f8ab0c321cb39f3c83d01d33087155fc5af24b20245cb3356ee01fb324eb8"
     -
       path: "resources/native-adapter.json"
-      sha256: "d22998073a3f1c295f57337a604627637680367e3f15efe2e6108a286fbcfba0"
+      sha256: "f49e1ac62ba3edcd92f9bee2760f8e054788758b1a300cb68c8da57fd39c8d28"
     -
       path: "resources/native-ownership/v1.json"
-      sha256: "1c810b4100131d2e15abdb3c1ffa5de71e280b44b218d094fe869327cdaf7be2"
+      sha256: "28756daf1685eddfc2f664c0bd665d77d755029aa4e8238f50a9417efa57396f"
   intentionally_excluded:
     - "Engine owns algorithms; extension owns C ABI/Zend binding."
     - "No App extraction or runtime adoption occurs in this successor."
@@ -131,7 +131,7 @@ documentation:
   integration_or_consumer: "docs/integration.md"
   examples:
     - "examples/typed-consumer.php"
-  changelog_record: "CHANGELOG.md / 0.3.2"
+  changelog_record: "CHANGELOG.md / 0.3.3"
 release_expectations:
   version_policy: "Exact stable sibling pins; promote compatible published successors together."
   expected_artifact_types:
@@ -208,13 +208,13 @@ blockers:
 Qualify the preserved native adapters using ordered independently verified dependency records and signed
 published source bundles. The portable Computation 0.1.1 baseline is now verified; all 22 corresponding
 source/corpus files remain unchanged. This correction selects the full-schema-validated durable portable
-receipt. Version 0.3.2 selects published native Engine/binding 1.0.2 and verifies their signed source bundles.
+receipt. Version 0.3.3 selects published native Engine/binding 1.0.3 and verifies their signed source bundles.
 No publication or independent Computation release attestation is claimed by this source change.
 
 ## Public API and responsibility
 
 Portable transport and native adapters are implemented. Engine owns all algorithms; the PHP extension owns
-ABI/Zend binding. The required extension is published 1.0.2; source CI checks both owners
+ABI/Zend binding. The required extension is published 1.0.3; source CI checks both owners
 through exact GitHub OIDC provenance, with the complete host build tuple checked separately. Every exported member is
 recorded in
 resources/public-api/v1.json and documented in docs/public-api.md. The current surface contains 26 types. 0
@@ -244,7 +244,7 @@ library implementation assertions from App together with their legacy source.
 ## Next-task execution notes
 
 The published Engine and extension identities are recorded in this successor.
-Run the complete native package gate and publish recorded successor 0.3.2;
+Run the complete native package gate and publish recorded successor 0.3.3;
 independent released-artifact verification follows. Only then update SDK's native development/template pins.
 App provisioning and runtime integration remain a separate later task with its own current source inventory.
 
