@@ -43,11 +43,11 @@ must remove superseded package-unit cases from App while retaining integration c
 ## Release status
 
 The extension-free Computation 0.1.1 baseline is published and independently verified. This native successor
-retains its portable source/corpus bytes exactly and requires the published Engine/PHP extension 1.0.1.
+retains its portable source/corpus bytes exactly and requires the published Engine/PHP extension 1.0.2.
 Its shared package gate verifies the exact source archives and GitHub OIDC provenance for both native owners
 before building the extension and checking the independent complete runtime tuple. See the
 [recorded evidence and release order](docs/contract-baseline.md). The dependency publication records do not
-self-attest the Computation 0.3.1 successor; its release and independent consumer verification follow the gate.
+self-attest the Computation 0.3.2 successor; its release and independent consumer verification follow the gate.
 
 The changelog records a proposed release, not evidence of publication. Human merge and successful release
 checks precede immutable publication. Independent release verification precedes consumer adoption. See

@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## 0.3.2
+
+- Select published Engine and PHP binding 1.0.2 through their exact source archives and GitHub OIDC provenance.
+- Carry the corrected native source-release records into the same strict dependency admission and runtime tuple checks.
+- Preserve the portable contract baseline, adapter behavior and package-owned conformance tests unchanged.
+
 ## 0.3.1
 
 - Admit stable Engine and PHP binding 1.0.1 through their exact published archives and GitHub OIDC provenance.
