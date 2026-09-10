@@ -56,30 +56,49 @@ jobs:
           NATIVE_COMMIT: ${{ steps.native-source.outputs.commit }}
           NATIVE_TAG: ${{ steps.native-source.outputs.tag }}
           NATIVE_ARCHIVE_SHA256: ${{ steps.native-source.outputs.archive_sha256 }}
+          NATIVE_PROVENANCE_SHA256: ${{ steps.native-source.outputs.provenance_sha256 }}
+          ENGINE_COMMIT: ${{ steps.native-source.outputs.engine_commit }}
+          ENGINE_TAG: ${{ steps.native-source.outputs.engine_tag }}
+          ENGINE_ARCHIVE_SHA256: ${{ steps.native-source.outputs.engine_archive_sha256 }}
+          ENGINE_PROVENANCE_SHA256: ${{ steps.native-source.outputs.engine_provenance_sha256 }}
         run: |
           test "$(git rev-parse HEAD)" = "$NATIVE_COMMIT"
           test "$(git rev-parse "refs/tags/$NATIVE_TAG^{commit}")" = "$NATIVE_COMMIT"
-          gh api "repos/kumwe/kumwe-engine/releases/tags/$NATIVE_TAG" \
-            --jq 'select(.draft == false and .prerelease == false and .published_at != null) | .id' \
-            > "$RUNNER_TEMP/native-published-release-id"
-          test -s "$RUNNER_TEMP/native-published-release-id"
-          bundle="$RUNNER_TEMP/verified-native-source"
-          mkdir "$bundle"
-          for name in kumwe-engine-php-source.tar.gz source.spdx.json source.json source.provenance.json SHA256SUMS; do
-            gh release download "$NATIVE_TAG" --repo kumwe/kumwe-engine --dir "$bundle" --pattern "$name"
+          for owner in engine kumwe-engine; do
+            if [ "$owner" = engine ]; then
+              commit="$ENGINE_COMMIT"; tag="$ENGINE_TAG"; digest="$ENGINE_ARCHIVE_SHA256"
+              provenance_digest="$ENGINE_PROVENANCE_SHA256"; archive=kumwe-engine-source.tar.gz
+            else
+              commit="$NATIVE_COMMIT"; tag="$NATIVE_TAG"; digest="$NATIVE_ARCHIVE_SHA256"
+              provenance_digest="$NATIVE_PROVENANCE_SHA256"; archive=kumwe-engine-php-source.tar.gz
+            fi
+            test "$(gh api "repos/kumwe/$owner/commits/$tag" --jq .sha)" = "$commit"
+            gh api "repos/kumwe/$owner/releases/tags/$tag" \
+              --jq 'select(.draft == false and .prerelease == false and .published_at != null) | .id' \
+              > "$RUNNER_TEMP/$owner-published-release-id"
+            test -s "$RUNNER_TEMP/$owner-published-release-id"
+            bundle="$RUNNER_TEMP/verified-$owner-source"
+            provenance="$RUNNER_TEMP/$owner-provenance"
+            mkdir "$bundle" "$provenance"
+            for name in "$archive" source.spdx.json source.json SHA256SUMS; do
+              gh release download "$tag" --repo "kumwe/$owner" --dir "$bundle" --pattern "$name"
+            done
+            gh release download "$tag" --repo "kumwe/$owner" --dir "$provenance" \
+              --pattern build-provenance.sigstore.json
+            printf '%s  %s\n' "$digest" "$bundle/$archive" \
+              "$provenance_digest" "$provenance/build-provenance.sigstore.json" | sha256sum --check --strict
+            (cd "$bundle" && sha256sum --check --strict SHA256SUMS)
+            branch="$(gh api "repos/kumwe/$owner" --jq '.default_branch')"
+            for name in "$archive" source.spdx.json source.json SHA256SUMS; do
+              gh attestation verify "$bundle/$name" --repo "kumwe/$owner" \
+                --bundle "$provenance/build-provenance.sigstore.json" --source-digest "$commit" \
+                --source-ref "refs/heads/$branch" \
+                --cert-identity "https://github.com/kumwe/$owner/.github/workflows/ci.yml@refs/heads/$branch" \
+                --deny-self-hosted-runners
+            done
           done
-          gh release download "$NATIVE_TAG" --repo kumwe/kumwe-engine --dir "$RUNNER_TEMP" \
-            --pattern build-provenance.sigstore.json
-          python3 tools/release-source.py verify "$bundle" --expected-commit "$NATIVE_COMMIT" \
-            --expected-sha256 "$NATIVE_ARCHIVE_SHA256" --require-stable
-          branch="$(gh api repos/kumwe/kumwe-engine --jq '.default_branch')"
-          for name in kumwe-engine-php-source.tar.gz source.spdx.json source.json source.provenance.json SHA256SUMS; do
-            gh attestation verify "$bundle/$name" --repo kumwe/kumwe-engine \
-              --bundle "$RUNNER_TEMP/build-provenance.sigstore.json" --source-digest "$NATIVE_COMMIT" \
-              --source-ref "refs/heads/$branch" \
-              --cert-identity "https://github.com/kumwe/kumwe-engine/.github/workflows/release.yml@refs/heads/$branch" \
-              --deny-self-hosted-runners
-          done
+          php tools/release-source.php verify "$RUNNER_TEMP/verified-kumwe-engine-source" \
+            --expected-commit "$NATIVE_COMMIT" --expected-sha256 "$NATIVE_ARCHIVE_SHA256"
 
       - name: Build and load the pinned native extension
         working-directory: native

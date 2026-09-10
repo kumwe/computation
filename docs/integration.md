@@ -4,13 +4,13 @@
 
 The package exports 20 portable transport types and six native adapter/composition types. It owns no App
 runtime wiring. Native algorithms, ABI/Zend code and semantic conformance corpora remain in their owner
-repositories. The released canonical contract is pinned exactly; native runtime 0.0.0-dev remains a candidate.
+repositories. The released canonical contract is pinned exactly; the native runtime requires the exact published Engine/PHP binding 1.0.1.
 
 ## Release and adoption order
 
 The extension-free Computation 0.1.1 baseline is independently verified and its portable source/corpus
-bytes remain unchanged here. The next prerequisites are independently verified Engine and extension stable
-releases; exact baseline evidence and release order are in [contract-baseline.md](contract-baseline.md).
+bytes remain unchanged here. Engine and extension 1.0.1 are published. CI verifies both exact signed source archives before building
+the extension; baseline evidence and release states are in [contract-baseline.md](contract-baseline.md).
 
 Review and publish compatible package/native successors, independently verify their exact artifacts and
 semantic corpus/build tuples, then provision the admitted extension before the separate App runtime cutover.
@@ -38,11 +38,11 @@ baseline. Review exact semantic public APIs, refusal behavior and corpus digests
 attestation. Reconcile live package work before changing the public manifest. Never use a namespace alias,
 mutable branch dependency or parallel PHP executor to bypass release ordering.
 
-## Native adapter candidate
+## Native adapter
 
-Version 0.2.0 adds explicit services requiring `ext-kumwe_engine` candidate `0.0.0-dev`, `psr/container` 2.x and
-released `kumwe/canonical-json` 0.1.1. The native extension remains a candidate; no stable native release or App
-adoption is asserted. The host must independently obtain the expected extension version, embedded Engine
+Version 0.3.1 requires `ext-kumwe_engine` exactly `1.0.1`, `psr/container` 2.x and released
+`kumwe/canonical-json` 0.1.1. The native dependency records identify observed stable releases and their
+publisher OIDC provenance, without claiming an independent attestation for this Computation release. The host must independently obtain the expected extension version, embedded Engine
 commit, source archive SHA-256, binding build digest and complete CapabilitySet from its admitted artifact
 metadata. The binding build digest covers the complete PHP, ABI and build configuration tuple; obtain it
 from the build's independent expected-identity output, never from the runtime being verified.

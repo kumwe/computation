@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## 0.3.1
+
+- Admit stable Engine and PHP binding 1.0.1 through their exact published archives and GitHub OIDC provenance.
+- Use the upstream PHP release verifier and the actual four-file source bundle; verify both native owners.
+- Preserve full native runtime tuple checks, portable baseline identity and clean archive consumer gates.
+
 - Replace the superseded portable receipt with complete-schema-validated durable external evidence.
 
 - Qualify native dependencies through ordered external release records and exact signed published source checks.
