@@ -11,7 +11,7 @@
   "require": {
     "php": "^8.5",
     "php-64bit": "^8.5",
-    "ext-kumwe_engine": "1.0.1",
+    "ext-kumwe_engine": "1.0.2",
     "kumwe/canonical-json": "0.1.1",
     "psr/container": "^2.0"
   },
