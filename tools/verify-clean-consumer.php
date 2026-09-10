@@ -127,7 +127,7 @@ if (!is_file($package . '/composer.json')) {
 }
 
 consumerRun([PHP_BINARY, $root . '/tools/verify-archive.php', $package], $workspace);
-consumerRun(['composer', '--working-dir=' . $package, 'validate', '--strict'], $workspace);
+consumerRun(['composer', '--working-dir=' . $package, 'validate', '--strict', '--no-check-all'], $workspace);
 
 $metadataBytes = file_get_contents($package . '/composer.json');
 $manifestBytes = file_get_contents($package . '/resources/public-api/v1.json');

@@ -49,7 +49,8 @@
             "commit": "fc9d049f8b675c8e19fd1672d49b5e206c9ad52a",
             "archive_sha256": "2d132618efa233ec3bf0c648234c4892b7eb3d5cc1c378ea91a757a91617c223",
             "attestation": {
-                "uri": "https://raw.githubusercontent.com/kumwe/extension-sdk/4dc365e35460eb598d8616aa71e6ae396c75627e/evidence/cp.yml",
+                "uri":
+      "https://raw.githubusercontent.com/kumwe/extension-sdk/4dc365e35460eb598d8616aa71e6ae396c75627e/evidence/cp.yml",
                 "sha256": "cec2e39c5b402870c56d9a4de3c06f310f25c63b1030864e975a1b2417347020"
             },
             "require": {

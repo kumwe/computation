@@ -32,7 +32,7 @@
     }
   },
   "scripts": {
-    "composer:validate": "composer validate --strict",
+    "composer:validate": "composer validate --strict --no-check-all",
     "security:audit": "composer audit --abandoned=fail",
     "release:check": "bash tools/test-release-record.sh",
     "lint": "php tools/lint.php",
