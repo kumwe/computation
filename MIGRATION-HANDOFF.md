@@ -41,7 +41,7 @@ target:
   artifact_identity: "kumwe/computation"
   canonical_namespace_or_abi: "Kumwe\\Computation"
   branch: "agent/admit-native-1-0-2"
-  pull_request: null
+  pull_request: "https://github.com/kumwe/computation/pull/16"
 ownership:
   responsibility: "Portable transport, native adapters, compatibility and deterministic refusals."
   non_responsibilities:
