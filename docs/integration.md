@@ -15,7 +15,7 @@ before building
 the extension; baseline evidence and release states are in [contract-baseline.md](contract-baseline.md).
 
 Review and publish compatible package/native successors, independently verify their exact artifacts and
-semantic corpus/build tuples, then provision the admitted extension before the separate App runtime cutover.
+semantic corpus/build tuples, then provision the admitted extension before Core runtime integration.
 A proposed version or passing source-candidate gate does not establish stable native admission.
 
 ## Tests by owner
@@ -27,11 +27,9 @@ A proposed version or passing source-candidate gate does not establish stable na
 | Native binding | Zend lifecycle, cleanup, marshalling, PHPT, installer and supported platform/PHP matrix. |
 | App | Authority, composition, DB/transactions, provisioning, stale generations, delivery and recovery. |
 
-App currently owns `Expression`, `ExpressionEvaluator`, `DecimalValue`, `RecordRuleValidator`,
-`RecordExpressionValues`, `ValidationViolation` and `DocumentWriteBudget`. Their implementations and tests remain
-until the ordered native cutover. That task must inventory exact test methods again against the current source,
-move pure reusable invariants to their actual package owner and retain implementation/integration assertions in
-App. It must not delete tests because a class has merely received a proposed future package owner.
+Core retains authorization, persistence, transaction and operational integration assertions.
+Library behavior belongs with its implementing package; verify current source ownership when replacing a legacy
+implementation. Remove duplicated implementation tests only together with their superseded implementation.
 
 ## Drift and compatibility
 

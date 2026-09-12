@@ -1,6 +1,6 @@
-# Contract-baseline release prerequisite
+# Portable compatibility baseline
 
-The extension-free Computation Phase 1A prerequisite is now independently verified. The published
+The extension-free Computation 0.1.1 baseline is independently verified. The published
 `kumwe/computation` **0.1.1** maintenance release has exact source
 `fc9d049f8b675c8e19fd1672d49b5e206c9ad52a` and original GitHub ZIP SHA-256
 `2d132618efa233ec3bf0c648234c4892b7eb3d5cc1c378ea91a757a91617c223`.
@@ -23,20 +23,13 @@ byte-identical to published 0.1.1. The source preservation map is checked in nat
 manifest gates. No algorithms have moved into the portable package, and no App implementation is removed.
 The transport corpus remains SHA-256 `30a64cf682a46c38ca99544d5abcad43cda7071bb9702621226bf297411b8bfc`.
 
-## Historical reconstruction and publication history
+The baseline source is intentionally preserved byte for byte, including historical comments. Those comments
+describe the portable release; current native implementation and ownership are documented here and in the
+[Core contract](core-contract.md). Historical dependency coordinates remain in the machine evidence record.
 
-Historical untagged source `3520a11a4acb075562db9dea0d23fbd4922d2bbd` supplied the reviewed portable boundary.
-Its proposed 0.1.0 record was never treated as an observed release. The maintenance implementation was
-reviewed in [PR #12](https://github.com/kumwe/computation/pull/12), revalidated and published as unused 0.1.1.
-Native main and every prior tag were preserved.
+## Native dependency identity
 
-The earlier published 0.2.0 and 0.2.1 artifacts require `ext-kumwe_engine: 0.0.0-dev`; native-backed 0.3.0 also
-cannot supply the pre-Engine portable prerequisite. Their historical coordinates remain in the machine
-record for audit. No historical development publication was relabelled as a verified portable release.
-
-## Stable native successor
-
-Computation 0.3.3 selects published Engine and PHP extension **1.0.3**. The source commits, archive digests,
+Published Computation 0.3.3 selects published Engine and PHP extension **1.0.3**. The source commits, archive digests,
 frozen ABI and exact publisher provenance coordinates are recorded in resources/native-adapter.json.
 Its status is `published-native-dependencies`: publisher OIDC provenance is not labelled an independent
 release attestation. The existing `verified-native-dependencies` state remains reserved for independent

@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- Standardize package/CI/runtime badges and current Core composition documentation.
+- Replace extraction handoff instructions with the durable release record and preserve manifest/archive gates.
+
 ## 0.3.3
 
 - Select the matching published Engine and PHP binding 1.0.3 source releases with their

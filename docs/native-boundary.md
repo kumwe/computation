@@ -1,6 +1,6 @@
 # Computation transport and native boundary
 
-Status: portable contracts and native adapters implemented; native releases remain development candidates.
+Portable contracts and native adapters are implemented and require the published Engine/binding 1.0.3 pair.
 Migration: KUMWE-MIG-2026-008 / KUMWE-CS-2026-008.
 
 This document assigns transport ownership. It does not implement or release an Engine, select an
@@ -149,8 +149,8 @@ capabilities(), compile(), execute() and release(string); native canonical encod
 Compiled execution selects result_format=opaque, preserving Engine-authored JSON bytes while avoiding an
 unused semantic PHP result tree. The explicit opaque-compiled-results/1 binding feature is required at
 composition for both native services; correlation, findings, result counts and byte budgets remain enforced.
-Every native candidate identity is recorded in resources/native-ownership/v1.json and CI pins that exact source.
-A source pin and passing candidate tests never constitute a stable release attestation.
+Every native identity is recorded in resources/native-ownership/v1.json and CI pins that exact source.
+A source pin and passing package tests do not establish independent release verification.
 
 Compiled native plans belong to the exact NativeAdapter instance that created them. A reconstructed or copied
 CompiledProgram is refused even if its transport bytes match. Call NativeAdapter::release() when finished;
