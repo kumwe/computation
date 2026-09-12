@@ -91,7 +91,7 @@ function computationManifestsMain(array $arguments): int
 
     $exported = array_keys($symbols);
     if ($options !== ['--write']) {
-        computationVerifyHandoff();
+        computationVerifyReleaseRecord();
     }
     $capabilities = computationVerifyCapabilities($exported, $release);
     $provider = computationVerifyServiceMap($exported, $release);
@@ -109,29 +109,32 @@ function computationManifestsMain(array $arguments): int
 }
 
 /**
- * Keep the shipped handoff and its consumer-facing manifest identities synchronized.
+ * Keep the shipped release record and its consumer-facing manifest identities synchronized.
  *
  * @return void
  * @since 0.3.0
  */
-function computationVerifyHandoff(): void
+function computationVerifyReleaseRecord(): void
 {
-    $handoff = computationReadFile('MIGRATION-HANDOFF.md');
+    $record = computationReadFile('docs/release-record.md');
     foreach ([COMPUTATION_PUBLIC_API, COMPUTATION_CAPABILITIES, COMPUTATION_SERVICE_MAP] as $path) {
         $digest = hash('sha256', computationReadFile($path));
         $pattern = '~path: "?' . preg_quote($path, '~') . '"?\s+sha256: "?' . $digest . '"?(?:\s|$)~';
-        if (preg_match($pattern, $handoff) !== 1) {
-            throw new RuntimeException('Handoff manifest digest is absent or stale: ' . $path);
+        if (preg_match($pattern, $record) !== 1) {
+            throw new RuntimeException('Release-record manifest digest is absent or stale: ' . $path);
         }
     }
     $sections = [
-        'Migration/implementation summary', 'Public API and responsibility',
-        'Capability reuse/semantic input review', 'Consumer inventory', 'Test ownership',
-        'Next-task execution notes', 'Drift check', 'Validation recipe and observed local results',
+        'Package contract', 'Public API and responsibility',
+        'Dependencies and semantic inputs', 'Consumer contract', 'Test ownership',
+        'Consumer verification', 'Compatibility and drift', 'Validation',
     ];
-    preg_match_all('/^## (.+)$/m', $handoff, $matches);
-    if ($matches[1] !== $sections || !str_starts_with($handoff, "---\n")) {
-        throw new RuntimeException('Handoff requires v2 front matter and eight ordered narrative sections.');
+    preg_match_all('/^## (.+)$/m', $record, $matches);
+    if (
+        $matches[1] !== $sections || !str_starts_with($record, "---\n")
+        || preg_match('/^schema: "?kumwe-package-release-record\/v1"?$/m', $record) !== 1
+    ) {
+        throw new RuntimeException('Release record requires v1 front matter and eight ordered narrative sections.');
     }
 }
 

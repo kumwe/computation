@@ -1,6 +1,6 @@
 # Public API
 
-This reference describes the Computation 0.2.0 native adapter candidate, wire version 1. All short type names below
+This reference describes the Computation 0.3.3 native adapter, wire version 1. All short type names below
 resolve under `Kumwe\Computation\` unless they are PHP built-ins. Public properties are readonly except inherited
 PHP exception state. `Internal\Guard` is not public API. Native algorithms remain in the Engine; this package
 owns no Engine implementation or
@@ -994,7 +994,7 @@ The host supplies `NativeCompatibility`; Compiler and Executor must share the sa
 
 `__construct()` accepts the exact host-selected `$capabilities`, `$extensionVersion`, `$embeddedEngineCommit`,
 `$embeddedSourceSha256` and `$bindingBuildDigest`. The last coordinate binds the independently recorded PHP,
-ABI and binding build tuple. These readonly properties identify the configured candidate without asserting
+ABI and binding build tuple. These readonly properties identify the configured native tuple without asserting
 release admission. `assertObserved()` rejects a missing or mismatched coordinate before execution; extra
 informational fields do not change the comparison. The binding_features string list must advertise
 opaque-compiled-results/1. This common package minimum also applies to NativeCanonicalEncoder even though

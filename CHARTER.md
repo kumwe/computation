@@ -9,15 +9,16 @@ Own the coarse `Compiler` and `Executor` contracts and explicit native implement
 CanonicalEncoder. All portable public declarations use the canonical
 `Kumwe\Computation\` namespace; `Internal` declarations are implementation details.
 
-## Scope of the native adapter candidate
+## Native adapter scope
 
 Program and document transport remain opaque bytes. Semantic identities describe coordinates supplied by a
 host; construction does not attest that the owner, release or corpus was verified. Native adapters require the
 actual extension and compare its complete build/corpus tuple with independently configured expectations.
-CanonicalEncoder uses the upstream GenericV1 contract. There is no App class or test removal.
+CanonicalEncoder uses the upstream GenericV1 contract. Core retains runtime integration and acceptance
+responsibilities.
 
-The required extension-free contract-baseline release has not been identified in published history.
-This native-backed successor cannot be its own pre-Engine prerequisite; see docs/contract-baseline.md.
+The extension-free 0.1.1 baseline is independently verified and preserved byte for byte.
+The native adapter requires the published Engine/binding 1.0.3 pair; see docs/contract-baseline.md.
 
 ## Exclusions
 
@@ -31,7 +32,7 @@ This native-backed successor cannot be its own pre-Engine prerequisite; see docs
 ## Dependencies and native ownership
 
 Runtime dependency ceiling: 64-bit PHP 8.5, ext-kumwe_engine, kumwe/canonical-json and psr/container. The current
-constraints identify development candidates; immutable release admission remains a separate required gate.
+constraints pin published native dependencies; independent consumer admission remains a separate required gate.
 Native Engine and binding declarations remain owned by their repositories. Native FQCNs must never appear as
 autoloadable PHP classes or runtime stubs in this package. Static analysis declarations are excluded from the archive.
 
@@ -48,4 +49,4 @@ No partial batch success is permitted by wire version 1.
 The package owns unit tests for all its invariants and the actual no-dev consumer archive. Native semantics
 and host integration retain their own test owners. Do not duplicate Computation's unit suite in App at adoption.
 Publish through the reviewed changelog release workflow after human merge. Independent artifact/source/API
-verification is required before a later task adopts the release. A package release is not App completion.
+verification is required before consumer deployment. A package release is not App completion.

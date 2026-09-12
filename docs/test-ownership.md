@@ -23,7 +23,7 @@ executes the test callbacks.
 - Native algorithms/ABI in Engine; Zend marshalling in extension; App readiness, authorization, lookup,
 transactions, invalidation and delivery.
 
-No complete App test file is authorized for deletion by this record; consult the released migration handoff for
+No complete App test file is authorized for deletion by this record; consult the Core contract and release record for
 mixed consumer responsibilities. Remove a duplicate App implementation test only when its old production
 implementation is removed during verified adoption. App retains its own integration assertions and does not execute
 package test files from vendor.
